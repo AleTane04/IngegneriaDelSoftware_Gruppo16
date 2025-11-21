@@ -36,3 +36,26 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Custom Settings _ 21/11/2025 ###
+# --- Maven ---
+target/
+*.war
+*.ear
+*.jar
+
+# --- IntelliJ  ---
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# --- NetBeans  ---
+/nbproject/private/
+/nbproject/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
