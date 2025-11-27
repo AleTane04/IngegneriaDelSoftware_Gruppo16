@@ -71,6 +71,6 @@ Il sistema opera in osservanza delle direttive ricevute, come il limite massimo 
 2. **Spostarsi nella cartella del Progetto**
    ```bash   
    cd IngegneriaDelSoftware_Gruppo16
-3. **Adoperare Maven per il bild automatico**
+3. **Adoperare Maven per il build automatico**
    ```bash   
    mvn package
