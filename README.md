@@ -35,7 +35,7 @@ Il sistema opera in osservanza delle direttive ricevute, come il limite massimo 
 - **Storico:** Visualizzazione dei libri attualmente in prestito per ogni utente.
 - **Manutenzione:** Modifica e cancellazione profili utente.
 
-### 🔄 Gestione Prestiti (Core Business)
+### 🔄 Gestione Prestiti 
 - **Check-out (Prestito):** - Controllo automatico disponibilità copie.
     - Controllo limite massimo (Max 3 libri per utente).
     - Decremento automatico delle scorte.
