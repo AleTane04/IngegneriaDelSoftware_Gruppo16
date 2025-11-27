@@ -17,7 +17,7 @@ Un'applicazione per la gestione di una biblioteca, sviluppata in **Java** con in
 ---
 
 ## 📖 Introduzione
-Il **Sistema di Gewstione di una Libreria** è progettato per facilitare il lavoro del bibliotecario, permettendo la gestione digitalizzata del catalogo libri, dell'anagrafica utenti e del monitoraggio dei prestiti. 
+Il **Sistema di Gestione di una Libreria** è progettato gestire una biblioteca universitaria, permettendo la gestione digitalizzata del catalogo libri, dell'anagrafica utenti e del monitoraggio dei prestiti. 
 
 Il sistema opera in osservanza delle direttive ricevute, come il limite massimo di libri per utente e il controllo della disponibilità delle copie in tempo reale.
 
