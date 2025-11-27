@@ -64,8 +64,13 @@ Il sistema opera in osservanza delle direttive ricevute, come il limite massimo 
 * Java JDK 8.
 * Maven (opzionale, se usato per le dipendenze).
 
-### Passaggi
+### Passaggi ( Work in Progress )
 1. **Clona la repository:**
    ```bash
    git clone [https://github.com/AleTane04/IngegneriaDelSoftware_Gruppo16.git](https://github.com/AleTane04/IngegneriaDelSoftware_Gruppo16.git)
+2. **Spostarsi nella cartella del Progetto**
+   ```bash   
    cd IngegneriaDelSoftware_Gruppo16
+3. **Adoperare Maven per il bild automatico**
+   ```bash   
+   mvn package
