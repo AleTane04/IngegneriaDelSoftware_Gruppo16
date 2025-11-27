@@ -1,4 +1,4 @@
-# 📚 Library Management System
+# 📚 Gestione Biblioteca Universitaria
 
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)
 ![JavaFX](https://img.shields.io/badge/JavaFX-GUI-blue?style=for-the-badge)
