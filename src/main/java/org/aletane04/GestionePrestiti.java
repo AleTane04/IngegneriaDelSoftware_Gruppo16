@@ -18,8 +18,8 @@ public class GestionePrestiti
  * @pre libro.getCopie() > 0
  * @post libro.getCopie() == old_copie - 1
  */
-    public void registraPrestito(Utente u, Libro l) 
+    /*public void registraPrestito(Utente u, Libro l) 
     {
         System.out.println("Hello World");
-    }
+    }*/
 }
