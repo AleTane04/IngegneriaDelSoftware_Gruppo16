@@ -67,7 +67,7 @@ Il sistema opera in osservanza delle direttive ricevute, come il limite massimo 
 ### Passaggi ( Work in Progress )
 1. **Clona la repository:**
    ```bash
-   git clone [https://github.com/AleTane04/IngegneriaDelSoftware_Gruppo16.git](https://github.com/AleTane04/IngegneriaDelSoftware_Gruppo16.git)
+   git clone https://github.com/AleTane04/IngegneriaDelSoftware_Gruppo16.git
 2. **Spostarsi nella cartella del Progetto**
    ```bash   
    cd IngegneriaDelSoftware_Gruppo16
