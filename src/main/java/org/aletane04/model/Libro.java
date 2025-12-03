@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gestionebiblioteca;
+package org.aletane04.model;
 
 import java.time.LocalDate;
 
@@ -15,14 +15,14 @@ public class Libro {
     private String titolo;
     private String[] autori;
     private LocalDate annoPublicazione;
-    private final int codice;
+    private final int codiceISBN;
     private int quantità;
     
     public Libro(String titolo, String[] autori, int annoPub, int mesePub, int giornoPub, int codice, int quantità){
         this.titolo=titolo;
         this.autori=autori;
         this.annoPublicazione=LocalDate.of(annoPub, mesePub, giornoPub);
-        this.codice=codice;
+        this.codiceISBN=codice;
         this.quantità=quantità;
     }
     
@@ -40,7 +40,7 @@ public class Libro {
     }
     
     public int getCodice(){
-        return codice;
+        return codiceISBN;
     }
     
     public int getQuantità(){
@@ -65,6 +65,27 @@ public class Libro {
         this.quantità=quantità;
     }
     
-    
+     @Override
+    public boolean equals(Object obj) {
+        /* Verifica dei casi degeneri */
+        if (obj == null) return false;
+        if (this == obj) return true;
+
+        /* Verifica che appartengano alla stessa classe */
+        if (this.getClass() != obj.getClass()) 
+            return false;
+        /* Downcast sicuro; in obj ho un riferimento di un libro */
+        Libro myLibro = (Libro) obj;
+
+        /* Essendo all'interno della stessa classe, accedo all'attributo "codice", che è privato, di myLibro */
+        return this.codiceISBN == myLibro.codiceISBN;
+    }
+
+   @Override
+    public int hashCode(){
+        int code = (codiceISBN == null) ? 0 : codiceISBN.hashCode();
+
+        return code;
+    }
     
 }
