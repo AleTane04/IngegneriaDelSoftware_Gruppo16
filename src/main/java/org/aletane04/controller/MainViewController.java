@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.aletane04;
+package org.aletane04.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -14,7 +14,7 @@ import javafx.fxml.Initializable;
  *
  * @author 39392
  */
-public class MyLibraryViewController implements Initializable {
+public class MainViewController implements Initializable {
 
     /**
      * Initializes the controller class.
