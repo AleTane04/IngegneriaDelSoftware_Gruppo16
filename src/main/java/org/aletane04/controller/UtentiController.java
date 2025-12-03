@@ -14,7 +14,7 @@ import javafx.fxml.Initializable;
  *
  * @author 39392
  */
-public class UtentiViewController implements Initializable {
+public class UtentiController implements Initializable {
 
     /**
      * Initializes the controller class.

@@ -14,7 +14,7 @@ import javafx.fxml.Initializable;
  *
  * @author 39392
  */
-public class PrestitiViewController implements Initializable {
+public class PrestitiController implements Initializable {
 
     /**
      * Initializes the controller class.

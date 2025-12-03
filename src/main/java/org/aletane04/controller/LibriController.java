@@ -14,7 +14,7 @@ import javafx.fxml.Initializable;
  *
  * @author 39392
  */
-public class LibriViewController implements Initializable {
+public class LibriController implements Initializable {
 
     /**
      * Initializes the controller class.
