@@ -41,6 +41,8 @@ public class Biblioteca {
             listaLibri.add(newLibro);
         } else {
             //Lancio una eccezione;
+            //gestioneio
+            
         }
     }
     
