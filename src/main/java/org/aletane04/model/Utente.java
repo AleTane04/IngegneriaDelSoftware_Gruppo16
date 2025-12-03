@@ -5,6 +5,7 @@
  */
 package org.aletane04.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.TreeMap;
@@ -13,19 +14,19 @@ import java.util.TreeMap;
  *
  * @author angel
  */
-public class Utente {
+public class Utente implements Serializable{
     private final String nome;
     private final String cognome;
     private final String matricola;
     private String email;
-    private Map<LocalDate, Libro> prestiti;
+    
     
     public Utente(String nome, String cognome, String matricola, String email){
         this.nome=nome;
         this.cognome=cognome;
         this.matricola=matricola;
         this.email=email;
-        this.prestiti=new TreeMap<>();
+        
     }
     
     //metodi getter
@@ -71,5 +72,10 @@ public class Utente {
         return matricola == null ? 0 : matricola.hashCode();
 
        
+    }
+    
+    @Override
+    public String toString(){
+        return "Nome = " + getNome() + ", Cognome = " + getCognome() + ", Matricola = " + getMatricola() + ", Email istituzionale = " + getEmail() + "\n";
     }
 }
