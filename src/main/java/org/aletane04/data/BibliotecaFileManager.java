@@ -49,7 +49,7 @@ public class BibliotecaFileManager
         scriviSuFile(fileName, libri,"TITOLO;AUTORI;DATA;ISBN;COPIE");
     }
     
-    public void salvaUtentu(List<Utente> utenti, String fileName) 
+    public void salvaUtenti(List<Utente> utenti, String fileName) 
     {
         scriviSuFile(fileName, utenti,"NOME;COGNOME;MATRICOLA;EMAIL");
     }
