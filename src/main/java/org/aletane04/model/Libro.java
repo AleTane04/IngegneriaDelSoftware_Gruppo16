@@ -5,20 +5,23 @@
  */
 package org.aletane04.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
  *
  * @author angel
  */
-public class Libro {
+public class Libro implements Serializable{
     private String titolo;
     private String autori;
     private LocalDate annoPublicazione;
     private final String codiceISBN;
     private int quantità;
     
-    public Libro(String titolo, String[] autori, int annoPub, int mesePub, int giornoPub, String codiceISBN, int quantità){
+
+    public Libro(String titolo, String autori, int annoPub, int mesePub, int giornoPub, String codiceISBN, int quantità){
+
         this.titolo=titolo;
         this.autori=autori;
         this.annoPublicazione=LocalDate.of(annoPub, mesePub, giornoPub);
@@ -86,6 +89,11 @@ public class Libro {
         return codiceISBN == null ? 0 : codiceISBN.hashCode();
 
        
+    }
+    
+    @Override
+    public String toString(){
+        return "Titolo = " + getTitolo() + ", Autori = " + getAutori() + ", Anno di Publicazione = " + getAnnoPublicazione() + ", Codice ISBN = " + getCodice() + ", Copie disponibili = " + getQuantità() + "\n";
     }
     
 }

@@ -5,6 +5,11 @@
  */
 
 package org.aletane04.data;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.aletane04.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,10 +46,56 @@ public class Biblioteca {
             listaLibri.add(newLibro);
         } else {
             //Lancio una eccezione;
+            //gestioneio
+            
         }
     }
     
-  
+    public void salvaCSVLibro(String nomeFile){
+        
+        try( PrintWriter pw = new PrintWriter(new FileWriter(nomeFile)) ){
+            
+            pw.println("TITOLO;AUTORI;ANNO PUBLICAZIONE;CODICE ISBN;QUANTITA'");
+            for(Libro l : this.listaLibri){
+                pw.append(l.getTitolo());
+                pw.append(';');
+                pw.append(l.getAutori());
+                pw.append(';');
+                pw.append(l.getAnnoPublicazione().toString());
+                pw.append(';');
+                pw.append(l.getCodice());
+                pw.append(';');
+                pw.println(l.getQuantità());
+                
+            }
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Biblioteca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    public void salvaCSVUtente(String nomeFile){
+        
+        try( PrintWriter pw = new PrintWriter(new FileWriter(nomeFile)) ){
+            
+            pw.println("NOME;COGNOME;MATRICOLA;EMAIL ISTITUZIONALE");
+            for(Utente u : this.listaUtenti){
+                pw.append(u.getNome());
+                pw.append(';');
+                pw.append(u.getCognome());
+                pw.append(';');
+                pw.append(u.getMatricola());
+                pw.append(';');
+                pw.append(u.getEmail());
+                
+            }
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Biblioteca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
     
     public String getDescrizione(){
         return descrizione;

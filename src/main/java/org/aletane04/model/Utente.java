@@ -5,6 +5,7 @@
  */
 package org.aletane04.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.TreeMap;
@@ -13,7 +14,7 @@ import java.util.TreeMap;
  *
  * @author angel
  */
-public class Utente {
+public class Utente implements Serializable{
     private final String nome;
     private final String cognome;
     private final String matricola;
@@ -71,5 +72,10 @@ public class Utente {
         return matricola == null ? 0 : matricola.hashCode();
 
        
+    }
+    
+    @Override
+    public String toString(){
+        return "Nome = " + getNome() + ", Cognome = " + getCognome() + ", Matricola = " + getMatricola() + ", Email istituzionale = " + getEmail() + "\n";
     }
 }
