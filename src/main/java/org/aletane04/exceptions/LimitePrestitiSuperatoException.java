@@ -9,7 +9,7 @@ package org.aletane04.exceptions;
  *
  * @author 39392
  */
-public class LimitePrestitiSuperatoException {
+public class LimitePrestitiSuperatoException extends Exception {
 
     /**
      * Creates a new instance of <code>LimitePrestitiSuperatoException</code>

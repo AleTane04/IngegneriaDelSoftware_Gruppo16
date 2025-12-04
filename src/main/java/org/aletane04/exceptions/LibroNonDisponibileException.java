@@ -9,7 +9,7 @@ package org.aletane04.exceptions;
  *
  * @author 39392
  */
-public class LibroNonDisponibileException {
+public class LibroNonDisponibileException extends Exception {
 
     /**
      * Creates a new instance of <code>LibroNonDisponibileException</code>

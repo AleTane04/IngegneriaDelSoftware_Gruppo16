@@ -13,14 +13,17 @@ import java.util.logging.Logger;
 import org.aletane04.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableList;
-import org.aletane04.model.*;
+
 
 /**
  *
  * @author angel
  */
 public class Biblioteca {
+    
+    private static final String FILE_LIBRI = "elenco_libri.csv";
+    private static final String FILE_UTENTI = "elenco_utenti.csv";
+    private static final String FILE_PRESTITI = "elenco_libri.csv";
     private final String descrizione;
     private ObservableList<Utente> listaUtenti;
     private ObservableList<Libro> listaLibri;
