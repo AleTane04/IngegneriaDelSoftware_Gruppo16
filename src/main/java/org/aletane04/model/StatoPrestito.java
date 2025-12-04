@@ -9,6 +9,25 @@ package org.aletane04.model;
  *
  * @author 39392
  */
-public class StatoPrestito {
+public enum StatoPrestito 
+{
+    ATTIVO,
+    IN_SCADENZA,
+    SCADUTO;
+    
+    /* Mostro nella tabella dei caratteri più chiari e rappresentativi;
+        ESEMPIO: ATTIVO -> Prestito attivo */
+    @Override
+    public String toString() 
+    {
+        switch(this) 
+        {
+            case ATTIVO: return "Prestito attivo";
+            case IN_SCADENZA: return "Prestito in scadenza";
+            case SCADUTO: return "Prestito scaduto";
+            default: return "Stato del Prestito";
+        }
+    }
     
 }
+

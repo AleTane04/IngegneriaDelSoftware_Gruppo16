@@ -127,7 +127,8 @@ public class Libro{
         return "Titolo = " + getTitolo() + ", Autori = " + getAutori() + ", Anno di Publicazione = " + getAnnoPubblicazione() + ", Codice ISBN = " + getCodiceISBN() + ", Copie disponibili = " + getNumeroCopieDisponibili() + "\n";
     }
     
-    /* Metodo per trasformare un oggetto libro in una stringa, i cui campi sono separati da ;  */
+    /* Metodo per restituire le proprietà di un libro 
+    in una stringa adatta per il formato file .csv, i cui campi sono separati da ;  */
     
     public String toCSV() {
         return titolo+";"+autori+";"+annoPubblicazione.toString()+";"+codiceISBN+";"+numeroCopieDisponibili;
