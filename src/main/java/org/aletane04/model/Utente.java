@@ -18,14 +18,14 @@ public class Utente {
     private final String cognome;
     private final String matricola;
     private String email;
-    private Map<LocalDate, Libro> prestiti;
+    
     
     public Utente(String nome, String cognome, String matricola, String email){
         this.nome=nome;
         this.cognome=cognome;
         this.matricola=matricola;
         this.email=email;
-        this.prestiti=new TreeMap<>();
+        
     }
     
     //metodi getter

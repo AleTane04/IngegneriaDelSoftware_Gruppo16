@@ -13,16 +13,16 @@ import java.time.LocalDate;
  */
 public class Libro {
     private String titolo;
-    private String[] autori;
+    private String autori;
     private LocalDate annoPublicazione;
-    private final int codiceISBN;
+    private final String codiceISBN;
     private int quantità;
     
-    public Libro(String titolo, String[] autori, int annoPub, int mesePub, int giornoPub, int codice, int quantità){
+    public Libro(String titolo, String[] autori, int annoPub, int mesePub, int giornoPub, String codiceISBN, int quantità){
         this.titolo=titolo;
         this.autori=autori;
         this.annoPublicazione=LocalDate.of(annoPub, mesePub, giornoPub);
-        this.codiceISBN=codice;
+        this.codiceISBN=codiceISBN;
         this.quantità=quantità;
     }
     
@@ -31,7 +31,7 @@ public class Libro {
         return titolo;
     }
     
-    public String[] getAutori(){
+    public String getAutori(){
         return autori;
     }
     
@@ -39,7 +39,7 @@ public class Libro {
         return annoPublicazione;
     }
     
-    public int getCodice(){
+    public String getCodice(){
         return codiceISBN;
     }
     
@@ -53,7 +53,7 @@ public class Libro {
         this.titolo=titolo;
     }
     
-    public void setAutori(String[] autori){
+    public void setAutori(String autori){
         this.autori=autori;
     }
     
@@ -65,7 +65,7 @@ public class Libro {
         this.quantità=quantità;
     }
     
-     @Override
+    @Override
     public boolean equals(Object obj) {
         /* Verifica dei casi degeneri */
         if (obj == null) return false;
@@ -81,11 +81,11 @@ public class Libro {
         return this.codiceISBN == myLibro.codiceISBN;
     }
 
-   @Override
+    @Override
     public int hashCode(){
-        int code = (codiceISBN == null) ? 0 : codiceISBN.hashCode();
+        return codiceISBN == null ? 0 : codiceISBN.hashCode();
 
-        return code;
+       
     }
     
 }
