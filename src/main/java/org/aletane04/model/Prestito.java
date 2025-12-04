@@ -5,10 +5,12 @@
  */
 package org.aletane04.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author 39392
  */
-public class Prestito {
+public class Prestito implements Serializable{
     
 }
