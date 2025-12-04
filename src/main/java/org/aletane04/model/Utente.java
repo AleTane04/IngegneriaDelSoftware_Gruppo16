@@ -14,9 +14,9 @@ import java.util.TreeMap;
  *
  * @author angel
  */
-public class Utente implements Serializable{
-    private final String nome;
-    private final String cognome;
+public class Utente{
+    private String nome;
+    private String cognome;
     private final String matricola;
     private String email;
     
@@ -27,6 +27,21 @@ public class Utente implements Serializable{
         this.matricola=matricola;
         this.email=email;
         
+    }
+    
+    /* Data una riga del file .csv in input, la spezzo in un array di stringhe, converto 
+    i valori nei tipi giusti e popolo i campi del mio costruttore */
+    public Utente(String rigaCSV) 
+    {
+        /* Ogni volta che viene trovato un ";" 
+        spezzo la stringa e inserisco il contenuto in un array di Stringhe */
+        String[] arrayChunks = rigaCSV.split(";");
+        
+        this.nome=arrayChunks[0];
+        this.cognome=arrayChunks[1];
+        this.matricola = arrayChunks[2];
+        this.email=arrayChunks[3];
+     
     }
     
     //metodi getter
@@ -47,6 +62,12 @@ public class Utente implements Serializable{
    }
    
    //metodi setter
+   public void setNome(String nome){
+       this.nome=nome;
+   }
+   public void setCognome(String cognome){
+       this.cognome=cognome;
+   }
    public void setEmail(String email){
        this.email=email;
    }
@@ -77,5 +98,11 @@ public class Utente implements Serializable{
     @Override
     public String toString(){
         return "Nome = " + getNome() + ", Cognome = " + getCognome() + ", Matricola = " + getMatricola() + ", Email istituzionale = " + getEmail() + "\n";
+    }
+    
+    /* Metodo per restituire le proprietà di un libro 
+    in una stringa adatta per il formato file .csv, i cui campi sono separati da ;  */
+    public String toCSV() {
+        return nome+";"+cognome+";"+matricola+";"+email;
     }
 }

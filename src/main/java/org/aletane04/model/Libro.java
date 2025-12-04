@@ -12,21 +12,40 @@ import java.time.LocalDate;
  *
  * @author angel
  */
-public class Libro implements Serializable{
+public class Libro{
     private String titolo;
     private String autori;
-    private LocalDate annoPublicazione;
+    private LocalDate annoPubblicazione;
     private final String codiceISBN;
-    private int quantità;
+    private int numeroCopieDisponibili;
     
 
-    public Libro(String titolo, String autori, int annoPub, int mesePub, int giornoPub, String codiceISBN, int quantità){
+    public Libro(String titolo, String autori, int annoPub, int mesePub, int giornoPub, String codiceISBN, int numeroCopie){
 
         this.titolo=titolo;
         this.autori=autori;
-        this.annoPublicazione=LocalDate.of(annoPub, mesePub, giornoPub);
+        this.annoPubblicazione=LocalDate.of(annoPub, mesePub, giornoPub);
         this.codiceISBN=codiceISBN;
-        this.quantità=quantità;
+        this.numeroCopieDisponibili=numeroCopie;
+    }
+    
+    /* Data una riga del file .csv in input, la spezzo in un array di stringhe, converto 
+    i valori nei tipi giusti e popolo i campi del mio costruttore */
+    public Libro(String rigaCSV) 
+    {
+        /* Ogni volta che viene trovato un ";" 
+        spezzo la stringa e inserisco il contenuto in un array di Stringhe */
+        String[] arrayChunks = rigaCSV.split(";");
+        
+        this.titolo=arrayChunks[0];
+        this.autori=arrayChunks[1];
+        /* Da Stringa a LocalDate */
+        this.annoPubblicazione = LocalDate.parse(arrayChunks[2]);
+        this.codiceISBN=arrayChunks[3];
+        /* Da Stringa a intero */
+        this.numeroCopieDisponibili=Integer.parseInt(arrayChunks[4]);
+        
+    
     }
     
     //metodi getter
@@ -38,16 +57,16 @@ public class Libro implements Serializable{
         return autori;
     }
     
-    public LocalDate getAnnoPublicazione(){
-        return annoPublicazione;
+    public LocalDate getAnnoPubblicazione(){
+        return annoPubblicazione;
     }
     
-    public String getCodice(){
+    public String getCodiceISBN(){
         return codiceISBN;
     }
     
-    public int getQuantità(){
-        return quantità;
+    public int getNumeroCopieDisponibili(){
+        return numeroCopieDisponibili;
     }
     
     
@@ -60,14 +79,26 @@ public class Libro implements Serializable{
         this.autori=autori;
     }
     
-    public void setAnnoPublicazione(int annoPub, int mesePub, int giornoPub){
-        this.annoPublicazione=LocalDate.of(annoPub, mesePub, giornoPub);
+    public void setAnnoPubblicazione(int annoPub, int mesePub, int giornoPub){
+        this.annoPubblicazione=LocalDate.of(annoPub, mesePub, giornoPub);
     }
     
-    public void setQuantità(int quantità){
-        this.quantità=quantità;
+    public void setNumeroCopieDisponibili(int q){
+        this.numeroCopieDisponibili=q;
     }
     
+    /* Altri metodi */
+    
+    public void decrementaNumeroCopieDisponibili() 
+    {
+        if(this.numeroCopieDisponibili > 0)
+            this.numeroCopieDisponibili--;
+    }
+    
+    public void incrementaNumeroCopieDisponibili() 
+    {
+        this.numeroCopieDisponibili++;
+    }
     @Override
     public boolean equals(Object obj) {
         /* Verifica dei casi degeneri */
@@ -93,7 +124,14 @@ public class Libro implements Serializable{
     
     @Override
     public String toString(){
-        return "Titolo = " + getTitolo() + ", Autori = " + getAutori() + ", Anno di Publicazione = " + getAnnoPublicazione() + ", Codice ISBN = " + getCodice() + ", Copie disponibili = " + getQuantità() + "\n";
+        return "Titolo = " + getTitolo() + ", Autori = " + getAutori() + ", Anno di Publicazione = " + getAnnoPubblicazione() + ", Codice ISBN = " + getCodiceISBN() + ", Copie disponibili = " + getNumeroCopieDisponibili() + "\n";
     }
+    
+    /* Metodo per trasformare un oggetto libro in una stringa, i cui campi sono separati da ;  */
+    
+    public String toCSV() {
+        return titolo+";"+autori+";"+annoPubblicazione.toString()+";"+codiceISBN+";"+numeroCopieDisponibili;
+    }
+    
     
 }
