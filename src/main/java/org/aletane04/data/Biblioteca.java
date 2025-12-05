@@ -32,7 +32,7 @@ public class Biblioteca {
         
         /* Carico le entità "indipendenti", ossia la lista di Libri e Utenti */
         this.listaLibri = bibliotecaFileManager.caricaLibriDaFile(FILE_LIBRI);
-        this.listaUtenti = bibliotecaFileManager.caricaUtentiDaFile(FILE_LIBRI);
+        this.listaUtenti = bibliotecaFileManager.caricaUtentiDaFile(FILE_UTENTI);
         
         /* Per caricare i prestiti, gli passo al BibliotecaFileManager
            le liste appena popolate
@@ -73,6 +73,30 @@ public class Biblioteca {
         }
     }
     
+    /* Rimozione di un libro */
+    public void rimuoviLibro(Libro libroDaRimuovere) throws Exception 
+    {
+        
+    
+    // 1. CONTROLLO: Qualcuno ha questo libro in prestito?
+    // Scorro la lista dei prestiti e cerco se c'è quel libro
+    boolean inPrestito = false;
+    for (Prestito p : listaPrestiti) {
+        if (p.getLibro().equals(libroDaRimuovere)) {
+            inPrestito = true;
+            break;
+        }
+    }
+
+    // 2. SE È IN PRESTITO -> BLOCCO TUTTO
+    if (inPrestito) {
+        throw new Exception("Impossibile cancellare: il libro è attualmente in prestito!");
+    }
+
+    // 3. SE È LIBERO -> LO CANCELLO
+    // La lista si aggiorna, e grazie a ObservableList anche la tabella sparirà da sola
+    listaLibri.remove(libroDaRimuovere);
+}
     public void updateLibro() 
     {
         saveAll();

@@ -5,23 +5,102 @@
  */
 package org.aletane04.controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import org.aletane04.data.Biblioteca;
+import org.aletane04.model.*;
+import org.aletane04.exceptions.*;
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.ResourceBundle;
 
-/**
- * FXML Controller class
- *
- * @author 39392
- */
 public class PrestitiController implements Initializable {
 
-    /**
-     * Initializes the controller class.
-     */
+    @FXML private TableView<Prestito> tabellaPrestiti;
+    @FXML private TableColumn<Prestito, String> colUtente, colLibro, colStato;
+    @FXML private TableColumn<Prestito, LocalDate> colFine;
+    @FXML private ComboBox<Utente> comboUtenti;
+    @FXML private ComboBox<Libro> comboLibri;
+    @FXML private DatePicker dateFine;
+
+    private Biblioteca manager;
+
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
+    public void initialize(URL location, ResourceBundle resources) {
+        // 1. SETUP GRAFICO
+        colUtente.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getUtente().toString()));
+        colLibro.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getLibro().getTitolo()));
+        colFine.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("dataFine"));
+        colStato.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getStatoPrestito().toString()));
+
+        // Colori righe (RowFactory) - Grafica pura, va bene qui
+        tabellaPrestiti.setRowFactory(tv -> new TableRow<Prestito>() {
+            @Override
+            protected void updateItem(Prestito p, boolean empty) {
+                super.updateItem(p, empty);
+                if (p == null || empty) {
+                    setStyle("");
+                } else {
+                    switch (p.getStatoPrestito()) {
+                        case SCADUTO: setStyle("-fx-background-color: #ffcccc;"); break;
+                        case IN_SCADENZA: setStyle("-fx-background-color: #ffffe0;"); break;
+                        case ATTIVO: setStyle(""); break;
+                    }
+                }
+            }
+        });
+       
+        
+    tabellaPrestiti.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+    }
+
+    public void setBiblioteca(Biblioteca manager) {
+        this.manager = manager;
+
+        // 2. SETUP DATI
+        // Popolo le ComboBox e la Tabella solo ora che ho le liste
+        comboUtenti.setItems(manager.getUtenti());
+        comboLibri.setItems(manager.getLibri());
+        tabellaPrestiti.setItems(manager.getPrestiti());
+    }
+
+    @FXML
+    public void onRegistra() {
+        try {
+            Utente u = comboUtenti.getValue();
+            Libro l = comboLibri.getValue();
+            LocalDate fine = dateFine.getValue();
+
+            if (u == null || l == null || fine == null) {
+                mostraMsg("Attenzione", "Seleziona Utente, Libro e Data!");
+                return;
+            }
+
+            manager.registraPrestito(u, l, fine);
+            comboUtenti.getSelectionModel().clearSelection();
+            comboLibri.getSelectionModel().clearSelection();
+
+        } catch (LibroNonDisponibileException | LimitePrestitiSuperatoException e) {
+            mostraMsg("Impossibile procedere", e.getMessage());
+        }
+    }
+
+    @FXML
+    public void onRestituisci() {
+        Prestito p = tabellaPrestiti.getSelectionModel().getSelectedItem();
+        if (p != null) {
+            manager.restituisciPrestito(p);
+        } else {
+            mostraMsg("Info", "Seleziona una riga da restituire.");
+        }
+    }
+
+    private void mostraMsg(String titolo, String txt) {
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        a.setTitle(titolo);
+        a.setContentText(txt);
+        a.showAndWait();
+    }
 }

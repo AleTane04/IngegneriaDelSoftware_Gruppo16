@@ -5,7 +5,7 @@
  */
 package org.aletane04.model;
 
-import java.io.Serializable;
+
 import java.time.LocalDate;
 
 /**
@@ -20,11 +20,11 @@ public class Libro{
     private int numeroCopieDisponibili;
     
 
-    public Libro(String titolo, String autori, int annoPub, int mesePub, int giornoPub, String codiceISBN, int numeroCopie){
+    public Libro(String titolo, String autori, LocalDate anno, String codiceISBN, int numeroCopie){
 
         this.titolo=titolo;
         this.autori=autori;
-        this.annoPubblicazione=LocalDate.of(annoPub, mesePub, giornoPub);
+        this.annoPubblicazione=anno;
         this.codiceISBN=codiceISBN;
         this.numeroCopieDisponibili=numeroCopie;
     }

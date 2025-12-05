@@ -1,11 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.aletane04.controller.UtentiController">
-    
-</AnchorPane>
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="org.aletane04.controller.UtentiController">
+
+    <top>
+        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10; -fx-background-color: #f4f4f4;">
+            <Label text="Cerca Utente:"/>
+            <TextField fx:id="txtRicerca" promptText="Nome, Cognome o Matricola..." HBox.hgrow="ALWAYS"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="tabellaUtenti">
+            <columns>
+                <TableColumn fx:id="colNome" text="Nome"/>
+                <TableColumn fx:id="colCognome" text="Cognome"/>
+                <TableColumn fx:id="colMatricola" text="Matricola"/>
+                <TableColumn fx:id="colEmail" text="Email"/>
+            </columns>
+            
+        </TableView>
+    </center>
+
+    <bottom>
+        <VBox spacing="5" style="-fx-padding: 10; -fx-border-color: #cccccc; -fx-border-width: 1 0 0 0;">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <TextField fx:id="txtNome" promptText="Nome"/>
+                <TextField fx:id="txtCognome" promptText="Cognome"/>
+                <TextField fx:id="txtMatricola" promptText="Matricola"/>
+                <TextField fx:id="txtEmail" promptText="Email" HBox.hgrow="ALWAYS"/>
+                <Button text="Aggiungi" onAction="#onAggiungi" style="-fx-base: #b6e7c9;"/>
+            </HBox>
+            
+            <Separator />
+            
+            <HBox alignment="CENTER_RIGHT">
+                 <Button text="Elimina Selezionato" onAction="#onElimina" style="-fx-base: #ffcccc;"/>
+            </HBox>
+        </VBox>
+    </bottom>
+
+</BorderPane>

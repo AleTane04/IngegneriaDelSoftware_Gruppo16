@@ -1,23 +1,31 @@
 package org.aletane04;
 
+import org.aletane04.controller.*;
+import org.aletane04.data.*;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.*;
+import javafx.stage.*;
+
 
 public class Main extends Application 
 {
 
     @Override
-    public void start(Stage stage) {
-        String javaVersion = System.getProperty("java.version");
-        String javafxVersion = System.getProperty("javafx.version");
-
-        Label label = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        Scene scene = new Scene(new StackPane(label), 640, 480);
-
+    public void start(Stage stage) throws Exception 
+    {
+        Biblioteca myBiblioteca = new Biblioteca();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainView.fxml"));
+        Parent root = loader.load();
+        
+        /* Qui passo il mio oggetto Biblioteca al controller */
+        MainController myMainController = loader.getController();
+        myMainController.setBiblioteca(myBiblioteca); 
+       
+        /* Creo la scena e la mostro in risoluzione HD e formato 16:9 */
+        Scene scene = new Scene(root, 1280, 720);
+        stage.setTitle("Gestione Biblioteca - G16");
         stage.setScene(scene);
         stage.show();
     }
