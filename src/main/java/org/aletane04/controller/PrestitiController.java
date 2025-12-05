@@ -29,13 +29,13 @@ public class PrestitiController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // 1. SETUP GRAFICO
+        /* SetUp grafico */
         colUtente.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getUtente().toString()));
         colLibro.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getLibro().getTitolo()));
         colFine.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("dataFine"));
         colStato.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getStatoPrestito().toString()));
 
-        // Colori righe (RowFactory) - Grafica pura, va bene qui
+       /* Colorazione delle righe */
         tabellaPrestiti.setRowFactory(tv -> new TableRow<Prestito>() {
             @Override
             protected void updateItem(Prestito p, boolean empty) {
@@ -59,8 +59,8 @@ public class PrestitiController implements Initializable {
     public void setBiblioteca(Biblioteca manager) {
         this.manager = manager;
 
-        // 2. SETUP DATI
-        // Popolo le ComboBox e la Tabella solo ora che ho le liste
+        /* SetUp dei dati */
+        // In questo metodo, vengono popolate le ComboBox e la Tabella solo ora che si hanno le liste.
         comboUtenti.setItems(manager.getUtenti());
         comboLibri.setItems(manager.getLibri());
         tabellaPrestiti.setItems(manager.getPrestiti());
@@ -97,7 +97,8 @@ public class PrestitiController implements Initializable {
         }
     }
 
-    private void mostraMsg(String titolo, String txt) {
+    private void mostraMsg(String titolo, String txt)
+    {
         Alert a = new Alert(Alert.AlertType.INFORMATION);
         a.setTitle(titolo);
         a.setContentText(txt);

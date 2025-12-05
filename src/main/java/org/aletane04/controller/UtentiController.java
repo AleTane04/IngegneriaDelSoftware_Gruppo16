@@ -20,28 +20,28 @@ import java.util.ResourceBundle;
 
 public class UtentiController implements Initializable {
 
-    // --- ELEMENTI GRAFICI (View) ---
+    /* Grafica - View */
     @FXML private TableView<Utente> tabellaUtenti;
     
-    // Colonne della tabella
+    /* Colonne della tabella */
     @FXML private TableColumn<Utente, String> colNome;
     @FXML private TableColumn<Utente, String> colCognome;
     @FXML private TableColumn<Utente, String> colMatricola;
     @FXML private TableColumn<Utente, String> colEmail;
 
-    // Campi di input e ricerca
+    /* Campi di input e ricerca */
     @FXML private TextField txtNome;
     @FXML private TextField txtCognome;
     @FXML private TextField txtMatricola;
     @FXML private TextField txtEmail;
-    @FXML private TextField txtRicerca; // La barra di ricerca in alto
+    @FXML private TextField txtRicerca;
 
-    // Riferimento al "Cervello" dell'app
+   /* Riferimento al manager */
     private Biblioteca manager;
 
     /**
-     * Metodo chiamato automaticamente da JavaFX appena carica il file FXML.
-     * Lo usiamo SOLO per configurare l'aspetto grafico (colonne).
+     * Questo metodo è chiamato automaticamente da JavaFX appena caricato il file FXML.
+     * Necessario per configurare l'aspetto grafico (colonne).
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -54,7 +54,7 @@ public class UtentiController implements Initializable {
         
         // Opzionale: Messaggio se la tabella è vuota
         tabellaUtenti.setPlaceholder(new Label("Nessun utente presente in archivio."));
-        // RISOLUZIONE PROBLEMA: Impostiamo la policy via codice Java
+
     // Questo fa sì che le colonne si allighino per riempire tutto lo spazio
         tabellaUtenti.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
@@ -68,11 +68,11 @@ public class UtentiController implements Initializable {
 
         // --- GESTIONE RICERCA E ORDINAMENTO ---
         
-        // 1. Avvolgiamo la lista originale in una FilteredList (inizialmente mostra tutto)
+        // 1. Si avvolge la lista originale in una FilteredList (inizialmente mostra tutto)
         FilteredList<Utente> filteredData = new FilteredList<>(manager.getUtenti(), p -> true);
 
-        // 2. Aggiungiamo un listener alla barra di ricerca
-        // Ogni volta che scrivi una lettera, il filtro si aggiorna
+        // 2. Si aggiunge un listener alla barra di ricerca
+        // Ogni volta che scrivo una lettera, il filtro si aggiorna
         txtRicerca.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(utente -> {
                 // Se la barra è vuota, mostra tutti
@@ -80,24 +80,24 @@ public class UtentiController implements Initializable {
                     return true;
                 }
 
-                // Confronta (case-insensitive) con Nome, Cognome o Matricola
+                // Confronto (case-insensitive) con Nome, Cognome o Matricola
                 String lowerCaseFilter = newValue.toLowerCase();
 
                 if (utente.getCognome().toLowerCase().contains(lowerCaseFilter)) return true;
                 if (utente.getNome().toLowerCase().contains(lowerCaseFilter)) return true;
                 if (utente.getMatricola().toLowerCase().contains(lowerCaseFilter)) return true;
-                
-                return false; // Non trovato
+                /* Se non trovato */
+                return false;
             });
         });
 
-        // 3. Avvolgiamo la FilteredList in una SortedList (per ordinare cliccando le colonne)
+        // 3. Avvolgo la FilteredList in una SortedList (per ordinare cliccando le colonne)
         SortedList<Utente> sortedData = new SortedList<>(filteredData);
 
-        // 4. Colleghiamo il comparatore della tabella alla lista ordinata
+        // 4. Collego il comparatore della tabella alla lista ordinata
         sortedData.comparatorProperty().bind(tabellaUtenti.comparatorProperty());
 
-        // 5. Mettiamo i dati finali nella tabella
+        // 5. Metto i dati finali nella tabella
         tabellaUtenti.setItems(sortedData);
     }
 
@@ -121,15 +121,15 @@ public class UtentiController implements Initializable {
         // 3. Creo l'utente e lo passo al manager
         Utente nuovoUtente = new Utente(nome, cognome, matricola, email);
         
-        // Nota: manager.aggiungiUtente() gestisce già i duplicati e il salvataggio CSV
+        /* Gestisce già i duplicati e il salvataggio CSV */
         manager.aggiungiUtente(nuovoUtente);
 
-        // 4. Pulisco i campi
+        // 4. Pulizia dei campi
         pulisciCampi();
     }
     
     /**
-     * Metodo bonus per eliminare un utente selezionato (se vuoi aggiungere il bottone "Elimina")
+     * Eliminare un utente selezionato
      */
     @FXML
     public void onElimina() {

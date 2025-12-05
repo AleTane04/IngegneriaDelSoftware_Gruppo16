@@ -25,15 +25,13 @@ public class LibriController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // 1. SETUP GRAFICO (Colonne) - Lo faccio subito!
+        /* Setup grafico delle colonne */
         colTitolo.setCellValueFactory(new PropertyValueFactory<>("titolo"));
         colAutore.setCellValueFactory(new PropertyValueFactory<>("autori"));
         colIsbn.setCellValueFactory(new PropertyValueFactory<>("codiceISBN"));
         colCopie.setCellValueFactory(new PropertyValueFactory<>("numeroCopieDisponibili"));
         colAnno.setCellValueFactory(new PropertyValueFactory<>("annoPubblicazione"));
-        
-        // RISOLUZIONE PROBLEMA: Impostiamo la policy via codice Java
-        // Questo fa sì che le colonne si allighino per riempire tutto lo spazio
+
         tabellaLibri.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
@@ -41,7 +39,7 @@ public class LibriController implements Initializable {
     {
         this.manager = manager;
 
-        // 2. SETUP DATI - Lo faccio solo quando arriva il manager
+        /* Setup dei dati, una volta ricevuto il manager */
         FilteredList<Libro> filteredData = new FilteredList<>(manager.getLibri(), b -> true);
 
         txtRicerca.textProperty().addListener((obs, oldV, newV) -> {
@@ -83,16 +81,16 @@ public class LibriController implements Initializable {
     }
     @FXML
 public void onRimuovi() {
-    // 1. Capisco quale riga l'utente ha selezionato
+   /* Riga selezionata dall'utente */
     Libro selezionato = tabellaLibri.getSelectionModel().getSelectedItem();
 
-    // 2. Se non ha selezionato nulla, lo sgrido gentilmente
+    /* Se l'utente non ha selezionato alcuna riga, viene avvisato */
     if (selezionato == null) {
         mostraErrore("Seleziona prima un libro dalla tabella!");
         return;
     }
 
-    // 3. Provo a cancellare
+    /* Provo a cancellare il libro */
     try {
         manager.rimuoviLibro(selezionato);
         
@@ -105,16 +103,19 @@ public void onRimuovi() {
     }
 }
 
-    private void pulisciCampi() {
+    private void pulisciCampi()
+    {
         txtTitolo.clear(); txtAutore.clear(); txtIsbn.clear(); txtCopie.clear();
         pickerAnno.setValue(null);
     }
 
-    private void mostraErrore(String msg) {
+    private void mostraErrore(String msg)
+    {
         Alert alert = new Alert(Alert.AlertType.ERROR, msg);
         alert.showAndWait();
     }
-    private void mostraInfo(String msg) {
+    private void mostraInfo(String msg)
+    {
     Alert alert = new Alert(Alert.AlertType.INFORMATION, msg);
     alert.showAndWait();
 }
