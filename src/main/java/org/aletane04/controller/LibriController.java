@@ -69,7 +69,21 @@ public class LibriController implements Initializable {
         /* ISBN NON MODIFICABILE */
         colIsbn.setEditable(false);
 
+        pickerAnno.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
 
+               /* Verifico che la data inseria sia successiva a quella del giorno odierno */
+                if (date.isAfter(LocalDate.now())) {
+                    /* Disabilito la selezione della data */
+                    setDisable(true);
+
+                }
+            }
+        });
+        /* Rendo il campo non editabile manualmente(via tastiera) */
+        pickerAnno.setEditable(false);
     }
 
     public void setBiblioteca(Biblioteca manager) 
@@ -103,6 +117,11 @@ public class LibriController implements Initializable {
             int copie = Integer.parseInt(txtCopie.getText());
             LocalDate data = pickerAnno.getValue() != null ? pickerAnno.getValue() : LocalDate.now();
 
+
+            if (data.isAfter(LocalDate.now())) {
+                mostraErrore("La data di pubblicazione non può essere nel futuro!");
+                return;
+            }
             if (titolo.isEmpty() || isbn.isEmpty()) 
             {
                 mostraErrore("Campi obbligatori mancanti!");
