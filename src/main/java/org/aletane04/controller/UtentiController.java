@@ -13,6 +13,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.aletane04.data.Biblioteca;
 import org.aletane04.model.Utente;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.converter.IntegerStringConverter;
+import javafx.util.converter.LocalDateStringConverter;
 
 import java.net.URL;
 import java.util.Optional;
@@ -57,6 +60,30 @@ public class UtentiController implements Initializable {
 
     // Questo fa sì che le colonne si allighino per riempire tutto lo spazio
         tabellaUtenti.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        /* Modifica campi Utente con doppio click sulla cella */
+        tabellaUtenti.setEditable(true);
+
+        colNome.setCellFactory(TextFieldTableCell.forTableColumn());
+        colNome.setOnEditCommit(event -> {
+            Utente u = event.getRowValue();
+            u.setNome(event.getNewValue());
+        });
+
+        colCognome.setCellFactory(TextFieldTableCell.forTableColumn());
+        colCognome.setOnEditCommit(event -> {
+            Utente u = event.getRowValue();
+            u.setCognome(event.getNewValue());
+        });
+
+        colEmail.setCellFactory(TextFieldTableCell.forTableColumn());
+        colEmail.setOnEditCommit(event -> {
+            Utente u = event.getRowValue();
+            u.setEmail(event.getNewValue());
+        });
+
+        colMatricola.setEditable(false);
+
     }
 
     /**
@@ -106,25 +133,25 @@ public class UtentiController implements Initializable {
      */
     @FXML
     public void onAggiungi() {
-        // 1. Leggo i dati
+       /* Lettura dei dati */
         String nome = txtNome.getText();
         String cognome = txtCognome.getText();
         String matricola = txtMatricola.getText();
         String email = txtEmail.getText();
 
-        // 2. Validazione base
+        /* Validazione di quanto letto */
         if (matricola.isEmpty() || cognome.isEmpty() || nome.isEmpty()) {
             mostraAlert(Alert.AlertType.WARNING, "Dati mancanti", "Nome, Cognome e Matricola sono obbligatori.");
             return;
         }
 
-        // 3. Creo l'utente e lo passo al manager
+        /* Creazione di un nuovo utente */
         Utente nuovoUtente = new Utente(nome, cognome, matricola, email);
         
-        /* Gestisce già i duplicati e il salvataggio CSV */
+       /* Aggiunta utente: il manager gestisce i duplicati e il salvataggio su file .csv */
         manager.aggiungiUtente(nuovoUtente);
 
-        // 4. Pulizia dei campi
+        /* Pulizia dei campi */
         pulisciCampi();
     }
     
@@ -142,9 +169,8 @@ public class UtentiController implements Initializable {
             
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                // Il manager si occupa di rimuovere dalla lista e aggiornare il CSV
-                // Per ora devi implementare rimuoviUtente nel manager se non c'è, 
-                // oppure usare manager.getUtenti().remove(selezionato); manager.salvaTutto();
+                /* Il manager gestisce automaticamente il salvataggio del file .csv dopo la rimozione dell'utente */
+
                 manager.getUtenti().remove(selezionato);
                 manager.saveAll(); 
             }

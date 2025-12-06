@@ -11,6 +11,9 @@ import org.aletane04.model.Libro;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.converter.IntegerStringConverter;
+import javafx.util.converter.LocalDateStringConverter;
 
 public class LibriController implements Initializable {
 
@@ -33,6 +36,37 @@ public class LibriController implements Initializable {
         colAnno.setCellValueFactory(new PropertyValueFactory<>("annoPubblicazione"));
 
         tabellaLibri.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        /* La tabella diventa modificabile */
+        tabellaLibri.setEditable(true);
+
+        colTitolo.setCellFactory(TextFieldTableCell.forTableColumn());
+        colTitolo.setOnEditCommit(event -> {
+            /* Salvo il riferimento del libro il cui titolo è stato modificato */
+            Libro libro = event.getRowValue();
+            /* Aggiorno il valore del campo Titolo */
+            libro.setTitolo(event.getNewValue());
+        });
+
+        colAutore.setCellFactory(TextFieldTableCell.forTableColumn());
+        colAutore.setOnEditCommit(event -> {
+            Libro libro = event.getRowValue();
+            libro.setAutori(event.getNewValue());
+        });
+
+
+        colCopie.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        colCopie.setOnEditCommit(event -> {
+            Libro libro = event.getRowValue();
+            libro.setNumeroCopieDisponibili(event.getNewValue());
+        });
+
+        colAnno.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter()));
+        colAnno.setOnEditCommit(event -> {
+            Libro libro = event.getRowValue();
+            libro.setAnnoPubblicazione(event.getNewValue());
+        });
+        /* ISBN NON MODIFICABILE */
+        colIsbn.setEditable(false);
     }
 
     public void setBiblioteca(Biblioteca manager) 

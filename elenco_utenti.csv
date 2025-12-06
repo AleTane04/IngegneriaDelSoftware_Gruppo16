@@ -1,5 +1,4 @@
 NOME;COGNOME;MATRICOLA;EMAIL
 Mario;Rossi;0512101111;m.rossi@studenti.unisa.it
 Luigi;Verdi;0512102222;l.verdi@studenti.unisa.it
-Utente;Senza;Matricola
-;Riga;Inizia;Con;PuntoVirgola
+;Riga;Inizia;Con

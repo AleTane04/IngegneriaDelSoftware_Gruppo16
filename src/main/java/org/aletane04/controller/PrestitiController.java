@@ -16,6 +16,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
+
 public class PrestitiController implements Initializable {
 
     @FXML private TableView<Prestito> tabellaPrestiti;
@@ -45,7 +46,7 @@ public class PrestitiController implements Initializable {
                 } else {
                     switch (p.getStatoPrestito()) {
                         case SCADUTO: setStyle("-fx-background-color: #ffcccc;"); break;
-                        case IN_SCADENZA: setStyle("-fx-background-color: #ffffe0;"); break;
+                        case IN_SCADENZA: setStyle("-fx-background-color: #ebe534;"); break;
                         case ATTIVO: setStyle(""); break;
                     }
                 }

@@ -79,8 +79,8 @@ public class Libro{
         this.autori=autori;
     }
     
-    public void setAnnoPubblicazione(int annoPub, int mesePub, int giornoPub){
-        this.annoPubblicazione=LocalDate.of(annoPub, mesePub, giornoPub);
+    public void setAnnoPubblicazione(LocalDate data){
+        this.annoPubblicazione=data;
     }
     
     public void setNumeroCopieDisponibili(int q){

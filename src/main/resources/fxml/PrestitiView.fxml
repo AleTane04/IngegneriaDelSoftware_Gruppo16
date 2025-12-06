@@ -51,8 +51,7 @@
 
     <bottom>
         <HBox alignment="CENTER_RIGHT" style="-fx-padding: 10; -fx-background-color: #f4f4f4;">
-            <Label text="Seleziona una riga rossa o gialla per agire -> " style="-fx-text-fill: grey;"/>
-            <Button text="Restituisci Libro" onAction="#onRestituisci" 
+            <Button text="Restituisci Libro" onAction="#onRestituisci"
                     style="-fx-base: #ffcccc; -fx-font-weight: bold;"/>
         </HBox>
     </bottom>
