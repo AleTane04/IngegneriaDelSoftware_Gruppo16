@@ -68,6 +68,8 @@ public class LibriController implements Initializable {
         });
         /* ISBN NON MODIFICABILE */
         colIsbn.setEditable(false);
+
+
     }
 
     public void setBiblioteca(Biblioteca manager) 
