@@ -27,6 +27,12 @@ public class Main extends Application
         Scene scene = new Scene(root, 1280, 720);
         stage.setTitle("Gestione Biblioteca - G16");
         stage.setScene(scene);
+        stage.setOnCloseRequest(event -> {
+            // Blocco la chiusura immediata di JavaFX
+            event.consume();
+            // Chiedo conferma con il metodo semplice scritto sopra
+            myMainController.onEsciClick();
+        });
         stage.show();
     }
 

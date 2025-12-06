@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.aletane04.data.Biblioteca;
+import org.aletane04.exceptions.LibroGiaPresenteException;
 import org.aletane04.model.Libro;
 import java.net.URL;
 import java.time.LocalDate;
@@ -107,11 +108,22 @@ public class LibriController implements Initializable {
             }
 
             manager.aggiungiLibro(new Libro(titolo, autore, data, isbn, copie));
+            mostraSuccesso("Libro aggiunto correttamente!");
             pulisciCampi();
 
-        } catch (NumberFormatException e) {
-            mostraErrore("Il numero copie deve essere un intero!");
         }
+            catch (NumberFormatException e)
+            {
+                mostraErrore("Il numero copie deve essere un intero!");
+            }
+            catch (LibroGiaPresenteException e)
+            {
+                mostraErrore(e.getMessage());
+            }
+            catch(Exception e)
+            {
+                mostraErrore("Errore imprevisto: " + e.getMessage());
+            }
     }
     @FXML
 public void onRimuovi() {
@@ -129,7 +141,7 @@ public void onRimuovi() {
         manager.rimuoviLibro(selezionato);
         
         // Se arrivo qui, non c'è stata eccezione -> Successo!
-        mostraInfo("Libro eliminato con successo.");
+        mostraSuccesso("Libro eliminato con successo.");
         
     } catch (Exception e) {
         // Se il manager lancia l'eccezione (libro in prestito), la catturo qui
@@ -143,14 +155,27 @@ public void onRimuovi() {
         pickerAnno.setValue(null);
     }
 
-    private void mostraErrore(String msg)
-    {
-        Alert alert = new Alert(Alert.AlertType.ERROR, msg);
+    /* Metodi Helper */
+
+    /**
+     * Mostra un messaggio di successo (Icona Blu/Informazione)
+     */
+    private void mostraSuccesso(String msg) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Operazione Completata");
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
         alert.showAndWait();
     }
-    private void mostraInfo(String msg)
-    {
-    Alert alert = new Alert(Alert.AlertType.INFORMATION, msg);
-    alert.showAndWait();
-}
+
+    /**
+     * Mostra un messaggio di errore (Icona Rossa)
+     */
+    private void mostraErrore(String msg) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Errore");
+        alert.setHeaderText("Si è verificato un problema");
+        alert.setContentText(msg);
+        alert.showAndWait();
+    }
 }

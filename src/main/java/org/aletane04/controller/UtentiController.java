@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.aletane04.data.Biblioteca;
+import org.aletane04.exceptions.UtenteGiaPresenteException;
 import org.aletane04.model.Utente;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.IntegerStringConverter;
@@ -48,17 +49,17 @@ public class UtentiController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Colleghiamo le colonne agli attributi della classe Utente.
-        // La stringa ("nome") deve corrispondere al metodo getNome() nel model.
+        /* Collego le colonne agli attributi della classe Utente */
+        /* nome -> getNome; cognome -> getCognome; In generale: xxx -> getXxx */
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colCognome.setCellValueFactory(new PropertyValueFactory<>("cognome"));
         colMatricola.setCellValueFactory(new PropertyValueFactory<>("matricola"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         
-        // Opzionale: Messaggio se la tabella è vuota
+        /* Se la tabella è vuota, viene mostrato questo messaggio "di servizio" */
         tabellaUtenti.setPlaceholder(new Label("Nessun utente presente in archivio."));
 
-    // Questo fa sì che le colonne si allighino per riempire tutto lo spazio
+        /* Le colonne si adattano per occupare tutto lo spazio disponibile */
         tabellaUtenti.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         /* Modifica campi Utente con doppio click sulla cella */
@@ -95,10 +96,10 @@ public class UtentiController implements Initializable {
 
         // --- GESTIONE RICERCA E ORDINAMENTO ---
         
-        // 1. Si avvolge la lista originale in una FilteredList (inizialmente mostra tutto)
+        /* Si avvolge la lista originale in una FilteredList, che inizialmente mostra tutto */
         FilteredList<Utente> filteredData = new FilteredList<>(manager.getUtenti(), p -> true);
 
-        // 2. Si aggiunge un listener alla barra di ricerca
+        /* Listener per la barra di ricerca */
         // Ogni volta che scrivo una lettera, il filtro si aggiorna
         txtRicerca.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(utente -> {
@@ -118,41 +119,54 @@ public class UtentiController implements Initializable {
             });
         });
 
-        // 3. Avvolgo la FilteredList in una SortedList (per ordinare cliccando le colonne)
+        /* Pattern Decorator: avvolgo la FilteredList in una SortedList, in modo tale da riordinare quando clicco sulle colonne */
         SortedList<Utente> sortedData = new SortedList<>(filteredData);
 
-        // 4. Collego il comparatore della tabella alla lista ordinata
+        /* Collego il comparatore della tabella alla lista ordinata */
         sortedData.comparatorProperty().bind(tabellaUtenti.comparatorProperty());
 
-        // 5. Metto i dati finali nella tabella
+        /* Inserimento dei dati finali nella tabella */
         tabellaUtenti.setItems(sortedData);
     }
 
     /**
      * Gestisce il click sul bottone "Aggiungi".
      */
+
     @FXML
     public void onAggiungi() {
-       /* Lettura dei dati */
+        // 1. Leggo i dati
         String nome = txtNome.getText();
         String cognome = txtCognome.getText();
         String matricola = txtMatricola.getText();
         String email = txtEmail.getText();
 
-        /* Validazione di quanto letto */
+        // 2. Validazione base
         if (matricola.isEmpty() || cognome.isEmpty() || nome.isEmpty()) {
             mostraAlert(Alert.AlertType.WARNING, "Dati mancanti", "Nome, Cognome e Matricola sono obbligatori.");
             return;
         }
 
-        /* Creazione di un nuovo utente */
-        Utente nuovoUtente = new Utente(nome, cognome, matricola, email);
-        
-       /* Aggiunta utente: il manager gestisce i duplicati e il salvataggio su file .csv */
-        manager.aggiungiUtente(nuovoUtente);
+        try {
+            // 3. Creo e aggiungo
+            Utente nuovoUtente = new Utente(nome, cognome, matricola, email);
+            manager.aggiungiUtente(nuovoUtente);
 
-        /* Pulizia dei campi */
-        pulisciCampi();
+            // 4. Successo
+            mostraAlert(Alert.AlertType.INFORMATION, "Successo", "Utente aggiunto correttamente.");
+
+            // 5. Pulisco usando il tuo metodo
+            pulisciCampi();
+
+        } catch(UtenteGiaPresenteException e)
+        {
+            mostraAlert(Alert.AlertType.ERROR, "Errore inserimento nuovo Utente", e.getMessage());
+        }
+        catch (Exception e)
+        {
+            // Gestione di eventuali errori imprevisti
+            mostraAlert(Alert.AlertType.ERROR, "Errore", "Impossibile aggiungere l'utente.");
+        }
     }
     
     /**
@@ -160,22 +174,37 @@ public class UtentiController implements Initializable {
      */
     @FXML
     public void onElimina() {
+        // 1. Recupero la selezione
         Utente selezionato = tabellaUtenti.getSelectionModel().getSelectedItem();
-        
-        if (selezionato != null) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Conferma eliminazione");
-            alert.setContentText("Vuoi davvero eliminare " + selezionato.getCognome() + "?");
-            
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                /* Il manager gestisce automaticamente il salvataggio del file .csv dopo la rimozione dell'utente */
 
-                manager.getUtenti().remove(selezionato);
-                manager.saveAll(); 
+        if (selezionato == null) {
+            // Uso il tuo metodo helper
+            mostraAlert(Alert.AlertType.WARNING, "Attenzione", "Seleziona un utente dalla tabella per eliminarlo.");
+            return;
+        }
+
+        // 2. Chiedo conferma (Questo DEVE essere fatto a mano per leggere la risposta)
+        Alert conferma = new Alert(Alert.AlertType.CONFIRMATION);
+        conferma.setTitle("Conferma eliminazione");
+        conferma.setHeaderText(null);
+        conferma.setContentText("Vuoi davvero eliminare l'utente " + selezionato.getCognome() + "?");
+
+        // Mostro e aspetto
+        Optional<ButtonType> result = conferma.showAndWait();
+
+        // 3. Se conferma, procedo
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                // Chiamo il metodo SICURO del manager
+                manager.rimuoviUtente(selezionato);
+
+                // Successo: Uso il tuo metodo con icona INFORMATION
+                mostraAlert(Alert.AlertType.INFORMATION, "Operazione completata", "Utente rimosso con successo.");
+
+            } catch (Exception e) {
+                // Errore (es. Utente ha libri): Uso il tuo metodo con icona ERROR
+                mostraAlert(Alert.AlertType.ERROR, "Errore di rimozione", e.getMessage());
             }
-        } else {
-            mostraAlert(Alert.AlertType.INFORMATION, "Nessuna selezione", "Seleziona un utente dalla tabella per eliminarlo.");
         }
     }
 

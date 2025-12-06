@@ -112,7 +112,7 @@ public class Libro{
         Libro myLibro = (Libro) obj;
 
         /* Essendo all'interno della stessa classe, accedo all'attributo "codice", che è privato, di myLibro */
-        return this.codiceISBN == myLibro.codiceISBN;
+        return java.util.Objects.equals(this.codiceISBN, myLibro.codiceISBN);
     }
 
     @Override

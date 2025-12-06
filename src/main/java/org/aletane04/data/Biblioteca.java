@@ -15,7 +15,8 @@ import java.time.LocalDate;
  *
  * @author angel
  */
-public class Biblioteca {
+public class Biblioteca
+{
     
     private static final String FILE_LIBRI = "elenco_libri.csv";
     private static final String FILE_UTENTI = "elenco_utenti.csv";
@@ -60,15 +61,16 @@ public class Biblioteca {
     }
     
     /* Metodi concernenti i Libri */
-    public void aggiungiLibro(Libro newLibro) 
+    public void aggiungiLibro(Libro newLibro) throws LibroGiaPresenteException
     {
     
         if(listaLibri.contains(newLibro) == false) {
             listaLibri.add(newLibro);
-        } else {
-            //Lancio una eccezione;
-            //gestioneio
-            System.out.println("Errore nell'aggiunta del Testo");
+        }
+            else
+        {
+           /* Lancio una eccezione */
+             throw new LibroGiaPresenteException("Esiste già un libro con ISBN: " + newLibro.getCodiceISBN());
             
         }
     }
@@ -96,20 +98,42 @@ public class Biblioteca {
     // 3. SE È LIBERO -> LO CANCELLO
     // La lista si aggiorna, e grazie a ObservableList anche la tabella sparirà da sola
     listaLibri.remove(libroDaRimuovere);
-}
+    }
+
+    public void rimuoviUtente(Utente utenteDaRimuovere) throws Exception {
+
+        // 1. CONTROLLO: L'utente ha prestiti attivi?
+        boolean haPrestiti = false;
+        for (Prestito p : listaPrestiti) {
+            // Uso equals (che si basa sulla matricola)
+            if (p.getUtente().equals(utenteDaRimuovere)) {
+                haPrestiti = true;
+                break;
+            }
+        }
+
+        // 2. SE HA PRESTITI -> BLOCCO TUTTO
+        if (haPrestiti) {
+            throw new Exception("Impossibile eliminare: l'utente ha ancora libri in prestito!");
+        }
+
+        // 3. SE È LIBERO -> LO CANCELLO
+        listaUtenti.remove(utenteDaRimuovere);
+
+        // Nota: Il salvataggio su file avverrà solo quando l'utente premerà "Salva"
+    }
 
     
     /* Metodo concernente gli Utenti */
     
-    public void aggiungiUtente(Utente newUtente) 
+    public void aggiungiUtente(Utente newUtente) throws UtenteGiaPresenteException
     {
     
         if(listaUtenti.contains(newUtente) == false) {
             listaUtenti.add(newUtente);
         } else {
-            //Lancio una eccezione;
-            //gestioneio
-            System.out.println("Errore nell'aggiunta dell'Utente");
+
+            throw new UtenteGiaPresenteException("Esiste già un utente con Matricola: " + newUtente.getMatricola());
             
         }
     }

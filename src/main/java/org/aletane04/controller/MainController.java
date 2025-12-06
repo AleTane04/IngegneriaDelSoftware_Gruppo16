@@ -7,9 +7,9 @@ package org.aletane04.controller;
 
 import javafx.application.Platform;
 import javafx.fxml.*;
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.fxml.Initializable;
+import java.net.*;
+import java.util.*;
+import javafx.scene.control.*;
 import org.aletane04.data.*;
 
 /**
@@ -48,12 +48,27 @@ public class MainController implements Initializable
 
     @FXML public void onSalvaClick() 
     {
-        myBiblioteca.saveAll(); 
+        myBiblioteca.saveAll();
+        // Popup Semplice
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Salvataggio");
+        alert.setHeaderText(null);
+        alert.setContentText("Salvataggio effettuato con successo!");
+        alert.showAndWait();
     }
     @FXML public void onEsciClick() 
     {
-        myBiblioteca.saveAll();
-        Platform.exit(); 
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Conferma Uscita");
+        alert.setHeaderText("Sei sicuro di voler uscire?");
+        alert.setContentText("I dati non salvati andranno persi.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK)
+        {
+            Platform.exit();
+            System.exit(0);
+        }
     }
     
 }

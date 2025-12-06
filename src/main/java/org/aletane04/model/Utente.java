@@ -85,8 +85,8 @@ public class Utente{
         Utente myUtente = (Utente) obj;
 
         /* Essendo all'interno della stessa classe, accedo all'attributo "codice", che è privato, di myLibro */
-        return this.matricola == myUtente.matricola;
-    }
+        return java.util.Objects.equals(this.matricola, myUtente.matricola);
+   }
 
     @Override
     public int hashCode(){
