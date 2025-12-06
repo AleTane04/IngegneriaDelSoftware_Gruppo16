@@ -206,8 +206,4 @@ public class Biblioteca
         bibliotecaFileManager.salvaPrestiti(listaPrestiti, FILE_PRESTITI);
         System.out.println("Salvataggio CSV completato.");
     }
-   
-    
-    
-    
 }

@@ -41,20 +41,59 @@ public class PrestitiController implements Initializable {
             @Override
             protected void updateItem(Prestito p, boolean empty) {
                 super.updateItem(p, empty);
-                if (p == null || empty) {
+                /* Se la riga è vuota, pulisco lo stile */
+                if (p == null || empty)
+                {
                     setStyle("");
                 } else {
-                    switch (p.getStatoPrestito()) {
-                        case SCADUTO: setStyle("-fx-background-color: #ffcccc;"); break;
-                        case IN_SCADENZA: setStyle("-fx-background-color: #ebe534;"); break;
-                        case ATTIVO: setStyle(""); break;
+                    /* Se la riga è selezionata, i colori personalizzati non agiranno */
+                    if (isSelected()) {
+                        setStyle("");
+                    }
+                    /* Se la riga non è selezionata, si applicano le personalizzazioni */
+                    else {
+                        switch (p.getStatoPrestito()) {
+                            case SCADUTO:
+                                setStyle("-fx-background-color: #ffcccc;"); /* Colore rosso chiaro */
+                                break;
+                            case IN_SCADENZA:
+                                setStyle("-fx-background-color: #ffffcc;"); /* Colore giallo chiaro */
+                                break;
+                            case ATTIVO:
+                                setStyle(""); /* Colore biando: di default */
+                                break;
+                        }
                     }
                 }
             }
+
+
+            /* Questo metodo si aziona quando l'utente clicca sulla riga.
+            e forza il ricalcolo dello stile (chiamando updateItem) per applicare il blu o il rosso. */
+            @Override
+            public void updateSelected(boolean selected) {
+                super.updateSelected(selected);
+                updateItem(getItem(), isEmpty());
+            }
         });
-       
-        
-    tabellaPrestiti.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        dateFine.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+
+                /* Se la data precede quella del giorno odierno */
+                if (date.isBefore(LocalDate.now())) {
+                    /* La disabilito */
+                    setDisable(true);
+
+                }
+            }
+        });
+        dateFine.setEditable(false);
+        tabellaPrestiti.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+
+
     }
 
     public void setBiblioteca(Biblioteca manager) {
@@ -76,6 +115,12 @@ public class PrestitiController implements Initializable {
 
             if (u == null || l == null || fine == null) {
                 mostraMsg("Attenzione", "Seleziona Utente, Libro e Data!");
+                return;
+            }
+
+            if (fine.isBefore(LocalDate.now()))
+            {
+                mostraMsg("Data non valida", "La data di restituzione non può essere nel passato!");
                 return;
             }
 
