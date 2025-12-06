@@ -19,7 +19,7 @@ public class Biblioteca {
     
     private static final String FILE_LIBRI = "elenco_libri.csv";
     private static final String FILE_UTENTI = "elenco_utenti.csv";
-    private static final String FILE_PRESTITI = "elenco_libri.csv";
+    private static final String FILE_PRESTITI = "elenco_prestiti.csv";
     
     private ObservableList<Utente> listaUtenti;
     private ObservableList<Libro> listaLibri;
@@ -97,10 +97,7 @@ public class Biblioteca {
     // La lista si aggiorna, e grazie a ObservableList anche la tabella sparirà da sola
     listaLibri.remove(libroDaRimuovere);
 }
-    public void updateLibro() 
-    {
-        saveAll();
-    }
+
     
     /* Metodo concernente gli Utenti */
     
@@ -151,8 +148,7 @@ public class Biblioteca {
         listaPrestiti.add(nuovoPrestito);
         l.decrementaNumeroCopieDisponibili(); // Metodo nel model che fa copie--
         
-        /* Salvataggio dell'Azione immediato */
-        saveAll();
+
         
         /* Si forza il refresh della lista libri per aggiornare,
             in modo immediato, il numero di copie visualizzato
@@ -173,12 +169,13 @@ public class Biblioteca {
             int index = listaLibri.indexOf(l);
             if(index >= 0) listaLibri.set(index, l);
             
-            saveAll();
+
         }
     }
 
    
-    public void saveAll() {
+    public void saveAll()
+    {
         // Delega al FileManager la scrittura fisica
         bibliotecaFileManager.salvaLibri(listaLibri, FILE_LIBRI);
         bibliotecaFileManager.salvaUtenti(listaUtenti, FILE_UTENTI);

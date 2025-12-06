@@ -1,6 +1,8 @@
 TITOLO;AUTORI;DATA;ISBN;COPIE
 Il Signore degli Anelli;J.R.R. Tolkien;1954-07-29;978-8845292613;5
+QUESTA RIGA E TOTALMENTE SBAGLIATA SENZA PUNTO E VIRGOLA
+Libro Con Data Sbagliata;Autore Distratto;IERI;123-456;3
 1984;George Orwell;1949-06-08;978-8804668237;3
-Java: The Complete Reference;Herbert Schildt;2021-12-10;978-1260463415;2
-La Divina Commedia;Dante Alighieri;1320-01-01;978-8811361817;0
-Ingegneria del Software;Ian Sommerville;2017-03-24;978-8891902481;10
+Libro Con Copie Non Numeriche;Matematico Scarso;2020-01-01;999-999;DIECI
+
+Il Signore degli Anelli;J.R.R. Tolkien;1954-07-29;978-8845292823;5

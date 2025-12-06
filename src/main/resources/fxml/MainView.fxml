@@ -16,11 +16,6 @@
                         <MenuItem text="Esci" onAction="#onEsciClick"/>
                     </items>
                 </Menu>
-                <Menu text="Aiuto">
-                    <items>
-                        <MenuItem text="Informazioni" />
-                    </items>
-                </Menu>
             </menus>
         </MenuBar>
     </top>

@@ -73,9 +73,18 @@ public class BibliotecaFileManager
             String riga;
             while ((riga = br.readLine()) != null) 
             {
+                if(riga.isEmpty())
+                    continue;
                 /* Aggiungo un nuovo Libro dalla lettura della riga */
-                if (!riga.isEmpty()) 
-                    libri.add(new Libro(riga)); 
+                try
+                {
+                    libri.add(new Libro(riga));
+                }
+                catch(Exception e)
+                {
+                    System.err.println("La riga " + riga + " è corrotta: ignorata.");
+                }
+
             }
         } catch (IOException e) {
             System.err.println("Errore lettura libri: " + e.getMessage());
@@ -97,8 +106,18 @@ public class BibliotecaFileManager
             String riga;
             while ((riga = br.readLine()) != null) 
             {
-                if (!riga.isEmpty()) 
-                    utenti.add(new Utente(riga)); // Uso il costruttore CSV
+                if(riga.isEmpty())
+                    continue;
+                /* Aggiungo un nuovo utente dalla lettura della riga */
+                try
+                {
+                    /*  Uso il costruttore CSV */
+                    utenti.add(new Utente(riga));
+                }
+                catch(Exception e)
+                {
+                    System.err.println("La riga " + riga + " è corrotta: ignorata.");
+                }
             }
         } catch (IOException e) {
             System.err.println("Errore lettura utenti: " + e.getMessage());
@@ -106,8 +125,8 @@ public class BibliotecaFileManager
         return utenti;
     }
     
-    // QUESTO È IL METODO PIÙ IMPORTANTE
-    // Deve ricollegare gli ID (ISBN/Matricola) agli oggetti veri
+
+    /* Questo metodo ricollega gli ID (ISBN/Matricola) agli oggetti veri */
     public ObservableList<Prestito> caricaPrestitiDaFile(String nomeFile, ObservableList<Utente> utenti, ObservableList<Libro> libri) 
     {
         ObservableList<Prestito> listaPrestiti = FXCollections.observableArrayList();
@@ -147,8 +166,15 @@ public class BibliotecaFileManager
                         .orElse(null);
 
                 // 3. Se esistono entrambi, ricreo il prestito
-                if (u != null && l != null) {
-                    listaPrestiti.add(new Prestito(u, l, dataInizio, dataFine));
+                try {
+                        if (u != null && l != null)
+                        {
+                            listaPrestiti.add(new Prestito(u, l, dataInizio, dataFine));
+                        }
+                    }
+                catch (Exception e)
+                {
+                    System.err.println("La riga " + riga + " è corrotta: ignorata.");
                 }
             }
         } catch (Exception e) {
