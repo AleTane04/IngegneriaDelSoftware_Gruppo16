@@ -75,7 +75,16 @@ public class Prestito {
     {
         return dataFine;
     }
-    
+
+    /**
+     * @brief Calcola e restituisce lo stato attuale del prestito.
+     * * Lo stato viene determinato dinamicamente confrontando la data odierna
+     * con la data di fine prestito:
+     * - <b>SCADUTO</b>: Se la data odierna è successiva alla data di fine.
+     * - <b>IN_SCADENZA</b>: Se mancano 7 giorni o meno alla scadenza (inclusa).
+     * - <b>ATTIVO</b>: In tutti gli altri casi.
+     * * @return Il valore dell'enum StatoPrestito corrispondente alla situazione attuale.
+     */
     public StatoPrestito getStatoPrestito() 
     {
         LocalDate giornoOdierno = LocalDate.now();
