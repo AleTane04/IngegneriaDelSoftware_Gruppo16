@@ -63,8 +63,17 @@ public class LibriController implements Initializable {
 
         colAnno.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter()));
         colAnno.setOnEditCommit(event -> {
-            Libro libro = event.getRowValue();
-            libro.setAnnoPubblicazione(event.getNewValue());
+            if(event.getNewValue().isAfter(LocalDate.now()))
+            {
+                mostraErrore("La data non può essere nel futuro!");
+                tabellaLibri.refresh();
+            }
+            else
+            {
+                Libro libro = event.getRowValue();
+                libro.setAnnoPubblicazione(event.getNewValue());
+            }
+
         });
         /* ISBN NON MODIFICABILE */
         colIsbn.setEditable(false);
@@ -74,7 +83,7 @@ public class LibriController implements Initializable {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
 
-               /* Verifico che la data inseria sia successiva a quella del giorno odierno */
+               /* Verifico che la data inserita sia successiva a quella del giorno odierno */
                 if (date.isAfter(LocalDate.now())) {
                     /* Disabilito la selezione della data */
                     setDisable(true);
