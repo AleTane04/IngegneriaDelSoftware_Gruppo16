@@ -86,7 +86,11 @@ public class Libro{
     public String getCodiceISBN(){
         return codiceISBN;
     }
-    
+
+    /**
+     * @brief Restituisce il numero attuale di copie disponibili.
+     * * @return Il numero di copie disponibili.
+     */
     public int getNumeroCopieDisponibili(){
         return numeroCopieDisponibili;
     }
