@@ -105,7 +105,10 @@ public class Libro{
         this.titolo=titolo;
     }
 
-    
+    /**
+     * @brief Imposta o aggiorna gli autori del libro.
+     * * @param autori La stringa contenente i nuovi autori.
+     */
     public void setAutori(String autori){
         this.autori=autori;
     }
