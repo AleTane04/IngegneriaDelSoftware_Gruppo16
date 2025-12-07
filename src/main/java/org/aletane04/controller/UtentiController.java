@@ -20,23 +20,23 @@ import java.util.ResourceBundle;
 
 public class UtentiController implements Initializable {
 
-    // --- ELEMENTI GRAFICI (View) ---
+    /// --- ELEMENTI GRAFICI (View) ---
     @FXML private TableView<Utente> tabellaUtenti;
     
-    // Colonne della tabella
+    /// Colonne della tabella
     @FXML private TableColumn<Utente, String> colNome;
     @FXML private TableColumn<Utente, String> colCognome;
     @FXML private TableColumn<Utente, String> colMatricola;
     @FXML private TableColumn<Utente, String> colEmail;
 
-    // Campi di input e ricerca
+    /// Campi di input e ricerca
     @FXML private TextField txtNome;
     @FXML private TextField txtCognome;
     @FXML private TextField txtMatricola;
     @FXML private TextField txtEmail;
     @FXML private TextField txtRicerca; // La barra di ricerca in alto
 
-    // Riferimento al "Cervello" dell'app
+    /// Riferimento al "Cervello" dell'app
     private Biblioteca manager;
 
     /**
@@ -60,20 +60,20 @@ public class UtentiController implements Initializable {
     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        /* Collego le colonne agli attributi della classe Utente */
-        /* nome -> getNome; cognome -> getCognome; In generale: xxx -> getXxx */
+        /// Collego le colonne agli attributi della classe Utente 
+        /// nome -> getNome; cognome -> getCognome; In generale: xxx -> getXxx
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colCognome.setCellValueFactory(new PropertyValueFactory<>("cognome"));
         colMatricola.setCellValueFactory(new PropertyValueFactory<>("matricola"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         
-        /* Se la tabella è vuota, viene mostrato questo messaggio "di servizio" */
+        /// Se la tabella è vuota, viene mostrato questo messaggio "di servizio" 
         tabellaUtenti.setPlaceholder(new Label("Nessun utente presente in archivio."));
 
-        /* Le colonne si adattano per occupare tutto lo spazio disponibile */
+        /// Le colonne si adattano per occupare tutto lo spazio disponibile 
         tabellaUtenti.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        /* Modifica campi Utente con doppio click sulla cella */
+        /// Modifica campi Utente con doppio click sulla cella 
         tabellaUtenti.setEditable(true);
 
         colNome.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -127,21 +127,21 @@ public class UtentiController implements Initializable {
     public void setBiblioteca(Biblioteca manager) {
         this.manager = manager;
 
-        // --- GESTIONE RICERCA E ORDINAMENTO ---
+        /// --- GESTIONE RICERCA E ORDINAMENTO ---
         
-        /* Si avvolge la lista originale in una FilteredList, che inizialmente mostra tutto */
+        /// Si avvolge la lista originale in una FilteredList, che inizialmente mostra tutto 
         FilteredList<Utente> filteredData = new FilteredList<>(manager.getUtenti(), p -> true);
 
-        /* Listener per la barra di ricerca */
-        // Ogni volta che scrivo una lettera, il filtro si aggiorna
+        /// Listener per la barra di ricerca 
+        /// Ogni volta che scrivo una lettera, il filtro si aggiorna
         txtRicerca.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(utente -> {
-                // Se la barra è vuota, mostra tutti
+                /// Se la barra è vuota, mostra tutti
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
 
-                // Confronto (case-insensitive) con Nome, Cognome o Matricola
+                /// Confronto (case-insensitive) con Nome, Cognome o Matricola
                 String lowerCaseFilter = newValue.toLowerCase();
 
                 if (utente.getCognome().toLowerCase().contains(lowerCaseFilter)) return true;
@@ -152,13 +152,13 @@ public class UtentiController implements Initializable {
             });
         });
 
-        /* Pattern Decorator: avvolgo la FilteredList in una SortedList, in modo tale da riordinare quando clicco sulle colonne */
+        /// Pattern Decorator: avvolgo la FilteredList in una SortedList, in modo tale da riordinare quando clicco sulle colonne 
         SortedList<Utente> sortedData = new SortedList<>(filteredData);
 
-        /* Collego il comparatore della tabella alla lista ordinata */
+        /// Collego il comparatore della tabella alla lista ordinata 
         sortedData.comparatorProperty().bind(tabellaUtenti.comparatorProperty());
 
-        /* Inserimento dei dati finali nella tabella */
+        /// Inserimento dei dati finali nella tabella 
         tabellaUtenti.setItems(sortedData);
     }
 
@@ -183,27 +183,27 @@ public class UtentiController implements Initializable {
     */
     @FXML
     public void onAggiungi() {
-        // 1. Leggo i dati
+        /// 1. Leggo i dati
         String nome = txtNome.getText();
         String cognome = txtCognome.getText();
         String matricola = txtMatricola.getText();
         String email = txtEmail.getText();
 
-        // 2. Validazione base
+        /// 2. Validazione base
         if (matricola.isEmpty() || cognome.isEmpty() || nome.isEmpty()) {
             mostraAlert(Alert.AlertType.WARNING, "Dati mancanti", "Nome, Cognome e Matricola sono obbligatori.");
             return;
         }
 
         try {
-            // 3. Creo e aggiungo
+            /// 3. Creo e aggiungo
             Utente nuovoUtente = new Utente(nome, cognome, matricola, email);
             manager.aggiungiUtente(nuovoUtente);
 
-            // 4. Successo
+            /// 4. Successo
             mostraAlert(Alert.AlertType.INFORMATION, "Successo", "Utente aggiunto correttamente.");
 
-            // 5. Pulisco usando il tuo metodo
+            /// 5. Pulisco usando il tuo metodo
             pulisciCampi();
 
         } catch(UtenteGiaPresenteException e)
@@ -212,7 +212,7 @@ public class UtentiController implements Initializable {
         }
         catch (Exception e)
         {
-            // Gestione di eventuali errori imprevisti
+            /// Gestione di eventuali errori imprevisti
             mostraAlert(Alert.AlertType.ERROR, "Errore", "Impossibile aggiungere l'utente.");
         }
     }
@@ -238,41 +238,41 @@ public class UtentiController implements Initializable {
     */
     @FXML
     public void onElimina() {
-        // 1. Recupero la selezione
+        /// 1. Recupero la selezione
         Utente selezionato = tabellaUtenti.getSelectionModel().getSelectedItem();
 
         if (selezionato == null) {
-            // Uso il tuo metodo helper
+            /// Uso il tuo metodo helper
             mostraAlert(Alert.AlertType.WARNING, "Attenzione", "Seleziona un utente dalla tabella per eliminarlo.");
             return;
         }
 
-        // 2. Chiedo conferma (Questo DEVE essere fatto a mano per leggere la risposta)
+        /// 2. Chiedo conferma (Questo DEVE essere fatto a mano per leggere la risposta)
         Alert conferma = new Alert(Alert.AlertType.CONFIRMATION);
         conferma.setTitle("Conferma eliminazione");
         conferma.setHeaderText(null);
         conferma.setContentText("Vuoi davvero eliminare l'utente " + selezionato.getCognome() + "?");
 
-        // Mostro e aspetto
+        /// Mostro e aspetto
         Optional<ButtonType> result = conferma.showAndWait();
 
-        // 3. Se conferma, procedo
+        /// 3. Se conferma, procedo
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                // Chiamo il metodo SICURO del manager
+                /// Chiamo il metodo SICURO del manager
                 manager.rimuoviUtente(selezionato);
 
-                // Successo: Uso il metodo con icona INFORMATION
+                /// Successo: Uso il metodo con icona INFORMATION
                 mostraAlert(Alert.AlertType.INFORMATION, "Operazione completata", "Utente rimosso con successo.");
 
             } catch (Exception e) {
-                // Errore (es. Utente ha libri): Uso il metodo con icona ERROR
+                /// Errore (es. Utente ha libri): Uso il metodo con icona ERROR
                 mostraAlert(Alert.AlertType.ERROR, "Errore di rimozione", e.getMessage());
             }
         }
     }
 
-    // --- Metodi Helper privati ---
+    /// --- Metodi Helper privati ---
     
     /**
     * @brief Pulisce il contenuto testuale di tutti i campi di input dell'utente.
