@@ -19,7 +19,14 @@ public class Libro{
     private final String codiceISBN;
     private int numeroCopieDisponibili;
     
-
+    /**
+    *@brief Costruttore per la classe Libro
+    * 
+    * La funzione crea una nuova istanza della classe Libro
+    * 
+    * @post I parametri passati alla funzione sono
+    * 
+    */
     public Libro(String titolo, String autori, LocalDate anno, String codiceISBN, int numeroCopie){
 
         this.titolo=titolo;

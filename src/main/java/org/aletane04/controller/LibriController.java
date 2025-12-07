@@ -23,9 +23,23 @@ public class LibriController implements Initializable {
 
     private Biblioteca manager;
 
+    /**
+    * @brief Inizializza il controller e configura la TableView per la visualizzazione dei libri.
+    *
+    * Questa funzione è chiamata automaticamente dal framework JavaFX dopo che l'interfaccia 
+    * utente è stata completamente caricata. Il suo scopo è associare le colonne della tabella 
+    * alle proprietà del modello dati (Libro) e impostare la politica di ridimensionamento.
+    *
+    * @pre Il file FXML corrispondente deve essere caricato e gli elementi devono essere stati iniettati.
+    * @post Tutte le colonne della tabella sono associate alle rispettive proprietà del modello dati, 
+    * garantendo che le colonne riempiano l'intero spazio orizzontale disponibile.
+    *
+    * @param[in] location L'URL utilizzato per risolvere i percorsi relativi per l'oggetto radice.
+    * @param[in] resources Le risorse utilizzate per localizzare l'oggetto radice.
+    */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // 1. SETUP GRAFICO (Colonne) - Lo faccio subito!
+        // 1. SETUP GRAFICO (Colonne) 
         colTitolo.setCellValueFactory(new PropertyValueFactory<>("titolo"));
         colAutore.setCellValueFactory(new PropertyValueFactory<>("autori"));
         colIsbn.setCellValueFactory(new PropertyValueFactory<>("codiceISBN"));
@@ -36,7 +50,23 @@ public class LibriController implements Initializable {
         // Questo fa sì che le colonne si allighino per riempire tutto lo spazio
         tabellaLibri.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
-
+    
+    /**
+    * @brief Imposta il manager della biblioteca e inizializza la logica di visualizzazione e ricerca dei dati.
+    *
+    * Questo metodo viene chiamato per associare il controller al modello dati principale ({@code Biblioteca}) 
+    * e stabilire i meccanismi di filtro e ordinamento per la tabella. Stabilisce l'ascoltatore (listener) 
+    * sul campo di testo di ricerca per aggiornare dinamicamente i dati visualizzati.
+    *
+    * @pre Il manager della biblioteca non deve essere null e deve contenere 
+    * una lista valida di oggetti Libro tramite il metodo getLibri().
+    * @pre Il campo di testo per la ricerca e la tabella devono essere stati iniettati.
+    * @post L'istanza del manager è memorizzata nella variabile di classe this.manager.
+    * @post I dati della tabella sono configurati con una FilteredList e una SortedList, consentendo la ricerca dinamica.
+    * @post Un listener è attivo sulla proprietà di testo di txtRicerca per filtrare i libri in base a titolo, autore o ISBN.
+    *
+    * @param[in] manager L'istanza della classe {@code Biblioteca} che fornisce i dati e la logica di business. 
+    */
     public void setBiblioteca(Biblioteca manager) 
     {
         this.manager = manager;
@@ -59,6 +89,21 @@ public class LibriController implements Initializable {
         tabellaLibri.setItems(sortedData);
     }
 
+    /**
+    * @brief Gestisce l'evento di aggiunta di un nuovo libro alla biblioteca
+    *
+    * Questo metodo recupera i dati dai campi di input del moduolo, esegue una validazione di base, (controllo dei campi obbligatori e formato numerico) e, 
+    * in caso di successo aggiunge un nuovo oggetto della classe Libro al modello dati
+    *
+    * @pre il manager della biblioteca deve essere inizializzato e disponibile per invocare il metodo
+    * @pre il testo dei campi txtTitolo e txtISBN non deve essere vuoto@
+    * @pre il testo del campo txtCopie deve essere un valore numerico intero valido
+    * @post se ha successo, un nuovo oggetto della classe Libro viene aggiunto al modello dati@
+    * @post i campi di input vengono puliti utilizzando pulisciCampi(@)
+    * @post se si verifica un errore validazione o di formato, viene mostrato un messaggio di errore all'utente tramite mostraErrore() 
+    * e l'operazione di aggiunta viene annullatar
+    * 
+    **/
     @FXML
     public void onAggiungi() {
         try {
@@ -80,42 +125,108 @@ public class LibriController implements Initializable {
         } catch (NumberFormatException e) {
             mostraErrore("Il numero copie deve essere un intero!");
         }
+        
     }
+    
+    
+    
+    
+    
+    /**
+    * @brief Gestisce l'evento di rimozione di un libro selezionato dalla tabella.
+    * 
+    * Questo metodo verifica se un elemento è stato selezionato nella tabellaLibri. 
+    * Se la selezione è valida, tenta di eliminare il libro dal modello dati tramite il manager. 
+    * Il metodo gestisce gli errori, sia quelli derivanti dalla mancanza di selezione, 
+    * sia quelli sollevati dal manager durante il tentativo di rimozione (e.g., libro in prestito).
+    * 
+    * @pre Il manager della biblioteca ({@code manager}) deve essere stato inizializzato e in grado 
+    * di eseguire l'operazione {@code rimuoviLibro()}.
+    * @pre La {@code tabellaLibri} deve essere popolata con dati validi.
+    * @post Se l'utente non ha selezionato alcun libro, viene mostrato un messaggio di errore.
+    * @post Se la rimozione ha successo (il manager non solleva eccezioni), il libro viene rimosso 
+    * dal modello dati e viene mostrato un messaggio di successo all'utente tramite {@code mostraInfo()}.
+    * @post Se il manager solleva un'eccezione (e.g., violazione di vincoli di integrità), 
+    * viene mostrato un messaggio di errore all'utente con il messaggio dell'eccezione.
+    * 
+    *  
+    **/
     @FXML
-public void onRimuovi() {
-    // 1. Capisco quale riga l'utente ha selezionato
-    Libro selezionato = tabellaLibri.getSelectionModel().getSelectedItem();
+    public void onRimuovi() {
+        // 1. Capisco quale riga l'utente ha selezionato
+        Libro selezionato = tabellaLibri.getSelectionModel().getSelectedItem();
 
-    // 2. Se non ha selezionato nulla, lo sgrido gentilmente
-    if (selezionato == null) {
-        mostraErrore("Seleziona prima un libro dalla tabella!");
-        return;
+        // 2. Se non ha selezionato nulla, lo sgrido gentilmente
+        if (selezionato == null) {
+         mostraErrore("Seleziona prima un libro dalla tabella!");
+            return;
+        }
+
+        // 3. Provo a cancellare
+        try {
+            manager.rimuoviLibro(selezionato);
+        
+            // Se arrivo qui, non c'è stata eccezione -> Successo!
+            mostraInfo("Libro eliminato con successo.");
+        
+        } catch (Exception e) {
+            // Se il manager lancia l'eccezione (libro in prestito), la catturo qui
+            mostraErrore(e.getMessage());
+        }
     }
 
-    // 3. Provo a cancellare
-    try {
-        manager.rimuoviLibro(selezionato);
-        
-        // Se arrivo qui, non c'è stata eccezione -> Successo!
-        mostraInfo("Libro eliminato con successo.");
-        
-    } catch (Exception e) {
-        // Se il manager lancia l'eccezione (libro in prestito), la catturo qui
-        mostraErrore(e.getMessage());
-    }
-}
-
+    /**
+    * @brief Resetta il contenuto di tutti i campi di input del modulo di aggiunta libro.
+    *
+    * Questo è un metodo di utilità interno che pulisce i campi di testo e resetta 
+    * il selettore di data, preparando l'interfaccia utente per un nuovo inserimento 
+    * di dati. Viene tipicamente chiamato dopo un'operazione di aggiunta completata 
+    * con successo.
+    *
+    * @pre I campi di testo txtTitolo, txtAutore, txtIsbn, txtCopie e il selettore di data {@code pickerAnno} devono essere stati iniettati.
+    * @post Tutti i campi di testo specificati sono vuoti (il loro contenuto è stato cancellato).
+    * 
+    **/
     private void pulisciCampi() {
         txtTitolo.clear(); txtAutore.clear(); txtIsbn.clear(); txtCopie.clear();
         pickerAnno.setValue(null);
     }
-
+    
+    /**
+     * @brief Visualizza un messaggio di errore modale all'utente.
+     *
+     * Questo metodo di utilità crea e mostra una finestra di dialogo modale di tipo "Alert" (JavaFX) 
+     * con icona di errore. L'esecuzione del programma viene sospesa fino a quando l'utente non 
+     * interagisce con l'avviso, garantendo che il messaggio venga letto.
+     *
+     * @pre Nessuna precondizione specifica, il metodo è una funzione di utilità della GUI.
+     * @post Viene visualizzata una finestra di dialogo modale di errore contenente il messaggio {@code msg}.
+     * @post L'esecuzione del thread corrente è bloccata fino alla chiusura dell'Alert.
+     *
+     * @param[in] msg Il messaggio di errore dettagliato da mostrare all'utente.
+    **/
     private void mostraErrore(String msg) {
         Alert alert = new Alert(Alert.AlertType.ERROR, msg);
         alert.showAndWait();
     }
+    
+    /**
+     * @brief Visualizza un messaggio informativo modale all'utente.
+     *
+     * Questo metodo di utilità crea e mostra una finestra di dialogo modale di tipo "Alert" (JavaFX) 
+     * con icona informativa. Viene utilizzato per notificare all'utente il successo di un'operazione 
+     * o per fornire informazioni non critiche. L'esecuzione è bloccata finché l'utente non chiude l'avviso.
+     *
+     * 
+     * @post Viene visualizzata una finestra di dialogo modale informativa contenente il messaggio {@code msg}.
+     * @post L'esecuzione del thread corrente è bloccata fino alla chiusura dell'Alert, garantendo 
+     * la ricezione del messaggio da parte dell'utente.
+     *
+     * @param[in] msg Il messaggio informativo o di successo da mostrare all'utente.
+     * 
+     **/
     private void mostraInfo(String msg) {
-    Alert alert = new Alert(Alert.AlertType.INFORMATION, msg);
-    alert.showAndWait();
-}
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, msg);
+        alert.showAndWait();
+    }
 }

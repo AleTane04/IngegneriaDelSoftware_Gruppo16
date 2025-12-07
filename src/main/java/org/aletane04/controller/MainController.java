@@ -29,12 +29,45 @@ public class MainController implements Initializable
      /**
      * Initializes the controller class.
      */
+    
+    /**
+    * @brief Metodo di inizializzazione del controller.
+    *
+    * Questo metodo implementa l'interfaccia Initializable di JavaFX.
+    * Viene chiamato dal FXMLLoader dopo che tutti gli elementi FXML
+    * sono stati caricati e iniettati.
+    *
+    * @pre Tutti gli elementi con l'annotazione @FXML devono essere stati iniettati con successo.
+    * @post Nessuna modifica visibile all'interfaccia utente. Il controller è pronto per l'associazione con il modello (manager).
+    *
+    * @param[in] location La posizione relativa dell'oggetto radice.
+    * @param[in] resources Le risorse utilizzate per la localizzazione dell'oggetto radice.
+    * 
+    */
     @Override
     public void initialize(URL location, ResourceBundle resources) 
     {
         /* Vuoto, non è  necessario fare set-up grafico generale */
     }
 
+    /**
+    * @brief Imposta il gestore della biblioteca (modello) e lo propaga a tutti i controller delle sottoviste.
+    *
+    * Questo metodo stabilisce il legame tra il controller principale e l'istanza di
+    * Biblioteca che funge da manager dei dati. Successivamente, si occupa
+    * di chiamare il metodo setBiblioteca su ciascuno dei controller
+    * delle sottoviste (Utenti, Libri, Prestiti), passando la stessa istanza
+    * del manager per inizializzare il loro accesso ai dati.
+    *
+    * @pre I controller delle sottoviste (libriViewController, utentiViewController,
+    * prestitiViewController) devono essere stati iniettati (anche se possono essere nulli).
+    * @post L'istanza di Biblioteca è memorizzata nel campo myBiblioteca di questo
+    * controller e, se non sono nulli, viene propagata a tutti i controller delle sottoviste.
+    *
+    * @param[in] myBiblioteca L'istanza di Biblioteca che contiene i dati e la logica di business.
+    *
+    * 
+    */
     public void setBiblioteca(Biblioteca myBiblioteca) {
         this.myBiblioteca = myBiblioteca;
         /* Passo il mio oggetto "manager" agli altri controller */
@@ -45,12 +78,45 @@ public class MainController implements Initializable
         if (prestitiViewController != null)
             prestitiViewController.setBiblioteca(myBiblioteca);
     }
-
-    @FXML public void onSalvaClick() 
+    
+    
+    /**
+    * @brief Gestisce l'evento di salvataggio manuale dei dati.
+    *
+    * Questa funzione è un gestore di eventi FXML (tipicamente associato al click
+    * su un bottone "Salva"). Chiama il metodo saveAll() sull'istanza del
+    * gestore (modello) myBiblioteca per rendere permanenti su file tutte
+    * le modifiche apportate ai dati (Utenti, Libri, Prestiti).
+    *
+    * @pre Il manager myBiblioteca deve essere stato inizializzato tramite
+    * setBiblioteca() e deve contenere i dati correnti del sistema.
+    * @post Tutte le collezioni di dati gestite da myBiblioteca (es. Utenti,
+    * Libri, Prestiti) sono state scritte e persistite su un mezzo di memorizzazione
+    * (tipicamente un file CSV o simile).
+    *
+    * 
+    */
+    @FXML 
+    public void onSalvaClick() 
     {
         myBiblioteca.saveAll(); 
     }
-    @FXML public void onEsciClick() 
+    
+    
+    /**
+    * @brief Gestisce l'evento di uscita dall'applicazione con salvataggio automatico.
+    *
+    * Questa funzione è un gestore di eventi FXML. Esegue due operazioni sequenziali e critiche:
+    * 1. Chiama il metodo saveAll() sul manager myBiblioteca per garantire
+    * la persistenza su file di tutte le modifiche.
+    * 2. Chiama Platform.exit() per terminare in modo pulito l'applicazione JavaFX.
+    *
+    * @pre Il manager myBiblioteca deve essere inizializzato e l'applicazione deve essere in esecuzione.
+    * @post Tutte le modifiche ai dati sono state salvate su disco e l'applicazione JavaFX viene chiusa.
+    *
+    */
+    @FXML 
+    public void onEsciClick() 
     {
         myBiblioteca.saveAll();
         Platform.exit(); 

@@ -12,17 +12,20 @@ package org.aletane04.exceptions;
 public class LibroNonDisponibileException extends Exception {
 
     /**
-     * Creates a new instance of <code>LibroNonDisponibileException</code>
-     * without detail message.
+     * Crea un nuova istanza di LibroNonDisponibileException
+     * senza un messaggio dettagliato
      */
     public LibroNonDisponibileException() {
     }
 
     /**
-     * Constructs an instance of <code>LibroNonDisponibileException</code> with
-     * the specified detail message.
-     *
-     * @param msg the detail message.
+     * 
+     * Crea un nuova istanza di LibroNonDisponibileException 
+     * con un messaggio dettagliato
+     * 
+     * 
+     * @param[in] msg il messaggio dettagliato
+     * 
      */
     public LibroNonDisponibileException(String msg) {
         super(msg);

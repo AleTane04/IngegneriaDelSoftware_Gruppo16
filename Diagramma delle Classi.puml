@@ -1,0 +1,55 @@
+@startuml
+annotation java.lang.Override
+class java.net.URL
+class java.time.LocalDate
+class java.util.Map
+class java.util.ResourceBundle
+class java.util.TreeMap
+class javafx.application.Application
+class javafx.collections.FXCollections
+class javafx.collections.ObservableList
+class javafx.scene.Scene
+class javafx.scene.control.Label
+class javafx.scene.layout.StackPane
+class javafx.stage.Stage
+class org.aletane04.Main
+class org.aletane04.controller.LibriController
+class org.aletane04.controller.MainController
+class org.aletane04.controller.PrestitiController
+class org.aletane04.controller.UtentiController
+class org.aletane04.data.Biblioteca
+class org.aletane04.model.Libro
+class org.aletane04.model.Prestito
+class org.aletane04.model.Utente
+interface javafx.fxml.Initializable
+org.aletane04.Main ..> java.lang.Override
+org.aletane04.Main --|> javafx.application.Application
+org.aletane04.Main ..> javafx.scene.Scene
+org.aletane04.Main ..> javafx.scene.control.Label
+org.aletane04.Main ..> javafx.scene.layout.StackPane
+org.aletane04.Main ..> javafx.stage.Stage
+org.aletane04.controller.LibriController ..> java.lang.Override
+org.aletane04.controller.LibriController ..> java.net.URL
+org.aletane04.controller.LibriController ..> java.util.ResourceBundle
+org.aletane04.controller.LibriController --|> javafx.fxml.Initializable
+org.aletane04.controller.MainController ..> java.lang.Override
+org.aletane04.controller.MainController ..> java.net.URL
+org.aletane04.controller.MainController ..> java.util.ResourceBundle
+org.aletane04.controller.MainController --|> javafx.fxml.Initializable
+org.aletane04.controller.PrestitiController ..> java.lang.Override
+org.aletane04.controller.PrestitiController ..> java.net.URL
+org.aletane04.controller.PrestitiController ..> java.util.ResourceBundle
+org.aletane04.controller.PrestitiController --|> javafx.fxml.Initializable
+org.aletane04.controller.UtentiController ..> java.lang.Override
+org.aletane04.controller.UtentiController ..> java.net.URL
+org.aletane04.controller.UtentiController ..> java.util.ResourceBundle
+org.aletane04.controller.UtentiController --|> javafx.fxml.Initializable
+org.aletane04.data.Biblioteca ..> javafx.collections.FXCollections
+org.aletane04.data.Biblioteca ..> javafx.collections.ObservableList
+org.aletane04.model.Libro ..> java.lang.Override
+org.aletane04.model.Libro ..> java.time.LocalDate
+org.aletane04.model.Utente ..> java.lang.Override
+org.aletane04.model.Utente ..> java.time.LocalDate
+org.aletane04.model.Utente ..> java.util.Map
+org.aletane04.model.Utente ..> java.util.TreeMap
+@enduml

@@ -1,0 +1,59 @@
+@startuml
+title UC-01: Inserimento Nuovo Libro
+skinparam sequence {
+    LifeLineBorderColor #4CAF50
+    ParticipantBorderColor #4CAF50
+    ActorBorderColor #2196F3
+}
+
+actor Bibliotecario
+participant PaginaInserimentoLibro as Pagina
+participant GestoreLibri as Gestore
+database ArchivioLibri as Archivio
+
+== Flusso Normale ==
+
+Bibliotecario -> Pagina: preme "Nuovo Libro" (IF-1.1)
+activate Pagina
+
+Bibliotecario -> Pagina: Compila e Conferma Inserimento\n(Titolo, Autori, Anno, ISBN, N. Copie) (DF-1.1)
+
+Pagina -> Gestore: Inserisci Nuovo Libro (Dati)
+activate Gestore
+
+Gestore -> Archivio: verifica ISBN (SELECT ISBN)
+activate Archivio
+Archivio --> Gestore: Risultato Verifica (ISBN non presente)
+deactivate Archivio
+
+Gestore -> Archivio: salva il nuovo libro (INSERT) (FC-1)
+activate Archivio
+Archivio --> Gestore: Salvataggio Confermato
+deactivate Archivio
+
+Gestore --> Pagina: Inserimento Confermato
+deactivate Gestore
+
+Pagina --> Bibliotecario: Messaggio di Successo
+deactivate Pagina
+
+== Flusso Alternativo (4a. Libro Già Presente) ==
+
+Bibliotecario -> Pagina: Compila e Conferma Inserimento (Dati)
+activate Pagina
+Pagina -> Gestore: Inserisci Nuovo Libro (Dati)
+activate Gestore
+
+Gestore -> Archivio: verifica ISBN (SELECT ISBN)
+activate Archivio
+Archivio --> Gestore: Risultato Verifica (ISBN **già presente**)
+deactivate Archivio
+
+alt Libro Già Presente (4a)
+    Gestore --> Pagina: ISBN Già Esistente (IF-1.2)
+    Pagina --> Bibliotecario: Proposta: Incrementa Copie?
+    deactivate Gestore
+    deactivate Pagina
+end
+
+@enduml

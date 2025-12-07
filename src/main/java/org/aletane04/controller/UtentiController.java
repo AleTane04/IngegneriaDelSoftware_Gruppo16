@@ -40,9 +40,24 @@ public class UtentiController implements Initializable {
     private Biblioteca manager;
 
     /**
-     * Metodo chiamato automaticamente da JavaFX appena carica il file FXML.
-     * Lo usiamo SOLO per configurare l'aspetto grafico (colonne).
-     */
+    * @brief Inizializza il controller e configura il binding delle colonne della tabella Utenti.
+    *
+    * Questo metodo, richiesto dall'interfaccia Initializable di JavaFX,
+    * viene chiamato automaticamente dopo che tutti i componenti FXML
+    * (come la tabella e le sue colonne) sono stati caricati e iniettati.
+    * Configura il meccanismo di associazione tra le colonne della tabella
+    * tabellaUtenti e le proprietà della classe Utente.
+    *
+    * @pre Tutti i componenti FXML (colonne e tabella) devono essere stati iniettati
+    * correttamente dal FXMLLoader.
+    * @post Le colonne della tabella sono associate alle proprietà della classe Utente
+    * tramite PropertyValueFactory. Il testo placeholder è impostato
+    * per le tabelle vuote e la politica di ridimensionamento è impostata su
+    * CONSTRAINED_RESIZE_POLICY per riempire lo spazio disponibile.
+    *
+    * @param[in] location La posizione relativa dell'oggetto radice (non utilizzato).
+    * @param[in] resources Le risorse utilizzate per la localizzazione dell'oggetto radice (non utilizzato).
+    */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Colleghiamo le colonne agli attributi della classe Utente.
@@ -60,9 +75,32 @@ public class UtentiController implements Initializable {
     }
 
     /**
-     * Metodo chiamato dal MainController per passare i dati.
-     * Qui avviene il collegamento logico vero e proprio.
-     */
+    * @brief Associa il gestore della biblioteca (modello) al controller e inizializza il meccanismo di filtro e ordinamento per la tabella Utenti.
+    *
+    * Questo metodo stabilisce il legame tra il controller e l'istanza di Biblioteca
+    * che funge da modello (manager). Successivamente, imposta il **data binding dinamico**
+    * per la tabella degli utenti (tabellaUtenti), permettendo sia il filtraggio
+    * tramite la barra di ricerca (txtRicerca) sia l'ordinamento
+    * automatico quando l'utente clicca sulle intestazioni delle colonne.
+    * L'implementazione segue il pattern JavaFX:
+    * 1. La lista originale degli utenti viene avvolta in una FilteredList.
+    * 2. Un listener viene aggiunto alla proprietà del testo per aggiornare il predicato del filtro.
+    * 3. La FilteredList viene avvolta in una SortedList.
+    * 4. La proprietà del comparatore della SortedList viene legata (bind) alla proprietà
+    * *  del comparatore della TableView.
+    * 5. I dati finali (filtrati e ordinati) sono impostati come sorgente della tabella.
+    *
+    * @pre Il manager Biblioteca deve essere inizializzato e la tabella
+    * tabellaUtenti e il campo di testo txtRicerca devono essere
+    * stati iniettati correttamente dal FXML.
+    * @post L'istanza di Biblioteca è memorizzata nel campo manager.
+    * Il binding tra i dati della tabella e le liste dinamiche (filtrate e ordinate)
+    * è attivo, consentendo la ricerca per Nome, Cognome o Matricola e l'ordinamento
+    * cliccando sulle colonne.
+    *
+    * @param[in] manager L'istanza di Biblioteca che contiene i dati e la logica di business.
+    * 
+    */
     public void setBiblioteca(Biblioteca manager) {
         this.manager = manager;
 
@@ -102,8 +140,24 @@ public class UtentiController implements Initializable {
     }
 
     /**
-     * Gestisce il click sul bottone "Aggiungi".
-     */
+    * @brief Gestisce l'evento di aggiunta di un nuovo utente nel sistema.
+    *
+    * Questa funzione recupera i dati dell'utente (Nome, Cognome, Matricola ed Email)
+    * dai campi di testo FXML. Esegue una **validazione di base** per assicurare
+    * che i campi obbligatori (Nome, Cognome e Matricola) non siano vuoti.
+    * In caso di validazione positiva, crea un nuovo oggetto Utente,
+    * lo passa al gestore manager per l'aggiunta (che gestisce la logica
+    * di business, inclusi i duplicati) e, infine, pulisce i campi di input.
+    *
+    * @pre I campi di testo FXML (txtNome, txtCognome, txtMatricola,
+    * txtEmail) devono essere stati iniettati e il manager manager
+    * deve essere inizializzato.
+    * @post Se i dati obbligatori sono presenti, un nuovo Utente è passato al
+    * gestore per l'aggiunta al sistema, e tutti i campi di input vengono puliti
+    * tramite pulisciCampi(). Se mancano dati obbligatori, viene mostrato un
+    * avviso all'utente.
+    *
+    */
     @FXML
     public void onAggiungi() {
         // 1. Leggo i dati
@@ -129,8 +183,24 @@ public class UtentiController implements Initializable {
     }
     
     /**
-     * Metodo bonus per eliminare un utente selezionato (se vuoi aggiungere il bottone "Elimina")
-     */
+    * @brief Gestisce l'evento di eliminazione dell'utente selezionato dalla tabella.
+    *
+    * Questa funzione recupera l'oggetto Utente selezionato nella tabella
+    * tabellaUtenti. Se è stata effettuata una selezione, mostra una
+    * finestra di dialogo di **conferma** all'utente. Se l'utente conferma
+    * l'operazione (ButtonType.OK), l'utente viene rimosso direttamente dalla lista
+    * gestita dal manager e i dati vengono salvati su file tramite manager.saveAll().
+    * Se nessuna riga è selezionata, viene mostrato un messaggio di avviso informativo.
+    *
+    * @pre La tabella tabellaUtenti deve essere stata popolata e il manager deve essere inizializzato.
+    * @post Se l'utente conferma l'eliminazione, l'oggetto Utente selezionato
+    * viene rimosso dalla lista interna del manager e i dati vengono salvati su disco.
+    * In caso di mancata selezione, viene mostrato un avviso.
+    *
+    * @param[in] tabellaUtenti La TableView da cui viene recuperata la selezione.
+    * @param[in] selezionato L'oggetto Utente selezionato (recuperato internamente).
+    *
+    */
     @FXML
     public void onElimina() {
         Utente selezionato = tabellaUtenti.getSelectionModel().getSelectedItem();
@@ -154,7 +224,20 @@ public class UtentiController implements Initializable {
     }
 
     // --- Metodi Helper privati ---
-
+    
+    
+    
+    
+    /**
+    * @brief Pulisce il contenuto testuale di tutti i campi di input dell'utente.
+    *
+    * Questa funzione è un metodo di utilità interno al controller.
+    * Rimuove tutti i dati inseriti dall'utente nei campi di testo FXML
+    * (txtNome, txtCognome, txtMatricola, txtEmail), riportandoli a uno stato vuoto.
+    * 
+    * @pre I campi di testo FXML devono essere stati iniettati e non nulli.
+    * @post Tutti i campi di testo (Nome, Cognome, Matricola, Email) sono vuoti.
+    */
     private void pulisciCampi() {
         txtNome.clear();
         txtCognome.clear();
@@ -162,6 +245,25 @@ public class UtentiController implements Initializable {
         txtEmail.clear();
     }
 
+    
+    /**
+    * @brief Mostra una finestra di dialogo di tipo Alert all'utente.
+    *
+    * Crea un oggetto Alert con il tipo specificato (es. INFORMATION, WARNING, ERROR),
+    * impostando il titolo e il testo del contenuto. L'intestazione (Header Text)
+    * della finestra di dialogo viene esplicitamente impostata a null per
+    * mostrare solo il titolo e il contenuto. La finestra viene visualizzata e
+    * l'esecuzione viene bloccata finché l'utente non la chiude.
+    *
+    * @post Viene visualizzata una finestra di dialogo modale di tipo Alert
+    * con le informazioni specificate, bloccando l'esecuzione del thread corrente
+    * finché l'utente non interagisce con essa.
+    * 
+    * @param[in] tipo Il tipo di alert (es. WARNING, ERROR) che definisce l'icona della finestra.
+    * @param[in] titolo La stringa da usare come titolo della finestra di dialogo.
+    * @param[in] contenuto La stringa da usare come testo principale del messaggio.
+    * 
+    */
     private void mostraAlert(Alert.AlertType tipo, String titolo, String contenuto) {
         Alert alert = new Alert(tipo);
         alert.setTitle(titolo);
