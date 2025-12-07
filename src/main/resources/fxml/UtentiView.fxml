@@ -22,26 +22,20 @@
                 <TableColumn fx:id="colMatricola" text="Matricola"/>
                 <TableColumn fx:id="colEmail" text="Email"/>
             </columns>
-            
         </TableView>
     </center>
 
     <bottom>
         <VBox spacing="5" style="-fx-padding: 10; -fx-border-color: #cccccc; -fx-border-width: 1 0 0 0;">
+            <Label text="Nuovo Utente" style="-fx-font-weight: bold;"/>
             <HBox spacing="10" alignment="CENTER_LEFT">
                 <TextField fx:id="txtNome" promptText="Nome"/>
                 <TextField fx:id="txtCognome" promptText="Cognome"/>
                 <TextField fx:id="txtMatricola" promptText="Matricola"/>
                 <TextField fx:id="txtEmail" promptText="Email" HBox.hgrow="ALWAYS"/>
                 <Button text="Aggiungi" onAction="#onAggiungi" style="-fx-base: #b6e7c9;"/>
-            </HBox>
-            
-            <Separator />
-            
-            <HBox alignment="CENTER_RIGHT">
-                 <Button text="Elimina Selezionato" onAction="#onElimina" style="-fx-base: #ffcccc;"/>
+                <Button text="Rimuovi" onAction="#onElimina" style="-fx-base: #ffcccc;"/>
             </HBox>
         </VBox>
     </bottom>
-
 </BorderPane>

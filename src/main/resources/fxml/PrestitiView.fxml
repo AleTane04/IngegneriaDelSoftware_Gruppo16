@@ -50,8 +50,8 @@
     </center>
 
     <bottom>
-        <HBox alignment="CENTER_RIGHT" style="-fx-padding: 10; -fx-background-color: #f4f4f4;">
-            <Button text="Restituisci Libro" onAction="#onRestituisci"
+        <HBox alignment="CENTER" style="-fx-padding: 10; -fx-background-color: #f4f4f4;">
+            <Button text="REGISTRA RESTITUZIONE" onAction="#onRestituisci"
                     style="-fx-base: #ffcccc; -fx-font-weight: bold;"/>
         </HBox>
     </bottom>

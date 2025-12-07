@@ -37,7 +37,7 @@
                 <TextField fx:id="txtCopie" promptText="Copie" prefWidth="60"/>
                 <DatePicker fx:id="pickerAnno" promptText="Data Pubblicazione" prefWidth="130"/>
                 <Button text="Aggiungi" onAction="#onAggiungi" style="-fx-base: #b6e7c9;"/>
-                <Button text="Rimuovi" onAction="#onRimuovi" style="-fx-base: #b6e7c9;"/>
+                <Button text="Rimuovi" onAction="#onRimuovi" style="-fx-base: #ffcccc;"/>
             </HBox>
         </VBox>
     </bottom>
