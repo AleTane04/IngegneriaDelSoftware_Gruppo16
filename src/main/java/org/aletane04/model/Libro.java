@@ -97,9 +97,14 @@ public class Libro{
     
     
     //metodi setter
+     /**
+     * @brief Imposta o aggiorna il titolo del libro.
+     * * @param titolo Il nuovo titolo da assegnare al libro.
+     */
     public void setTitolo(String titolo){
         this.titolo=titolo;
     }
+
     
     public void setAutori(String autori){
         this.autori=autori;
