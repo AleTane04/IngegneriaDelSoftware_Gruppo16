@@ -112,7 +112,11 @@ public class Libro{
     public void setAutori(String autori){
         this.autori=autori;
     }
-    
+
+    /**
+     * @brief Imposta la data di pubblicazione del libro.
+     * * @param data La nuova data di pubblicazione.
+     */
     public void setAnnoPubblicazione(LocalDate data){
         this.annoPubblicazione=data;
     }
