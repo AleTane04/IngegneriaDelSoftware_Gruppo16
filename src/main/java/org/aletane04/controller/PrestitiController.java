@@ -48,37 +48,37 @@ public class PrestitiController implements Initializable {
     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        /* SetUp grafico */
+        /// SetUp grafico 
         colUtente.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getUtente().toString()));
         colLibro.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getLibro().getTitolo()));
         colFine.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("dataFine"));
         colStato.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getStatoPrestito().toString()));
 
-       /* Colorazione delle righe */
+       /// Colorazione delle righe 
         tabellaPrestiti.setRowFactory(tv -> new TableRow<Prestito>() {
             @Override
             protected void updateItem(Prestito p, boolean empty) {
                 super.updateItem(p, empty);
-                /* Se la riga è vuota, pulisco lo stile */
+                /// Se la riga è vuota, pulisco lo stile 
                 if (p == null || empty)
                 {
                     setStyle("");
                 } else {
-                    /* Se la riga è selezionata, i colori personalizzati non agiranno */
+                    /// Se la riga è selezionata, i colori personalizzati non agiranno 
                     if (isSelected()) {
                         setStyle("");
                     }
-                    /* Se la riga non è selezionata, si applicano le personalizzazioni */
+                    /// Se la riga non è selezionata, si applicano le personalizzazioni 
                     else {
                         switch (p.getStatoPrestito()) {
                             case SCADUTO:
-                                setStyle("-fx-background-color: #ffcccc;"); /* Colore rosso chiaro */
+                                setStyle("-fx-background-color: #ffcccc;"); /// Colore rosso chiaro 
                                 break;
                             case IN_SCADENZA:
-                                setStyle("-fx-background-color: #ffffcc;"); /* Colore giallo chiaro */
+                                setStyle("-fx-background-color: #ffffcc;"); /// Colore giallo chiaro 
                                 break;
                             case ATTIVO:
-                                setStyle(""); /* Colore biando: di default */
+                                setStyle(""); /// Colore biando: di default 
                                 break;
                         }
                     }
@@ -86,8 +86,10 @@ public class PrestitiController implements Initializable {
             }
 
 
-            /* Questo metodo si aziona quando l'utente clicca sulla riga.
-            e forza il ricalcolo dello stile (chiamando updateItem) per applicare il blu o il rosso. */
+            /**
+             * Questo metodo si aziona quando l'utente clicca sulla riga.
+             * e forza il ricalcolo dello stile (chiamando updateItem) per applicare il blu o il rosso. 
+             */
             @Override
             public void updateSelected(boolean selected) {
                 super.updateSelected(selected);
@@ -99,9 +101,9 @@ public class PrestitiController implements Initializable {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
 
-                /* Se la data precede quella del giorno odierno */
+                /// Se la data precede quella del giorno odierno 
                 if (date.isBefore(LocalDate.now())) {
-                    /* La disabilito */
+                    /// La disabilito 
                     setDisable(true);
 
                 }
@@ -110,9 +112,9 @@ public class PrestitiController implements Initializable {
         dateFine.setEditable(false);
         tabellaPrestiti.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-
-
     }
+
+    
     /**
     * @brief Imposta il manager della biblioteca e popola gli elementi della GUI con i dati iniziali.
     *
@@ -133,8 +135,8 @@ public class PrestitiController implements Initializable {
     public void setBiblioteca(Biblioteca manager) {
         this.manager = manager;
 
-        /* SetUp dei dati */
-        // In questo metodo, vengono popolate le ComboBox e la Tabella solo ora che si hanno le liste.
+        /// SetUp dei dati 
+        /// In questo metodo, vengono popolate le ComboBox e la Tabella solo ora che si hanno le liste.
         comboUtenti.setItems(manager.getUtenti());
         comboLibri.setItems(manager.getLibri());
         tabellaPrestiti.setItems(manager.getPrestiti());
