@@ -130,6 +130,7 @@ public class Libro{
     }
     
     /* Altri metodi */
+    
     /**
     *@brief decrementa il numero di copie di un libro disponibili
     *
@@ -177,7 +178,8 @@ public class Libro{
 
     /**
      * @brief Calcola il codice hash per il libro.
-     * * Il calcolo è basato esclusivamente sul codice ISBN per garantire la coerenza 
+     *
+     * Il calcolo è basato esclusivamente sul codice ISBN per garantire la coerenza 
      * con il metodo equals(). Se l'ISBN è null, restituisce 0.
      *
      * @return Un intero che rappresenta il codice hash dell'oggetto.
@@ -191,7 +193,8 @@ public class Libro{
 
     /**
      * @brief Restituisce una rappresentazione testuale completa del libro.
-     * * La stringa include titolo, autori, anno di pubblicazione, ISBN e numero di copie.
+     * 
+     * La stringa include titolo, autori, anno di pubblicazione, ISBN e numero di copie.
      *
      * @return Una stringa descrittiva leggibile dall'utente.
      */
@@ -200,9 +203,15 @@ public class Libro{
         return "Titolo = " + getTitolo() + ", Autori = " + getAutori() + ", Anno di Publicazione = " + getAnnoPubblicazione() + ", Codice ISBN = " + getCodiceISBN() + ", Copie disponibili = " + getNumeroCopieDisponibili() + "\n";
     }
     
-    /* Metodo per restituire le proprietà di un libro 
-    in una stringa adatta per il formato file .csv, i cui campi sono separati da ;  */
     
+    /**
+     * @brief Restituisce i dati del libro formattati per file .csv.
+     *
+     *I campi sono concatenati e separati da un punto e virgola (;).
+     * Ordine campi: titolo;autori;anno;ISBN;copie.
+     *
+     * @return Una stringa pronta per essere scritta in un file .csv.
+     */
     public String toCSV() {
         return titolo+";"+autori+";"+annoPubblicazione.toString()+";"+codiceISBN+";"+numeroCopieDisponibili;
     }
