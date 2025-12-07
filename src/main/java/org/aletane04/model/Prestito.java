@@ -57,12 +57,20 @@ public class Prestito {
     {
         return myLibro;
     }
-    
+
+    /**
+     * @brief Restituisce la data in cui il prestito ha avuto inizio.
+     * @return La data di inizio prestito.
+     */
     public LocalDate getDataInizio() 
     {
         return dataInizio;
     }
-    
+
+    /**
+     * @brief Restituisce la data prevista per la fine del prestito.
+     * @return La data di scadenza del prestito.
+     */
     public LocalDate getDataFine() 
     {
         return dataFine;
