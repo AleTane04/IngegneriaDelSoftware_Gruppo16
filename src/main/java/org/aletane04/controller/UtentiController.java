@@ -262,11 +262,11 @@ public class UtentiController implements Initializable {
                 // Chiamo il metodo SICURO del manager
                 manager.rimuoviUtente(selezionato);
 
-                // Successo: Uso il tuo metodo con icona INFORMATION
+                // Successo: Uso il metodo con icona INFORMATION
                 mostraAlert(Alert.AlertType.INFORMATION, "Operazione completata", "Utente rimosso con successo.");
 
             } catch (Exception e) {
-                // Errore (es. Utente ha libri): Uso il tuo metodo con icona ERROR
+                // Errore (es. Utente ha libri): Uso il metodo con icona ERROR
                 mostraAlert(Alert.AlertType.ERROR, "Errore di rimozione", e.getMessage());
             }
         }
