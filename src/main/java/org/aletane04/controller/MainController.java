@@ -83,8 +83,8 @@ public class MainController implements Initializable
     /**
     * @brief Gestisce l'evento di salvataggio manuale dei dati.
     *
-    * Questa funzione è un gestore di eventi FXML (tipicamente associato al click
-    * su un bottone "Salva"). Chiama il metodo saveAll() sull'istanza del
+    * Questa funzione è un gestore di eventi FXML.
+    * Chiama il metodo saveAll() sull'istanza del
     * gestore (modello) myBiblioteca per rendere permanenti su file tutte
     * le modifiche apportate ai dati (Utenti, Libri, Prestiti).
     *
@@ -99,27 +99,42 @@ public class MainController implements Initializable
     @FXML 
     public void onSalvaClick() 
     {
-        myBiblioteca.saveAll(); 
+        myBiblioteca.saveAll();
+        // Popup Semplice
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Salvataggio");
+        alert.setHeaderText(null);
+        alert.setContentText("Salvataggio effettuato con successo!");
+        alert.showAndWait(); 
     }
     
     
-    /**
-    * @brief Gestisce l'evento di uscita dall'applicazione con salvataggio automatico.
-    *
-    * Questa funzione è un gestore di eventi FXML. Esegue due operazioni sequenziali e critiche:
-    * 1. Chiama il metodo saveAll() sul manager myBiblioteca per garantire
-    * la persistenza su file di tutte le modifiche.
-    * 2. Chiama Platform.exit() per terminare in modo pulito l'applicazione JavaFX.
-    *
-    * @pre Il manager myBiblioteca deve essere inizializzato e l'applicazione deve essere in esecuzione.
-    * @post Tutte le modifiche ai dati sono state salvate su disco e l'applicazione JavaFX viene chiusa.
-    *
-    */
+     /**
+     * @brief Gestisce l'evento di uscita dall'applicazione richiedendo una conferma all'utente.
+     *
+     * Questa funzione gestisce eventi FXML. Esegue due operazioni:
+     * 1. Visualizza un dialogo di conferma (Alert di tipo CONFIRMATION) all'utente.
+     * 2. Se l'utente conferma l'uscita (premendo OK), l'applicazione viene terminata 
+     * chiamando Platform.exit() e poi System.exit(0).
+     *
+     * @pre L'applicazione deve essere in esecuzione.
+     * @post L'applicazione JavaFX viene chiusa solo se l'utente conferma; altrimenti, rimane in esecuzione.
+     *
+     */
     @FXML 
     public void onEsciClick() 
     {
-        myBiblioteca.saveAll();
-        Platform.exit(); 
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Conferma Uscita");
+        alert.setHeaderText("Sei sicuro di voler uscire?");
+        alert.setContentText("I dati non salvati andranno persi.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK)
+        {
+            Platform.exit();
+            System.exit(0);
+        } 
     }
     
 }
