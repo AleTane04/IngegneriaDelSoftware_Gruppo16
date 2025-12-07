@@ -188,7 +188,13 @@ public class Libro{
 
        
     }
-    
+
+    /**
+     * @brief Restituisce una rappresentazione testuale completa del libro.
+     * * La stringa include titolo, autori, anno di pubblicazione, ISBN e numero di copie.
+     *
+     * @return Una stringa descrittiva leggibile dall'utente.
+     */
     @Override
     public String toString(){
         return "Titolo = " + getTitolo() + ", Autori = " + getAutori() + ", Anno di Publicazione = " + getAnnoPubblicazione() + ", Codice ISBN = " + getCodiceISBN() + ", Copie disponibili = " + getNumeroCopieDisponibili() + "\n";
