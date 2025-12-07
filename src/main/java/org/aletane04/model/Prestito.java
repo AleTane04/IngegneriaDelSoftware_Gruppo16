@@ -125,22 +125,33 @@ public class Prestito {
     {
         this.myLibro = l;
     }
-    
+
+    /**
+     * @brief Imposta la data di inizio del prestito.
+     * @param dI La nuova data di inizio.
+     */
     public void setDataInizio(LocalDate dI) 
     {
         this.dataInizio = dI;
     }
-    
+
+    /**
+     * @brief Imposta la data di fine (scadenza) del prestito.
+     * @param dF La nuova data di fine.
+     */
     public void setDataFine(LocalDate dF) 
     {
         this.dataFine = dF;
     }
     
     /* Altri metodi */
-    
-    /* Metodo per restituire le proprietà di un libro 
-    in una stringa adatta per il formato file .csv, i cui campi sono separati da ;  */
-    /* Salvo: Maricola;ISBN_Libro,DataInizio;DataFine */
+
+    /**
+     * @brief Restituisce i dati del prestito formattati per file CSV.
+     * * La stringa contiene i riferimenti chiave del prestito separati da punto e virgola (;).
+     * Ordine dei campi: Matricola Utente; ISBN Libro; Data Inizio; Data Fine.
+     * * @return Una stringa formattata pronta per la scrittura su file.
+     */
     public String toCSV() 
     {
         return this.myUtente.getMatricola()+";"+this.myLibro.getCodiceISBN()+";"+dataInizio+";"+dataFine;
