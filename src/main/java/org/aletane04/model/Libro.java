@@ -29,8 +29,12 @@ public class Libro{
         this.numeroCopieDisponibili=numeroCopie;
     }
     
-    /* Data una riga del file .csv in input, la spezzo in un array di stringhe, converto 
-    i valori nei tipi giusti e popolo i campi del mio costruttore */
+    /** 
+    *@brief Data una riga del file .csv in input, la spezzo in un array di stringhe, converto 
+    *i valori nei tipi giusti e popolo i campi del mio costruttore 
+    *
+
+    */
     public Libro(String rigaCSV) 
     {
         /* Ogni volta che viene trovato un ";" 
