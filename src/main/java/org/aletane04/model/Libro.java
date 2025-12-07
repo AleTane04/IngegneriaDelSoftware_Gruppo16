@@ -62,7 +62,11 @@ public class Libro{
     public String getTitolo(){
         return titolo;
     }
-    
+
+    /**
+     * @brief Restituisce gli autori del libro.
+     * * @return Una stringa contenente i nomi degli autori.
+     */
     public String getAutori(){
         return autori;
     }
