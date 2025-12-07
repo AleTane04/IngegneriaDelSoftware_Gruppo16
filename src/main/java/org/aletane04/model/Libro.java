@@ -30,10 +30,12 @@ public class Libro{
     }
     
     /** 
-    *@brief Data una riga del file .csv in input, la spezzo in un array di stringhe, converto 
+    *@brief passa una riga di un file .csv al costruttore
+    *
+    *Data una riga del file .csv in input, la spezzo in un array di stringhe, converto 
     *i valori nei tipi giusti e popolo i campi del mio costruttore 
     *
-
+    *@param[inout] rigaCSV la riga del file .csv passata
     */
     public Libro(String rigaCSV) 
     {
@@ -92,7 +94,11 @@ public class Libro{
     }
     
     /* Altri metodi */
-    
+    /**
+    *@brief decrementa il numero di copie di un libro disponibili
+    *
+    *@return 
+    */
     public void decrementaNumeroCopieDisponibili() 
     {
         if(this.numeroCopieDisponibili > 0)
