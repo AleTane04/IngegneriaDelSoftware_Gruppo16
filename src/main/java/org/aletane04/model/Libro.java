@@ -97,7 +97,7 @@ public class Libro{
     /**
     *@brief decrementa il numero di copie di un libro disponibili
     *
-    *@return 
+    *Decrementa il numero di copie di un libro disponibili solo se esso è maggiore di 0 
     */
     public void decrementaNumeroCopieDisponibili() 
     {
