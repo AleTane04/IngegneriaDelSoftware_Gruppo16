@@ -39,7 +39,7 @@ public class LibriController implements Initializable {
     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        /* Setup grafico delle colonne */
+        ///Setup grafico delle colonne
         colTitolo.setCellValueFactory(new PropertyValueFactory<>("titolo"));
         colAutore.setCellValueFactory(new PropertyValueFactory<>("autori"));
         colIsbn.setCellValueFactory(new PropertyValueFactory<>("codiceISBN"));
@@ -47,14 +47,14 @@ public class LibriController implements Initializable {
         colAnno.setCellValueFactory(new PropertyValueFactory<>("annoPubblicazione"));
 
         tabellaLibri.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        /* La tabella diventa modificabile */
+        /// La tabella diventa modificabile 
         tabellaLibri.setEditable(true);
 
         colTitolo.setCellFactory(TextFieldTableCell.forTableColumn());
         colTitolo.setOnEditCommit(event -> {
-            /* Salvo il riferimento del libro il cui titolo è stato modificato */
+            /// Salvo il riferimento del libro il cui titolo è stato modificato 
             Libro libro = event.getRowValue();
-            /* Aggiorno il valore del campo Titolo */
+            /// Aggiorno il valore del campo Titolo
             libro.setTitolo(event.getNewValue());
         });
 
@@ -85,7 +85,7 @@ public class LibriController implements Initializable {
             }
 
         });
-        /* ISBN NON MODIFICABILE */
+        /// ISBN NON MODIFICABILE
         colIsbn.setEditable(false);
 
         pickerAnno.setDayCellFactory(picker -> new DateCell() {
@@ -93,15 +93,15 @@ public class LibriController implements Initializable {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
 
-               /* Verifico che la data inserita sia successiva a quella del giorno odierno */
+               /// Verifico che la data inserita sia successiva a quella del giorno odierno 
                 if (date.isAfter(LocalDate.now())) {
-                    /* Disabilito la selezione della data */
+                    /// Disabilito la selezione della data 
                     setDisable(true);
 
                 }
             }
         });
-        /* Rendo il campo non editabile manualmente(via tastiera) */
+        /// Rendo il campo non editabile manualmente(via tastiera) 
         pickerAnno.setEditable(false);
     }
     
@@ -125,7 +125,7 @@ public class LibriController implements Initializable {
     {
         this.manager = manager;
 
-        /* Setup dei dati, una volta ricevuto il manager */
+        /// Setup dei dati, una volta ricevuto il manager 
         FilteredList<Libro> filteredData = new FilteredList<>(manager.getLibri(), b -> true);
 
         txtRicerca.textProperty().addListener((obs, oldV, newV) -> {
@@ -219,24 +219,24 @@ public class LibriController implements Initializable {
     **/
     @FXML
     public void onRimuovi() {
-        /* Riga selezionata dall'utente */
+        /// Riga selezionata dall'utente 
     Libro selezionato = tabellaLibri.getSelectionModel().getSelectedItem();
 
-    /* Se l'utente non ha selezionato alcuna riga, viene avvisato */
+    /// Se l'utente non ha selezionato alcuna riga, viene avvisato 
     if (selezionato == null) {
         mostraErrore("Seleziona prima un libro dalla tabella!");
         return;
     }
 
-    /* Provo a cancellare il libro */
+    /// Provo a cancellare il libro 
     try {
         manager.rimuoviLibro(selezionato);
         
-        // Se arrivo qui, non c'è stata eccezione -> Successo!
+        /// Se arrivo qui, non c'è stata eccezione -> Successo!
         mostraSuccesso("Libro eliminato con successo.");
         
     } catch (Exception e) {
-        // Se il manager lancia l'eccezione (libro in prestito), la catturo qui
+        /// Se il manager lancia l'eccezione (libro in prestito), la catturo qui
         mostraErrore(e.getMessage());
     }
     }
