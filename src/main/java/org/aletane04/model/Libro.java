@@ -151,7 +151,8 @@ public class Libro{
 
     /**
      * @brief Verifica l'uguaglianza tra questo libro e un altro oggetto.
-     * * Due libri sono considerati uguali se possiedono lo stesso codice ISBN.
+     * 
+     * Due libri sono considerati uguali se possiedono lo stesso codice ISBN.
      * Viene effettuato un controllo preliminare sui riferimenti e sulla classe di appartenenza.
      *
      * @param[in] obj L'oggetto da confrontare con l'istanza corrente.
@@ -173,6 +174,14 @@ public class Libro{
         return java.util.Objects.equals(this.codiceISBN, myLibro.codiceISBN);
     }
 
+
+    /**
+     * @brief Calcola il codice hash per il libro.
+     * * Il calcolo è basato esclusivamente sul codice ISBN per garantire la coerenza 
+     * con il metodo equals(). Se l'ISBN è null, restituisce 0.
+     *
+     * @return Un intero che rappresenta il codice hash dell'oggetto.
+     */
     @Override
     public int hashCode(){
         return codiceISBN == null ? 0 : codiceISBN.hashCode();
