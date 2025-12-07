@@ -55,6 +55,10 @@ public class Libro{
     }
     
     //metodi getter
+    /**
+     * @brief Restituisce il titolo del libro.
+     * * @return Il titolo del libro.
+     */
     public String getTitolo(){
         return titolo;
     }
@@ -104,7 +108,10 @@ public class Libro{
         if(this.numeroCopieDisponibili > 0)
             this.numeroCopieDisponibili--;
     }
-    
+
+    /**
+    *@brief incrementa il numero di copie di un libro disponibili 
+    */
     public void incrementaNumeroCopieDisponibili() 
     {
         this.numeroCopieDisponibili++;
