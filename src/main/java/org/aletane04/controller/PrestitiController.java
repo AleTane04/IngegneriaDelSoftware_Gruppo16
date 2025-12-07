@@ -32,14 +32,14 @@ public class PrestitiController implements Initializable {
     * @brief Inizializza il controller e configura la TableView per la visualizzazione dei prestiti.
     *
     * Questa funzione è chiamata automaticamente dal framework JavaFX. Configura le colonne della 
-    * {@code tabellaPrestiti} per associare i dati degli oggetti {@code Prestito} e delle loro 
+    * tabellaPrestiti per associare i dati degli oggetti Prestito e delle loro 
     * relazioni (Utente, Libro). Inoltre, imposta una RowFactory per applicare colorazioni di sfondo 
     * alle righe basate sullo stato del prestito (SCADUTO, IN_SCADENZA), fornendo un feedback visivo immediato.
     * Infine, imposta la politica di ridimensionamento della tabella.
     *
-    * @pre I componenti della GUI colUtente, colLibro, colFine, colStato, tabellaPrestiti devono essere stati iniettati (mediante @FXML).
+    * @pre I componenti della GUI colUtente, colLibro, colFine, colStato, tabellaPrestiti devono essere stati iniettati.
     * @post Tutte le colonne sono associate alle rispettive proprietà, alcune tramite PropertyValueFactory e altre tramite espressioni lambda per gestire dati annidati.
-    * @post Viene applicata una RowFactory personalizzata alla tabellaPrestiti per colorare le righe dei prestiti in base al loro stato (e.g., rosso per SCADUTO).
+    * @post Viene applicata una RowFactory personalizzata alla tabellaPrestiti per colorare le righe dei prestiti in base al loro stato.
     * @post La tabellaPrestiti è configurata per utilizzare la politica di ridimensionamento CONSTRAINED_RESIZE_POLICY.
     *
     * @param[in] location L'URL utilizzato per risolvere i percorsi relativi.
@@ -48,33 +48,71 @@ public class PrestitiController implements Initializable {
     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // 1. SETUP GRAFICO
+        /* SetUp grafico */
         colUtente.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getUtente().toString()));
         colLibro.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getLibro().getTitolo()));
         colFine.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("dataFine"));
         colStato.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getStatoPrestito().toString()));
 
-        // Colori righe (RowFactory) - Grafica pura, va bene qui
+       /* Colorazione delle righe */
         tabellaPrestiti.setRowFactory(tv -> new TableRow<Prestito>() {
             @Override
             protected void updateItem(Prestito p, boolean empty) {
                 super.updateItem(p, empty);
-                if (p == null || empty) {
+                /* Se la riga è vuota, pulisco lo stile */
+                if (p == null || empty)
+                {
                     setStyle("");
                 } else {
-                    switch (p.getStatoPrestito()) {
-                        case SCADUTO: setStyle("-fx-background-color: #ffcccc;"); break;
-                        case IN_SCADENZA: setStyle("-fx-background-color: #ffffe0;"); break;
-                        case ATTIVO: setStyle(""); break;
+                    /* Se la riga è selezionata, i colori personalizzati non agiranno */
+                    if (isSelected()) {
+                        setStyle("");
+                    }
+                    /* Se la riga non è selezionata, si applicano le personalizzazioni */
+                    else {
+                        switch (p.getStatoPrestito()) {
+                            case SCADUTO:
+                                setStyle("-fx-background-color: #ffcccc;"); /* Colore rosso chiaro */
+                                break;
+                            case IN_SCADENZA:
+                                setStyle("-fx-background-color: #ffffcc;"); /* Colore giallo chiaro */
+                                break;
+                            case ATTIVO:
+                                setStyle(""); /* Colore biando: di default */
+                                break;
+                        }
                     }
                 }
             }
-        });
-       
-        
-        tabellaPrestiti.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-    }
 
+
+            /* Questo metodo si aziona quando l'utente clicca sulla riga.
+            e forza il ricalcolo dello stile (chiamando updateItem) per applicare il blu o il rosso. */
+            @Override
+            public void updateSelected(boolean selected) {
+                super.updateSelected(selected);
+                updateItem(getItem(), isEmpty());
+            }
+        });
+        dateFine.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+
+                /* Se la data precede quella del giorno odierno */
+                if (date.isBefore(LocalDate.now())) {
+                    /* La disabilito */
+                    setDisable(true);
+
+                }
+            }
+        });
+        dateFine.setEditable(false);
+        tabellaPrestiti.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+
+
+    }
     /**
     * @brief Imposta il manager della biblioteca e popola gli elementi della GUI con i dati iniziali.
     *
@@ -95,8 +133,8 @@ public class PrestitiController implements Initializable {
     public void setBiblioteca(Biblioteca manager) {
         this.manager = manager;
 
-        // 2. SETUP DATI
-        // Popolo le ComboBox e la Tabella solo ora che ho le liste
+        /* SetUp dei dati */
+        // In questo metodo, vengono popolate le ComboBox e la Tabella solo ora che si hanno le liste.
         comboUtenti.setItems(manager.getUtenti());
         comboLibri.setItems(manager.getLibri());
         tabellaPrestiti.setItems(manager.getPrestiti());
