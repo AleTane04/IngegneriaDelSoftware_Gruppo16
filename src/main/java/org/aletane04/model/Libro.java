@@ -120,7 +120,11 @@ public class Libro{
     public void setAnnoPubblicazione(LocalDate data){
         this.annoPubblicazione=data;
     }
-    
+
+    /**
+     * @brief Sovrascrive il numero di copie disponibili.
+     * * @param q La nuova quantità di copie da impostare.
+     */
     public void setNumeroCopieDisponibili(int q){
         this.numeroCopieDisponibili=q;
     }
