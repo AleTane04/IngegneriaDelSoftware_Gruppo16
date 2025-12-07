@@ -47,7 +47,7 @@ public class MainController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources) 
     {
-        /* Vuoto, non è  necessario fare set-up grafico generale */
+        /// Vuoto, non è  necessario fare set-up grafico generale 
     }
 
     /**
@@ -70,7 +70,7 @@ public class MainController implements Initializable
     */
     public void setBiblioteca(Biblioteca myBiblioteca) {
         this.myBiblioteca = myBiblioteca;
-        /* Passo il mio oggetto "manager" agli altri controller */
+        /// Passo il mio oggetto "manager" agli altri controller 
         if (libriViewController != null)
             libriViewController.setBiblioteca(myBiblioteca);
         if (utentiViewController != null)
@@ -100,7 +100,7 @@ public class MainController implements Initializable
     public void onSalvaClick() 
     {
         myBiblioteca.saveAll();
-        // Popup Semplice
+        /// Popup Semplice
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Salvataggio");
         alert.setHeaderText(null);
