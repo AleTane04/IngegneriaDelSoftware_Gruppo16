@@ -65,7 +65,7 @@ public class LibriController implements Initializable {
         colAnno.setOnEditCommit(event -> {
             if(event.getNewValue().isAfter(LocalDate.now()))
             {
-                mostraErrore("La data non può essere nel futuro!");
+                mostraErrore("Impossibile inserire una data di pubblicazione successiva a quella odierna");
                 tabellaLibri.refresh();
             }
             else
