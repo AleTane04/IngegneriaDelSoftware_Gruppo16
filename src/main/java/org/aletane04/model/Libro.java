@@ -70,7 +70,11 @@ public class Libro{
     public String getAutori(){
         return autori;
     }
-    
+
+    /**
+     * @brief Restituisce la data di pubblicazione del libro.
+     * * @return La data di pubblicazione (oggetto LocalDate).
+     */
     public LocalDate getAnnoPubblicazione(){
         return annoPubblicazione;
     }
