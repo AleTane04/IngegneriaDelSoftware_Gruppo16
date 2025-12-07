@@ -78,7 +78,11 @@ public class Libro{
     public LocalDate getAnnoPubblicazione(){
         return annoPubblicazione;
     }
-    
+
+    /**
+     * @brief Restituisce il codice ISBN del libro.
+     * * @return Il codice ISBN.
+     */
     public String getCodiceISBN(){
         return codiceISBN;
     }
