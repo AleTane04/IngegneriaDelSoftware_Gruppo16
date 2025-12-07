@@ -39,16 +39,70 @@ public class LibriController implements Initializable {
     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // 1. SETUP GRAFICO (Colonne) 
+        /* Setup grafico delle colonne */
         colTitolo.setCellValueFactory(new PropertyValueFactory<>("titolo"));
         colAutore.setCellValueFactory(new PropertyValueFactory<>("autori"));
         colIsbn.setCellValueFactory(new PropertyValueFactory<>("codiceISBN"));
         colCopie.setCellValueFactory(new PropertyValueFactory<>("numeroCopieDisponibili"));
         colAnno.setCellValueFactory(new PropertyValueFactory<>("annoPubblicazione"));
-        
-        // RISOLUZIONE PROBLEMA: Impostiamo la policy via codice Java
-        // Questo fa sì che le colonne si allighino per riempire tutto lo spazio
+
         tabellaLibri.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        /* La tabella diventa modificabile */
+        tabellaLibri.setEditable(true);
+
+        colTitolo.setCellFactory(TextFieldTableCell.forTableColumn());
+        colTitolo.setOnEditCommit(event -> {
+            /* Salvo il riferimento del libro il cui titolo è stato modificato */
+            Libro libro = event.getRowValue();
+            /* Aggiorno il valore del campo Titolo */
+            libro.setTitolo(event.getNewValue());
+        });
+
+        colAutore.setCellFactory(TextFieldTableCell.forTableColumn());
+        colAutore.setOnEditCommit(event -> {
+            Libro libro = event.getRowValue();
+            libro.setAutori(event.getNewValue());
+        });
+
+
+        colCopie.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        colCopie.setOnEditCommit(event -> {
+            Libro libro = event.getRowValue();
+            libro.setNumeroCopieDisponibili(event.getNewValue());
+        });
+
+        colAnno.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter()));
+        colAnno.setOnEditCommit(event -> {
+            if(event.getNewValue().isAfter(LocalDate.now()))
+            {
+                mostraErrore("Impossibile inserire una data di pubblicazione successiva a quella odierna");
+                tabellaLibri.refresh();
+            }
+            else
+            {
+                Libro libro = event.getRowValue();
+                libro.setAnnoPubblicazione(event.getNewValue());
+            }
+
+        });
+        /* ISBN NON MODIFICABILE */
+        colIsbn.setEditable(false);
+
+        pickerAnno.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+
+               /* Verifico che la data inserita sia successiva a quella del giorno odierno */
+                if (date.isAfter(LocalDate.now())) {
+                    /* Disabilito la selezione della data */
+                    setDisable(true);
+
+                }
+            }
+        });
+        /* Rendo il campo non editabile manualmente(via tastiera) */
+        pickerAnno.setEditable(false);
     }
     
     /**
@@ -71,7 +125,7 @@ public class LibriController implements Initializable {
     {
         this.manager = manager;
 
-        // 2. SETUP DATI - Lo faccio solo quando arriva il manager
+        /* Setup dei dati, una volta ricevuto il manager */
         FilteredList<Libro> filteredData = new FilteredList<>(manager.getLibri(), b -> true);
 
         txtRicerca.textProperty().addListener((obs, oldV, newV) -> {
@@ -96,10 +150,10 @@ public class LibriController implements Initializable {
     * in caso di successo aggiunge un nuovo oggetto della classe Libro al modello dati
     *
     * @pre il manager della biblioteca deve essere inizializzato e disponibile per invocare il metodo
-    * @pre il testo dei campi txtTitolo e txtISBN non deve essere vuoto@
+    * @pre il testo dei campi txtTitolo e txtISBN non devono essere vuoti
     * @pre il testo del campo txtCopie deve essere un valore numerico intero valido
     * @post se ha successo, un nuovo oggetto della classe Libro viene aggiunto al modello dati@
-    * @post i campi di input vengono puliti utilizzando pulisciCampi(@)
+    * @post i campi di input vengono puliti utilizzando pulisciCampi()
     * @post se si verifica un errore validazione o di formato, viene mostrato un messaggio di errore all'utente tramite mostraErrore() 
     * e l'operazione di aggiunta viene annullatar
     * 
@@ -113,6 +167,11 @@ public class LibriController implements Initializable {
             int copie = Integer.parseInt(txtCopie.getText());
             LocalDate data = pickerAnno.getValue() != null ? pickerAnno.getValue() : LocalDate.now();
 
+
+            if (data.isAfter(LocalDate.now())) {
+                mostraErrore("La data di pubblicazione non può essere nel futuro!");
+                return;
+            }
             if (titolo.isEmpty() || isbn.isEmpty()) 
             {
                 mostraErrore("Campi obbligatori mancanti!");
@@ -120,17 +179,24 @@ public class LibriController implements Initializable {
             }
 
             manager.aggiungiLibro(new Libro(titolo, autore, data, isbn, copie));
+            mostraSuccesso("Libro aggiunto correttamente!");
             pulisciCampi();
 
-        } catch (NumberFormatException e) {
-            mostraErrore("Il numero copie deve essere un intero!");
         }
-        
+            catch (NumberFormatException e)
+            {
+                mostraErrore("Il numero copie deve essere un intero!");
+            }
+            catch (LibroGiaPresenteException e)
+            {
+                mostraErrore(e.getMessage());
+            }
+            catch(Exception e)
+            {
+                mostraErrore("Errore imprevisto: " + e.getMessage());
+            }
     }
-    
-    
-    
-    
+
     
     /**
     * @brief Gestisce l'evento di rimozione di un libro selezionato dalla tabella.
@@ -153,27 +219,28 @@ public class LibriController implements Initializable {
     **/
     @FXML
     public void onRimuovi() {
-        // 1. Capisco quale riga l'utente ha selezionato
-        Libro selezionato = tabellaLibri.getSelectionModel().getSelectedItem();
+        /* Riga selezionata dall'utente */
+    Libro selezionato = tabellaLibri.getSelectionModel().getSelectedItem();
 
-        // 2. Se non ha selezionato nulla, lo sgrido gentilmente
-        if (selezionato == null) {
-         mostraErrore("Seleziona prima un libro dalla tabella!");
-            return;
-        }
-
-        // 3. Provo a cancellare
-        try {
-            manager.rimuoviLibro(selezionato);
-        
-            // Se arrivo qui, non c'è stata eccezione -> Successo!
-            mostraInfo("Libro eliminato con successo.");
-        
-        } catch (Exception e) {
-            // Se il manager lancia l'eccezione (libro in prestito), la catturo qui
-            mostraErrore(e.getMessage());
-        }
+    /* Se l'utente non ha selezionato alcuna riga, viene avvisato */
+    if (selezionato == null) {
+        mostraErrore("Seleziona prima un libro dalla tabella!");
+        return;
     }
+
+    /* Provo a cancellare il libro */
+    try {
+        manager.rimuoviLibro(selezionato);
+        
+        // Se arrivo qui, non c'è stata eccezione -> Successo!
+        mostraSuccesso("Libro eliminato con successo.");
+        
+    } catch (Exception e) {
+        // Se il manager lancia l'eccezione (libro in prestito), la catturo qui
+        mostraErrore(e.getMessage());
+    }
+    }
+
 
     /**
     * @brief Resetta il contenuto di tutti i campi di input del modulo di aggiunta libro.
@@ -195,7 +262,7 @@ public class LibriController implements Initializable {
     /**
      * @brief Visualizza un messaggio di errore modale all'utente.
      *
-     * Questo metodo di utilità crea e mostra una finestra di dialogo modale di tipo "Alert" (JavaFX) 
+     * Questo metodo crea e mostra una finestra di dialogo modale di tipo Alert
      * con icona di errore. L'esecuzione del programma viene sospesa fino a quando l'utente non 
      * interagisce con l'avviso, garantendo che il messaggio venga letto.
      *
@@ -211,22 +278,25 @@ public class LibriController implements Initializable {
     }
     
     /**
-     * @brief Visualizza un messaggio informativo modale all'utente.
+     * @brief Visualizza un messaggio di successo modale all'utente.
      *
-     * Questo metodo di utilità crea e mostra una finestra di dialogo modale di tipo "Alert" (JavaFX) 
-     * con icona informativa. Viene utilizzato per notificare all'utente il successo di un'operazione 
-     * o per fornire informazioni non critiche. L'esecuzione è bloccata finché l'utente non chiude l'avviso.
+     * Questo metodo crea e mostra una finestra di dialogo modale di tipo Alert
+     * con icona di successo. Viene utilizzato per notificare all'utente il successo di un'operazione. 
+     * L'esecuzione è bloccata finché l'utente non chiude l'avviso.
      *
      * 
-     * @post Viene visualizzata una finestra di dialogo modale informativa contenente il messaggio {@code msg}.
+     * @post Viene visualizzata una finestra di successo modale informativa contenente il messaggio msg.
      * @post L'esecuzione del thread corrente è bloccata fino alla chiusura dell'Alert, garantendo 
      * la ricezione del messaggio da parte dell'utente.
      *
-     * @param[in] msg Il messaggio informativo o di successo da mostrare all'utente.
+     * @param[in] msg Il messaggio di successo da mostrare all'utente.
      * 
      **/
-    private void mostraInfo(String msg) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, msg);
+    private void mostraSuccesso(String msg) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Operazione Completata");
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
         alert.showAndWait();
     }
 }
