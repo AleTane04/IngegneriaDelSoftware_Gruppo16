@@ -39,11 +39,20 @@ public class Prestito {
     */
     
     /* Metodi Getter */
+
+    /**
+     * @brief Restituisce l'utente che ha effettuato il prestito.
+     * @return L'oggetto Utente associato al prestito.
+     */
     public Utente getUtente() 
     {
         return myUtente;
     }
-    
+
+    /**
+     * @brief Restituisce il libro oggetto del prestito.
+     * @return L'oggetto Libro prestato.
+     */
     public Libro getLibro() 
     {
         return myLibro;
