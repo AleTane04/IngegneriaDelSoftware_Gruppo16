@@ -148,6 +148,15 @@ public class Libro{
     {
         this.numeroCopieDisponibili++;
     }
+
+    /**
+     * @brief Verifica l'uguaglianza tra questo libro e un altro oggetto.
+     * * Due libri sono considerati uguali se possiedono lo stesso codice ISBN.
+     * Viene effettuato un controllo preliminare sui riferimenti e sulla classe di appartenenza.
+     *
+     * @param[in] obj L'oggetto da confrontare con l'istanza corrente.
+     * @return true se gli oggetti sono uguali (stesso ISBN), false altrimenti.
+     */
     @Override
     public boolean equals(Object obj) {
         /* Verifica dei casi degeneri */
