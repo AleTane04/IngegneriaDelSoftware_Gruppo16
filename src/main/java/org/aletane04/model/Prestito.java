@@ -107,11 +107,20 @@ public class Prestito {
     }
     
     /* Metodi Setter */
+
+    /**
+     * @brief Imposta l'utente associato al prestito.
+     * @param u Il nuovo oggetto Utente da associare.
+     */
     public void setUtente(Utente u) 
     {
         this.myUtente = u;
     }
-    
+
+    /**
+     * @brief Imposta il libro oggetto del prestito.
+     * @param l Il nuovo oggetto Libro da associare.
+     */
     public void setLibro(Libro l) 
     {
         this.myLibro = l;
