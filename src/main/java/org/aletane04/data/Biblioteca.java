@@ -181,19 +181,30 @@ public class Biblioteca
         if(i >= 0) listaLibri.set(i, l);
     }
 
-    public void restituisciPrestito(Prestito p) {
-        // Rimuovo dalla lista (il prestito cessa di esistere)
-        if (listaPrestiti.remove(p)) {
-            
-            // Incremento copie del libro associato
-            Libro l = p.getLibro();
-            l.incrementaNumeroCopieDisponibili(); // Metodo nel model che fa copie++
-            
-            // Aggiorno tabella libri e salvo
-            int index = listaLibri.indexOf(l);
-            if(index >= 0) listaLibri.set(index, l);
-            
+    public void restituisciPrestito(Prestito p)
+    {
+        /* Controllo di sicurezza: se la data esiste, esco */
+        if (p.getStatoPrestito() == StatoPrestito.RESTITUITO)
+            return;
 
+        /* Logica di Business: setto come data di restituzione quella odierna */
+        p.setDataRestituzioneEffettiva(LocalDate.now());
+
+        Libro l = p.getLibro();
+        l.incrementaNumeroCopieDisponibili();
+
+        /* Aggiorno il numero di copie */
+        int indexLibro = listaLibri.indexOf(l);
+        if(indexLibro >= 0) {
+            listaLibri.set(indexLibro, l);
+        }
+
+        /* Aggiornamento lista prestiti (per notificare il cambiamento di stato):
+            Necessario per far "capire" a JavaFX che quel prestito è cambiato.
+         */
+        int indexPrestito = listaPrestiti.indexOf(p);
+        if(indexPrestito >= 0) {
+            listaPrestiti.set(indexPrestito, p);
         }
     }
 

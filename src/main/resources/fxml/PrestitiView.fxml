@@ -39,7 +39,8 @@
             <columns>
                 <TableColumn fx:id="colUtente" text="Utente" prefWidth="200"/>
                 <TableColumn fx:id="colLibro" text="Libro" prefWidth="250"/>
-                <TableColumn fx:id="colFine" text="Scadenza" prefWidth="100"/>
+                <TableColumn fx:id="colFine" text="Scadenza Prevista" prefWidth="100"/>
+                <TableColumn fx:id="colRestituzione" text="Data Rientro" prefWidth="100"/>
                 <TableColumn fx:id="colStato" text="Stato" prefWidth="100"/>
             </columns>
             

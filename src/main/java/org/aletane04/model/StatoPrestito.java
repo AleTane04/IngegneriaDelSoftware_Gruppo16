@@ -13,7 +13,8 @@ public enum StatoPrestito
 {
     ATTIVO,
     IN_SCADENZA,
-    SCADUTO;
+    SCADUTO,
+    RESTITUITO;
     
     /* Mostro nella tabella dei caratteri più chiari e rappresentativi;
         ESEMPIO: ATTIVO -> Prestito attivo */
@@ -25,6 +26,7 @@ public enum StatoPrestito
             case ATTIVO: return "Prestito attivo";
             case IN_SCADENZA: return "Prestito in scadenza";
             case SCADUTO: return "Prestito scaduto";
+            case RESTITUITO: return "Prestito concluso";
             default: return "Stato del Prestito";
         }
     }

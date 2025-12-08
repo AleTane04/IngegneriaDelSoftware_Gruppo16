@@ -169,7 +169,19 @@ public class BibliotecaFileManager
                 try {
                         if (u != null && l != null)
                         {
-                            listaPrestiti.add(new Prestito(u, l, dataInizio, dataFine));
+                            Prestito myPrestito = new Prestito(u, l, dataInizio, dataFine);
+
+                            if(chunks.length >= 5)
+                            {
+                                String dataRestString = chunks[4];
+                                /* Se la data è diversa da "null", allora è valida */
+                                if (!dataRestString.equals("null") && !dataRestString.isEmpty())
+                                {
+                                    myPrestito.setDataRestituzioneEffettiva(LocalDate.parse(dataRestString));
+                                }
+                            }
+
+                            listaPrestiti.add(myPrestito);
                         }
                     }
                 catch (Exception e)

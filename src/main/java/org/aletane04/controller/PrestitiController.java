@@ -20,11 +20,12 @@ import java.util.ResourceBundle;
 public class PrestitiController implements Initializable {
 
     @FXML private TableView<Prestito> tabellaPrestiti;
-    @FXML private TableColumn<Prestito, String> colUtente, colLibro, colStato;
+    @FXML private TableColumn<Prestito, String> colUtente, colLibro, colStato, colRestituzione;
     @FXML private TableColumn<Prestito, LocalDate> colFine;
     @FXML private ComboBox<Utente> comboUtenti;
     @FXML private ComboBox<Libro> comboLibri;
     @FXML private DatePicker dateFine;
+
 
     private Biblioteca manager;
 
@@ -35,6 +36,20 @@ public class PrestitiController implements Initializable {
         colLibro.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getLibro().getTitolo()));
         colFine.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("dataFine"));
         colStato.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getStatoPrestito().toString()));
+        colRestituzione.setCellValueFactory(c ->
+        {
+            LocalDate dataRientro = c.getValue().getDataRestituzioneEffettiva();
+            if (dataRientro == null)
+            {
+                /* Se non è ancora tornato dal prestito, la cella è vuota */
+                return new SimpleStringProperty("");
+            }
+                else
+            {
+                /* Se il testo è tornato, mostro la data */
+                return new SimpleStringProperty(dataRientro.toString());
+            }
+        });
 
        /* Colorazione delle righe */
         tabellaPrestiti.setRowFactory(tv -> new TableRow<Prestito>() {
@@ -61,6 +76,9 @@ public class PrestitiController implements Initializable {
                                 break;
                             case ATTIVO:
                                 setStyle(""); /* Colore biando: di default */
+                                break;
+                            case RESTITUITO:
+                                setStyle("-fx-background-color: #ccffcc;"); /* Colore verde chiaro */
                                 break;
                         }
                     }
@@ -136,9 +154,19 @@ public class PrestitiController implements Initializable {
     @FXML
     public void onRestituisci() {
         Prestito p = tabellaPrestiti.getSelectionModel().getSelectedItem();
-        if (p != null) {
+        if (p != null)
+        {
+            if (p.getStatoPrestito() == StatoPrestito.RESTITUITO)
+            {
+                mostraMsg("Operazione non necessaria", "Questo prestito è stato già chiuso e il libro è stato restituito.");
+                return;
+            }
             manager.restituisciPrestito(p);
-        } else {
+            tabellaPrestiti.refresh();
+            mostraMsg("Successo", "Libro restituito correttamente.");
+        }
+            else
+        {
             mostraMsg("Info", "Seleziona una riga da restituire.");
         }
     }

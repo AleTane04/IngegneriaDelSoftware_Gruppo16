@@ -32,6 +32,7 @@ public class Prestito {
     private Libro myLibro;
     private LocalDate dataInizio;
     private LocalDate dataFine;
+    private LocalDate dataRestituzioneEffettiva;
     
     public Prestito(Utente u, Libro l, LocalDate dI, LocalDate dF) 
     {
@@ -40,6 +41,7 @@ public class Prestito {
         this.myLibro = l;
         this.dataInizio = dI;
         this.dataFine = dF;
+        this.dataRestituzioneEffettiva = null; /* Il prestito nasce come attivo */
 
     }
     
@@ -100,6 +102,14 @@ public class Prestito {
     {
         return dataFine;
     }
+    /**
+     * @brief Restituisce la data effettiva per la fine del prestito.
+     * @return La data di fine effettiva del prestito.
+     */
+    public LocalDate getDataRestituzioneEffettiva()
+    {
+        return dataRestituzioneEffettiva;
+    }
 
     /**
      * @brief Calcola e restituisce lo stato attuale del prestito.
@@ -112,6 +122,11 @@ public class Prestito {
      */
     public StatoPrestito getStatoPrestito() 
     {
+        /* Se è presente la data di restituzione effettiva, allora il prestito è terminato */
+        if (dataRestituzioneEffettiva != null)
+        {
+            return StatoPrestito.RESTITUITO;
+        }
         LocalDate giornoOdierno = LocalDate.now();
         
         if(giornoOdierno.isAfter(dataFine)) 
@@ -168,6 +183,15 @@ public class Prestito {
     {
         this.dataFine = dF;
     }
+
+    /**
+     * @brief Imposta la data di effettiva fine del prestito.
+     * @param dRE La data effettiva di fine del prestito.
+     */
+    public void setDataRestituzioneEffettiva(LocalDate dRE)
+    {
+        this.dataRestituzioneEffettiva = dRE;
+    }
     
     /* Altri metodi */
 
@@ -179,7 +203,17 @@ public class Prestito {
      */
     public String toCSV() 
     {
-        return this.myUtente.getMatricola()+";"+this.myLibro.getCodiceISBN()+";"+dataInizio+";"+dataFine;
+        String dataRest;
+        if(dataRestituzioneEffettiva == null)
+        {
+            dataRest = "null";
+        }
+        else
+        {
+            dataRest = dataRestituzioneEffettiva.toString();;
+        }
+
+        return this.myUtente.getMatricola()+";"+this.myLibro.getCodiceISBN()+";"+dataInizio+";"+dataFine +";"+ dataRest;
     } 
     
 }
