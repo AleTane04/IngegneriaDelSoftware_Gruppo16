@@ -109,9 +109,14 @@ public class Libro{
     
     
     //metodi setter
+    
      /**
      * @brief Imposta o aggiorna il titolo del libro
-     * * @param titolo Il nuovo titolo da assegnare al libro
+     * 
+     * @pre titolo non deve essere null
+     * @post this.titolo è uguale al parametro 'titolo'
+     * 
+     * @param[in] titolo Il nuovo titolo da assegnare al libro
      */
     public void setTitolo(String titolo){
         this.titolo=titolo;
