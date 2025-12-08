@@ -70,7 +70,7 @@ public class Biblioteca
             else
         {
            /* Lancio una eccezione */
-             throw new LibroGiaPresenteException("Esiste già un libro con ISBN: " + newLibro.getCodiceISBN());
+             throw new LibroGiaPresenteException("Esiste già un libro con ISBN " + newLibro.getCodiceISBN() + ".\nRiprovare, o, in alternativa, aggiornare il numero di copie.");
             
         }
     }
@@ -92,7 +92,7 @@ public class Biblioteca
 
     // 2. SE È IN PRESTITO -> BLOCCO TUTTO
     if (inPrestito) {
-        throw new Exception("Impossibile cancellare: il libro è attualmente in prestito!");
+        throw new Exception("Impossibile cancellare: il libro è attualmente in prestito");
     }
 
     // 3. SE È LIBERO -> LO CANCELLO

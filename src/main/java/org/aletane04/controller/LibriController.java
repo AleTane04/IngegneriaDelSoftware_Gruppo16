@@ -188,7 +188,7 @@ public void onRimuovi() {
     /* Metodi Helper */
 
     /**
-     * Mostra un messaggio di successo (Icona Blu/Informazione)
+     * Mostra un messaggio di successo
      */
     private void mostraSuccesso(String msg) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -199,7 +199,7 @@ public void onRimuovi() {
     }
 
     /**
-     * Mostra un messaggio di errore (Icona Rossa)
+     * Mostra un messaggio di errore
      */
     private void mostraErrore(String msg) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
