@@ -82,7 +82,8 @@ public class Libro{
 
     /**
      * @brief Restituisce la data di pubblicazione del libro.
-     * * @return La data di pubblicazione (oggetto LocalDate).
+     * @post Il valore restituito corrisponde all'attributo interno 'annoPubblicazione'.
+     * @return La data di pubblicazione 
      */
     public LocalDate getAnnoPubblicazione(){
         return annoPubblicazione;
