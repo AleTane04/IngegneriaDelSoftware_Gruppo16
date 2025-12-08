@@ -30,17 +30,17 @@ public class Libro{
     }
     
     /** 
-    *@brief passa una riga di un file .csv al costruttore
-    *
-    *Data una riga del file .csv in input, la spezzo in un array di stringhe, converto 
-    *i valori nei tipi giusti e popolo i campi del mio costruttore 
-    *
-    *@pre La stringa non deve essere null
-    *@pre rigaCSV deve contenere esattamente 5 campi separati da ';'
-    *@pre Il campo data deve essere nel formato ISO (YYYY-MM-DD) 
-    *@post Una nuova istanza di Libro è inizializzata con i rispettivi campi popolati dai valori estratti dalla stringa 
-    *
-    *@param[in] rigaCSV la riga del file .csv passata
+     * @brief passa una riga di un file .csv al costruttore
+     *
+     * Data una riga del file .csv in input, la spezzo in un array di stringhe, converto 
+     * i valori nei tipi giusti e popolo i campi del mio costruttore 
+     *
+     * @pre La stringa non deve essere null
+     * @pre rigaCSV deve contenere esattamente 5 campi separati da ';'
+     * @pre Il campo data deve essere nel formato ISO (YYYY-MM-DD) 
+     * @post Una nuova istanza di Libro è inizializzata con i rispettivi campi popolati dai valori estratti dalla stringa 
+     *
+     * @param[in] rigaCSV la riga del file .csv passata
     */
     public Libro(String rigaCSV) 
     {
@@ -60,9 +60,12 @@ public class Libro{
     }
     
     //metodi getter
+    
     /**
      * @brief Restituisce il titolo del libro.
-     * * @return Il titolo del libro.
+     * @pre L'oggetto deve essere istanziato.
+     * @post Il valore restituito corrisponde all'attributo interno 'titolo'
+     * @return Il titolo del libro.
      */
     public String getTitolo(){
         return titolo;
