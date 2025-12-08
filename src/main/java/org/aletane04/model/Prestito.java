@@ -69,6 +69,10 @@ public class Prestito {
 
     /**
      * @brief Restituisce il libro oggetto del prestito
+     *
+     * @pre L'oggetto Prestito è stato inizializzato
+     * @post Il valore restituito corrisponde all'attributo interno 'myLibro
+     *
      * @return L'oggetto Libro prestato
      */
     public Libro getLibro() 
@@ -77,8 +81,11 @@ public class Prestito {
     }
 
     /**
-     * @brief Restituisce la data in cui il prestito ha avuto inizio.
-     * @return La data di inizio prestito.
+     * @brief Restituisce la data in cui il prestito ha avuto inizio
+     *
+     * @post Il valore restituito è la data di inizio (può essere null se non ancora impostata)
+     *
+     * @return La data di inizio prestito
      */
     public LocalDate getDataInizio() 
     {
