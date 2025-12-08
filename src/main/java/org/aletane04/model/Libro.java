@@ -72,8 +72,9 @@ public class Libro{
     }
 
     /**
-     * @brief Restituisce gli autori del libro.
-     * * @return Una stringa contenente i nomi degli autori.
+     * @brief Restituisce gli autori del libro
+     * @post Il valore restituito corrisponde all'attributo interno 'autori'.
+     * @return Una stringa contenente i nomi degli autori
      */
     public String getAutori(){
         return autori;
