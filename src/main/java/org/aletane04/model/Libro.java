@@ -234,14 +234,14 @@ public class Libro{
     @Override
     public int hashCode(){
         return codiceISBN == null ? 0 : codiceISBN.hashCode();
-
-       
     }
 
     /**
      * @brief Restituisce una rappresentazione testuale completa del libro.
      * 
      * La stringa include titolo, autori, anno di pubblicazione, ISBN e numero di copie.
+     *
+     * @post La stringa restituita non è null e contiene i dati aggiornati del libro
      *
      * @return Una stringa descrittiva leggibile dall'utente.
      */
