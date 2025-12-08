@@ -124,7 +124,11 @@ public class Libro{
 
     /**
      * @brief Imposta o aggiorna gli autori del libro
-     * * @param autori La stringa contenente i nuovi autori
+     *
+     * @pre autori non deve essere null
+     * @post this.autori è uguale al parametro 'autori'
+     *
+     * @param[in] autori La stringa contenente i nuovi autori
      */
     public void setAutori(String autori){
         this.autori=autori;
