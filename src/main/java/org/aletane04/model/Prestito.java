@@ -3,6 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+/**
+ * @file Prestito.java
+ * @brief Il file contiene l'implementazione della classe 'Prestito'
+ *
+ * informazioni sul file e il suo ruolo nel progetto 
+ */
 package org.aletane04.model;
 
 import java.time.LocalDate;
@@ -41,8 +47,12 @@ public class Prestito {
     /* Metodi Getter */
 
     /**
-     * @brief Restituisce l'utente che ha effettuato il prestito.
-     * @return L'oggetto Utente associato al prestito.
+     * @brief Restituisce l'utente che ha effettuato il prestito
+     *
+     * @pre L'oggetto Prestito è stato inizializzato
+     * @post Il valore restituito corrisponde all'attributo interno 'myUtente'
+     *
+     * @return L'oggetto Utente associato al prestito
      */
     public Utente getUtente() 
     {
@@ -50,8 +60,8 @@ public class Prestito {
     }
 
     /**
-     * @brief Restituisce il libro oggetto del prestito.
-     * @return L'oggetto Libro prestato.
+     * @brief Restituisce il libro oggetto del prestito
+     * @return L'oggetto Libro prestato
      */
     public Libro getLibro() 
     {
