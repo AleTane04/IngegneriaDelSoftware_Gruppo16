@@ -254,8 +254,10 @@ public class Libro{
     /**
      * @brief Restituisce i dati del libro formattati per file .csv.
      *
-     *I campi sono concatenati e separati da un punto e virgola (;).
+     * I campi sono concatenati e separati da un punto e virgola (;).
      * Ordine campi: titolo;autori;anno;ISBN;copie.
+     *
+     * @post La stringa contiene 5 campi separati da ';'
      *
      * @return Una stringa pronta per essere scritta in un file .csv.
      */
