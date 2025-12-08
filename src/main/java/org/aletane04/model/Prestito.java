@@ -13,7 +13,7 @@
  * Include inoltre la logica necessaria per calcolare dinamicamente lo stato
  * del prestito (Attivo, In Scadenza o Scaduto) confrontando la data di scadenza con la data odierna.
  *
- * @author [Tuo Nome]
+ * @author [angel]
  * @date 08 Dicembre 2025
  * @version 1.0
  */
