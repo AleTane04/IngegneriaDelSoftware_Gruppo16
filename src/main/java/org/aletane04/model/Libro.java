@@ -171,9 +171,13 @@ public class Libro{
     /* Altri metodi */
     
     /**
-    *@brief decrementa il numero di copie di un libro disponibili
-    *
-    *Decrementa il numero di copie di un libro disponibili solo se esso è maggiore di 0 
+     *@brief decrementa il numero di copie di un libro disponibili
+     *
+     * L'operazione viene effettuata solo se il numero di copie attuali è maggiore di 0
+     * 
+     * @invariant numeroCopieDisponibili >= 0
+     * @post Se (numeroCopieDisponibili > 0) allora (numeroCopieDisponibili = numeroCopieDisponibili - 1)
+     * @post Se (numeroCopieDisponibili == 0) allora (numeroCopieDisponibili == 0)
     */
     public void decrementaNumeroCopieDisponibili() 
     {
