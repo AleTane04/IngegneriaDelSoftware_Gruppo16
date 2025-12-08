@@ -90,16 +90,18 @@ public class Libro{
     }
 
     /**
-     * @brief Restituisce il codice ISBN del libro.
-     * * @return Il codice ISBN.
+     * @brief Restituisce il codice ISBN del libro
+     * @post Il valore restituito corrisponde all'attributo interno 'codiceISBN'
+     * @return Il codice ISBN
      */
     public String getCodiceISBN(){
         return codiceISBN;
     }
 
     /**
-     * @brief Restituisce il numero attuale di copie disponibili.
-     * * @return Il numero di copie disponibili.
+     * @brief Restituisce il numero attuale di copie disponibili
+     * @post Il valore restituito corrisponde all'attributo interno 'numeroCopieDisponibili'
+     * @return Il numero di copie disponibili.
      */
     public int getNumeroCopieDisponibili(){
         return numeroCopieDisponibili;
@@ -108,32 +110,32 @@ public class Libro{
     
     //metodi setter
      /**
-     * @brief Imposta o aggiorna il titolo del libro.
-     * * @param titolo Il nuovo titolo da assegnare al libro.
+     * @brief Imposta o aggiorna il titolo del libro
+     * * @param titolo Il nuovo titolo da assegnare al libro
      */
     public void setTitolo(String titolo){
         this.titolo=titolo;
     }
 
     /**
-     * @brief Imposta o aggiorna gli autori del libro.
-     * * @param autori La stringa contenente i nuovi autori.
+     * @brief Imposta o aggiorna gli autori del libro
+     * * @param autori La stringa contenente i nuovi autori
      */
     public void setAutori(String autori){
         this.autori=autori;
     }
 
     /**
-     * @brief Imposta la data di pubblicazione del libro.
-     * * @param data La nuova data di pubblicazione.
+     * @brief Imposta la data di pubblicazione del libro
+     * * @param data La nuova data di pubblicazione
      */
     public void setAnnoPubblicazione(LocalDate data){
         this.annoPubblicazione=data;
     }
 
     /**
-     * @brief Sovrascrive il numero di copie disponibili.
-     * * @param q La nuova quantità di copie da impostare.
+     * @brief Sovrascrive il numero di copie disponibili
+     * * @param q La nuova quantità di copie da impostare
      */
     public void setNumeroCopieDisponibili(int q){
         this.numeroCopieDisponibili=q;
@@ -161,13 +163,13 @@ public class Libro{
     }
 
     /**
-     * @brief Verifica l'uguaglianza tra questo libro e un altro oggetto.
+     * @brief Verifica l'uguaglianza tra questo libro e un altro oggetto
      * 
-     * Due libri sono considerati uguali se possiedono lo stesso codice ISBN.
-     * Viene effettuato un controllo preliminare sui riferimenti e sulla classe di appartenenza.
+     * Due libri sono considerati uguali se possiedono lo stesso codice ISBN
+     * Viene effettuato un controllo preliminare sui riferimenti e sulla classe di appartenenza
      *
-     * @param[in] obj L'oggetto da confrontare con l'istanza corrente.
-     * @return true se gli oggetti sono uguali (stesso ISBN), false altrimenti.
+     * @param[in] obj L'oggetto da confrontare con l'istanza corrente
+     * @return true se gli oggetti sono uguali (stesso ISBN), false altrimenti
      */
     @Override
     public boolean equals(Object obj) {
