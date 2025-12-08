@@ -5,9 +5,17 @@
  */
 /**
  * @file Prestito.java
- * @brief Il file contiene l'implementazione della classe 'Prestito'
+ * @brief Il file contiene l'implementazione della classe 'Prestito' per la gestione di prestiti bibliotecari
  *
- * informazioni sul file e il suo ruolo nel progetto 
+ * Questo file contiene la definizione della classe Prestito, che funge da entità
+ * di associazione tra un Utente e un Libro. La classe è responsabile della gestione
+ * del ciclo di vita del prestito, memorizzando la data di inizio e la data di scadenza prevista.
+ * Include inoltre la logica necessaria per calcolare dinamicamente lo stato
+ * del prestito (Attivo, In Scadenza o Scaduto) confrontando la data di scadenza con la data odierna.
+ *
+ * @author [Tuo Nome]
+ * @date 08 Dicembre 2025
+ * @version 1.0
  */
 package org.aletane04.model;
 
