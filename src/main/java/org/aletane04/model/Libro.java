@@ -136,7 +136,11 @@ public class Libro{
 
     /**
      * @brief Imposta la data di pubblicazione del libro
-     * * @param data La nuova data di pubblicazione
+     *
+     * @pre data non deve essere null
+     * @post this.annoPubblicazione è uguale al parametro 'data'
+     *
+     * @param[in] data La nuova data di pubblicazione
      */
     public void setAnnoPubblicazione(LocalDate data){
         this.annoPubblicazione=data;
