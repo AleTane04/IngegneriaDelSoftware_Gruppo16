@@ -120,7 +120,7 @@ public class Biblioteca
         // 3. SE È LIBERO -> LO CANCELLO
         listaUtenti.remove(utenteDaRimuovere);
 
-        // Nota: Il salvataggio su file avverrà solo quando l'utente premerà "Salva"
+
     }
 
     
