@@ -127,6 +127,32 @@ public class UtentiController implements Initializable {
 
         /* Inserimento dei dati finali nella tabella */
         tabellaUtenti.setItems(sortedData);
+
+        /* Deselezionare premendo ESC */
+        tabellaUtenti.setOnKeyPressed(event -> {
+            if (event.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
+                tabellaUtenti.getSelectionModel().clearSelection();
+            }
+        });
+
+        /* Deselezionare cliccando su uno spazio vuoto */
+        tabellaUtenti.setOnMouseClicked(event -> {
+            /* Viene verificato che il click è avvenuto su uno spazio vacuo */
+            if (event.getTarget() instanceof javafx.scene.Node) {
+                javafx.scene.Node nodo = (javafx.scene.Node) event.getTarget();
+
+                /* Risalita della gerarchia */
+                while (nodo != null && nodo != tabellaUtenti) {
+                    if (nodo instanceof TableRow && ((TableRow) nodo).getItem() != null) {
+                        return; /* Riga valida -> esco senza far nulla */
+                    }
+                    nodo = nodo.getParent();
+                }
+
+                /* È stato cliccato fuori dalle righe -> si procede con la pulizia della selezione */
+                tabellaUtenti.getSelectionModel().clearSelection();
+            }
+        });
     }
 
     /**

@@ -93,6 +93,32 @@ public class LibriController implements Initializable {
         });
         /* Rendo il campo non editabile manualmente(via tastiera) */
         pickerAnno.setEditable(false);
+
+        /* Deselezionare premendo ESC */
+        tabellaLibri.setOnKeyPressed(event -> {
+            if (event.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
+                tabellaLibri.getSelectionModel().clearSelection();
+            }
+        });
+
+        /* Deselezionare cliccando su uno spazio vuoto */
+        tabellaLibri.setOnMouseClicked(event -> {
+            /* Viene verificato che il click è avvenuto su uno spazio vacuo */
+            if (event.getTarget() instanceof javafx.scene.Node) {
+                javafx.scene.Node nodo = (javafx.scene.Node) event.getTarget();
+
+                /* Risalita della gerarchia */
+                while (nodo != null && nodo != tabellaLibri) {
+                    if (nodo instanceof TableRow && ((TableRow) nodo).getItem() != null) {
+                        return; /* Riga valida -> esco senza far nulla */
+                    }
+                    nodo = nodo.getParent();
+                }
+
+                /* È stato cliccato fuori dalle righe -> si procede con la pulizia della selezione */
+                tabellaLibri.getSelectionModel().clearSelection();
+            }
+        });
     }
 
     public void setBiblioteca(Biblioteca manager) 
