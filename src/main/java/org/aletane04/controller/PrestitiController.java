@@ -109,7 +109,31 @@ public class PrestitiController implements Initializable {
         });
         dateFine.setEditable(false);
         tabellaPrestiti.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        // TRUCCO 1: Deselezionare premendo ESC
+        tabellaPrestiti.setOnKeyPressed(event -> {
+            if (event.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
+                tabellaPrestiti.getSelectionModel().clearSelection();
+            }
+        });
 
+// TRUCCO 2: Deselezionare cliccando sullo spazio vuoto (bianco)
+        tabellaPrestiti.setOnMouseClicked(event -> {
+            // Verifico se il click è avvenuto su una parte "vuota"
+            if (event.getTarget() instanceof javafx.scene.Node) {
+                javafx.scene.Node nodo = (javafx.scene.Node) event.getTarget();
+
+                // Risalgo la gerarchia grafica per vedere se ho cliccato una Riga piena
+                while (nodo != null && nodo != tabellaPrestiti) {
+                    if (nodo instanceof TableRow && ((TableRow) nodo).getItem() != null) {
+                        return; // Ho cliccato una riga valida -> Non faccio nulla (lascio selezionare)
+                    }
+                    nodo = nodo.getParent();
+                }
+
+                // Se arrivo qui, vuol dire che ho cliccato fuori dalle righe -> Pulisco
+                tabellaPrestiti.getSelectionModel().clearSelection();
+            }
+        });
 
 
     }
