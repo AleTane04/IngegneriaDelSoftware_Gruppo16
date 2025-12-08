@@ -3,6 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+/**
+ * @file Libro.java
+ * @brief Il file contiene l'implementazione della classe 'Libro'
+ *
+ * informazioni sul file e il suo ruolo nel progetto 
+ */
 package org.aletane04.model;
 
 
@@ -41,7 +47,7 @@ public class Libro{
      * @post Una nuova istanza di Libro è inizializzata con i rispettivi campi popolati dai valori estratti dalla stringa 
      *
      * @param[in] rigaCSV la riga del file .csv passata
-    */
+     */
     public Libro(String rigaCSV) 
     {
         /* Ogni volta che viene trovato un ";" 
