@@ -159,7 +159,7 @@ public class Libro{
     /**
      * @brief Sovrascrive il numero di copie disponibili
      *
-     * @pre q >= 0 (Il numero di copie non può essere negativo) 
+     * @pre q >= 0 (il numero di copie non può essere negativo) 
      * @post this.numeroCopieDisponibili è uguale a 'q'
      *
      * @param[in] q La nuova quantità di copie disponibili da impostare
@@ -187,6 +187,8 @@ public class Libro{
 
     /**
     *@brief incrementa il numero di copie di un libro disponibili 
+    *
+    * @post numeroCopieDisponibili = numeroCopieDisponibili + 1
     */
     public void incrementaNumeroCopieDisponibili() 
     {
