@@ -158,7 +158,11 @@ public class Libro{
 
     /**
      * @brief Sovrascrive il numero di copie disponibili
-     * * @param q La nuova quantità di copie da impostare
+     *
+     * @pre q >= 0 (Il numero di copie non può essere negativo) 
+     * @post this.numeroCopieDisponibili è uguale a 'q'
+     *
+     * @param[in] q La nuova quantità di copie disponibili da impostare
      */
     public void setNumeroCopieDisponibili(int q){
         this.numeroCopieDisponibili=q;
