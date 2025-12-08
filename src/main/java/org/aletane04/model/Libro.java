@@ -62,9 +62,11 @@ public class Libro{
     //metodi getter
     
     /**
-     * @brief Restituisce il titolo del libro.
-     * @pre L'oggetto deve essere istanziato.
+     * @brief Restituisce il titolo del libro
+     *
+     * @pre L'oggetto deve essere istanziato
      * @post Il valore restituito corrisponde all'attributo interno 'titolo'
+     *
      * @return Il titolo del libro.
      */
     public String getTitolo(){
@@ -73,7 +75,9 @@ public class Libro{
 
     /**
      * @brief Restituisce gli autori del libro
-     * @post Il valore restituito corrisponde all'attributo interno 'autori'.
+     *
+     * @post Il valore restituito corrisponde all'attributo interno 'autori'
+     *
      * @return Una stringa contenente i nomi degli autori
      */
     public String getAutori(){
@@ -81,8 +85,10 @@ public class Libro{
     }
 
     /**
-     * @brief Restituisce la data di pubblicazione del libro.
-     * @post Il valore restituito corrisponde all'attributo interno 'annoPubblicazione'.
+     * @brief Restituisce la data di pubblicazione del libro
+     *
+     * @post Il valore restituito corrisponde all'attributo interno 'annoPubblicazione'
+     *
      * @return La data di pubblicazione 
      */
     public LocalDate getAnnoPubblicazione(){
@@ -91,7 +97,9 @@ public class Libro{
 
     /**
      * @brief Restituisce il codice ISBN del libro
+     *
      * @post Il valore restituito corrisponde all'attributo interno 'codiceISBN'
+     *
      * @return Il codice ISBN
      */
     public String getCodiceISBN(){
@@ -100,8 +108,10 @@ public class Libro{
 
     /**
      * @brief Restituisce il numero attuale di copie disponibili
+     *
      * @post Il valore restituito corrisponde all'attributo interno 'numeroCopieDisponibili'
-     * @return Il numero di copie disponibili.
+     *
+     * @return Il numero di copie disponibili
      */
     public int getNumeroCopieDisponibili(){
         return numeroCopieDisponibili;
