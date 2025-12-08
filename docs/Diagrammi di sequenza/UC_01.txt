@@ -1,0 +1,56 @@
+@startuml
+title Diagramma di Sequenza UC-01: Inserimento Nuovo Libro
+skinparam sequenceMessageAlign center
+
+actor Bibliotecario
+participant "LibriController" as GUI
+participant "newLibro : Libro" as Book
+participant "Biblioteca" as Sys
+participant "listaLibri : ObservableList" as List
+
+' Avvio azione dall'interfaccia
+Bibliotecario -> GUI: click su "Aggiungi" (onAggiungi)
+activate GUI
+
+' Recupero dati dai campi di testo
+GUI -> GUI: lettura campi (titolo, autore, isbn, copie, data)
+
+' 1. Validazione Input (Logica presente nel Controller)
+alt Data futura o Campi obbligatori vuoti
+    GUI -> Bibliotecario: mostraErrore("Dati non validi...")
+else Dati validi
+    ' 2. Creazione dell'oggetto Libro temporaneo
+    create Book
+    GUI -> Book: new Libro(titolo, autore, data, isbn, copie)
+    
+    ' 3. Richiesta al sistema (Boundary chiama Controller/Model)
+    GUI -> Sys: aggiungiLibro(newLibro)
+    activate Sys
+    
+    ' 4. Verifica Duplicati (Logica presente in Biblioteca.java)
+    Sys -> List: contains(newLibro)
+    activate List
+    List --> Sys: result (boolean)
+    deactivate List
+    
+    alt Libro già presente
+        ' Eccezione definita in LibroGiaPresenteException.java
+        Sys --> GUI: throw LibroGiaPresenteException
+        deactivate Sys
+        GUI -> Bibliotecario: mostraErrore("ISBN già presente...")
+    
+    else Libro non presente (Successo)
+        activate Sys
+        ' 5. Aggiornamento in memoria (ObservableList)
+        Sys -> List: add(newLibro)
+        Sys --> GUI: void
+        deactivate Sys
+        
+        ' 6. Feedback e pulizia interfaccia
+        GUI -> Bibliotecario: mostraSuccesso("Libro aggiunto!")
+        GUI -> GUI: pulisciCampi()
+    end
+end
+
+deactivate GUI
+@enduml

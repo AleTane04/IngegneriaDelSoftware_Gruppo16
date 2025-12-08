@@ -1,0 +1,92 @@
+@startuml
+' Stile conforme alla Slide 13 (Diagrammi di Interazione)
+skinparam style strictuml
+skinparam sequenceArrowThickness 1.5
+skinparam roundcorner 5
+skinparam maxmessagesize 150
+skinparam sequenceParticipant underline
+
+' Definizione Partecipanti
+actor "Bibliotecario" as User
+participant ":PrestitiView" as View
+participant ":PrestitiController" as Controller
+participant ":Biblioteca" as Service
+participant "u:Utente" as Utente
+participant "l:Libro" as Libro
+participant "p:Prestito" as Prestito
+
+' --- INIZIO FLUSSO ---
+Note over User, View : Il bibliotecario è nella sezione Prestiti
+
+User -> View : Seleziona Utente e Libro, poi clicca "Registra Prestito"
+activate View
+
+    View -> Controller : handleNuovoPrestito()
+    activate Controller
+
+        ' Recupero dati input
+        Controller -> View : matricola = getMatricolaSelezionata()
+        Controller -> View : isbn = getIsbnSelezionato()
+
+        ' Chiamata al Service (Facade)
+        Controller -> Service : aggiungiPrestito(matricola, isbn)
+        activate Service
+
+            ' Recupero oggetti dal Model
+            Service -> Service : u = getUtente(matricola)
+            Service -> Service : l = getLibro(isbn)
+
+            ' --- VERIFICA 1: Limite Prestiti Utente (FC-8) ---
+            Note right of Service : Verifica max 3 prestiti
+            
+            Service -> Utente : n_prestiti = getNumeroPrestitiAttivi()
+            
+            alt n_prestiti >= 3
+                ' Errore 4a
+                Service --> Controller : throw LimitePrestitiSuperatoException
+                Controller --> View : mostraErrore("L'utente ha già 3 libri in prestito")
+            
+            else utente abilitato
+                
+                ' --- VERIFICA 2: Disponibilità Libro (FC-8.1) ---
+                Service -> Libro : copie = getCopieDisponibili()
+                
+                alt copie == 0
+                    ' Errore 4b
+                    Service --> Controller : throw LibroNonDisponibileException
+                    Controller --> View : mostraErrore("Nessuna copia disponibile")
+                
+                else copie > 0
+                    ' --- ESECUZIONE PRESTITO ---
+                    
+                    ' 1. Creazione Entità Prestito
+                    create Prestito
+                    Service -> Prestito : <<create>>(u, l, dataOggi)
+                    
+                    ' 2. Aggiornamento Associazioni (Model)
+                    Service -> Utente : aggiungiPrestito(p)
+                    activate Utente
+                    deactivate Utente
+                    
+                    Service -> Libro : decrementaCopie()
+                    activate Libro
+                    deactivate Libro
+                    
+                    ' 3. Aggiornamento Liste Interne
+                    Service -> Service : registroPrestiti.add(p)
+
+                    ' 4. Persistenza (FC-1)
+                    Service -> Service : salvaTutto()
+                    
+                    Service --> Controller : conferma
+                    
+                    Controller --> View : aggiornaTabellaPrestiti()
+                    View --> User : Mostra conferma successo
+                end
+            end
+
+        deactivate Service
+    deactivate Controller
+deactivate View
+
+@enduml

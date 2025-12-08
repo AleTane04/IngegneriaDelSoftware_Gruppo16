@@ -1,0 +1,69 @@
+@startuml
+' Stile conforme alla Slide 13 (Diagrammi di Interazione)
+skinparam style strictuml
+skinparam sequenceArrowThickness 1.5
+skinparam roundcorner 5
+skinparam maxmessagesize 150
+skinparam sequenceParticipant underline
+
+' Definizione Partecipanti
+actor "Bibliotecario" as User
+participant ":UtentiView" as View
+participant ":UtentiController" as Controller
+participant ":Biblioteca" as Service
+participant "u:Utente" as Utente
+
+' --- INIZIO FLUSSO ---
+Note over User, View : Il bibliotecario è nella sezione Utenti
+
+User -> View : Inserisce dati (Nome, Cognome, Matricola, Email) e clicca "Salva"
+activate View
+
+    View -> Controller : handleNuovoUtente()
+    activate Controller
+
+        ' Recupero dati dalla form
+        Controller -> View : getNome()
+        Controller -> View : getCognome()
+        Controller -> View : getMatricola()
+        Controller -> View : getEmail()
+
+        ' Chiamata al Service (Facade)
+        Controller -> Service : registraUtente(nome, cognome, matricola, email)
+        activate Service
+
+            ' Verifica Vincolo (FC-6: Unicità Matricola)
+            Note right of Service : Verifica unicità Matricola
+
+            Service -> Service : u_esistente = getUtente(matricola)
+
+            alt utente già presente (u_esistente != null)
+                ' Flusso Alternativo 4a
+                Service --> Controller : throw UtenteGiaPresenteException
+                Controller --> View : mostraErrore("Matricola già registrata")
+            
+            else nuova matricola (u_esistente == null)
+                ' Flusso Principale
+                
+                ' Creazione Oggetto (Model)
+                create Utente
+                Service -> Utente : <<create>>(nome, cognome, matricola, email)
+                
+                ' Aggiornamento stato interno
+                Service -> Service : registroUtenti.add(u)
+
+                ' Persistenza (FC-1)
+                Service -> Service : salvaUtenti()
+                
+                Service --> Controller : conferma
+                
+                Controller --> View : pulisciCampi()
+                Controller --> View : aggiornaTabellaUtenti()
+                View --> User : Mostra conferma successo
+            end
+
+        deactivate Service
+    deactivate Controller
+deactivate View
+
+@enduml
