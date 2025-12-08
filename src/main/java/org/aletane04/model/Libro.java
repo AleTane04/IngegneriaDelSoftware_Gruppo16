@@ -202,6 +202,8 @@ public class Libro{
      * Viene effettuato un controllo preliminare sui riferimenti e sulla classe di appartenenza
      *
      * @param[in] obj L'oggetto da confrontare con l'istanza corrente
+     * @post Restituisce true se obj è un Libro e ha lo stesso ISBN, false altrimenti
+     *
      * @return true se gli oggetti sono uguali (stesso ISBN), false altrimenti
      */
     @Override
