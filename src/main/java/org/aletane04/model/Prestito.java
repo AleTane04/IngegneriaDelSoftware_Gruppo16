@@ -1,21 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
  * @file Prestito.java
  * @brief Il file contiene l'implementazione della classe 'Prestito' per la gestione di prestiti bibliotecari
  *
  * Questo file contiene la definizione della classe Prestito, che funge da entità
  * di associazione tra un Utente e un Libro. La classe è responsabile della gestione
- * del ciclo di vita del prestito, memorizzando la data di inizio e la data di scadenza prevista.
+ * del ciclo di vita del prestito, memorizzando la data di inizio, la data di scadenza prevista e la data di rientro
+ * effettiva del volume.
  * Include inoltre la logica necessaria per calcolare dinamicamente lo stato
  * del prestito (Attivo, In Scadenza o Scaduto) confrontando la data di scadenza con la data odierna.
+ * Infine, include la gestione della data di restituzione effettiva per storicizzare i prestiti conclusi.
  *
  * @author [angel]
  * @date 08 Dicembre 2025
- * @version 1.0
+ * @version 1.1
  */
 package org.aletane04.model;
 
@@ -28,12 +25,21 @@ import java.time.temporal.ChronoUnit;
  */
 public class Prestito {
     
-    private Utente myUtente;
-    private Libro myLibro;
-    private LocalDate dataInizio;
-    private LocalDate dataFine;
-    private LocalDate dataRestituzioneEffettiva;
-    
+    private Utente myUtente; ///< L'utente che ha effettuato il prestito.
+    private Libro myLibro; ///< Il libro oggetto del prestito.
+    private LocalDate dataInizio; ///< La data di inizio del prestito.
+    private LocalDate dataFine; ///< La data prevista per la restituzione.
+    private LocalDate dataRestituzioneEffettiva; ///< La data in cui il libro è stato effettivamente restituito (null se ancora in prestito).
+    /**
+     * @brief Costruttore della classe Prestito.
+     * * Inizializza un nuovo prestito attivo. La data di restituzione effettiva
+     * viene inizializzata a null.
+     * * @param[in] u L'utente che richiede il prestito.
+     * @param[in] l Il libro da prestare.
+     * @param[in] dI La data di inizio del prestito.
+     * @param[in] dF La data di scadenza prevista.
+     * @post dataRestituzioneEffettiva è null.
+     */
     public Prestito(Utente u, Libro l, LocalDate dI, LocalDate dF) 
     {
 
@@ -103,7 +109,7 @@ public class Prestito {
         return dataFine;
     }
     /**
-     * @brief Restituisce la data effettiva per la fine del prestito.
+     * @brief Restituisce la data effettiva della fine del prestito.
      * @return La data di fine effettiva del prestito.
      */
     public LocalDate getDataRestituzioneEffettiva()
@@ -114,7 +120,8 @@ public class Prestito {
     /**
      * @brief Calcola e restituisce lo stato attuale del prestito.
      * * Lo stato viene determinato dinamicamente confrontando la data odierna
-     * con la data di fine prestito:
+     * con la data di fine prestito o verificando la presenza dell'effettiva data di restituzione:
+     * - <b>RESTITUITO</b>: Se è stata registrata una data di restituzione effettiva.
      * - <b>SCADUTO</b>: Se la data odierna è successiva alla data di fine.
      * - <b>IN_SCADENZA</b>: Se mancano 7 giorni o meno alla scadenza (inclusa).
      * - <b>ATTIVO</b>: In tutti gli altri casi.
@@ -197,8 +204,9 @@ public class Prestito {
 
     /**
      * @brief Restituisce i dati del prestito formattati per file CSV.
-     * * La stringa contiene i riferimenti chiave del prestito separati da punto e virgola (;).
-     * Ordine dei campi: Matricola Utente; ISBN Libro; Data Inizio; Data Fine.
+     * La stringa contiene i riferimenti chiave del prestito separati da punto e virgola (;).
+     * Se il prestito non è concluso, l'ultimo campo sarà la stringa "null".
+     * Ordine dei campi: Matricola Utente; ISBN Libro; Data Inizio; Data Fine; Data Fine Prestito Effettiva.
      * * @return Una stringa formattata pronta per la scrittura su file.
      */
     public String toCSV() 
