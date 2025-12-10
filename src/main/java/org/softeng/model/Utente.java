@@ -9,13 +9,27 @@ package org.softeng.model;
  *
  * @author angel
  */
+/**
+ * @file Utente.java
+ * @brief Il file contiene l'implementazione della classe 'Utente'
+ *
+ * informazioni sul file e il suo ruolo nel progetto 
+ */
 public class Utente{
     private String nome;
     private String cognome;
     private final String matricola;
     private String email;
     
-    
+    /** @brief Costruttore della classe Utente
+     *  Inizializza una nuova istanza della classe Utente.
+     *  @param[in] nome Il nome dell'utente
+     *  @param[in] cognome il cognome dell'utente
+     *  @param[in] matricola La matricola dell'utente
+     *  @param[in] email L'email istituzionale dell'utente
+     *  @return new Utente
+     *  @post L'oggetto creato della classe Utente è in uno stato coerente e valido
+     */
     public Utente(String nome, String cognome, String matricola, String email){
         this.nome=nome;
         this.cognome=cognome;
@@ -24,12 +38,18 @@ public class Utente{
         
     }
     
-    /* Data una riga del file .csv in input, la spezzo in un array di stringhe, converto 
-    i valori nei tipi giusti e popolo i campi del mio costruttore */
+    /** @brief Costruttore della classe Utente (versione con riga del file .csv)
+     *  Data una riga del file .csv in input, la spezzo in un array di stringhe, converto 
+     *  i valori nei tipi giusti e popolo i campi del mio costruttore.
+     *  @param[in] rigaCSV La riga del file .csv
+     *  @return new Utente
+     *  @post L'oggetto creati della classe Utente è in uno stato coerente e valido
+     */
     public Utente(String rigaCSV) 
     {
-        /* Ogni volta che viene trovato un ";" 
-        spezzo la stringa e inserisco il contenuto in un array di Stringhe */
+        /** Ogni volta che viene trovato un ";" 
+         * spezzo la stringa e inserisco il contenuto in un array di Stringhe 
+         */
         String[] arrayChunks = rigaCSV.split(";");
         
         this.nome=arrayChunks[0];
@@ -39,24 +59,62 @@ public class Utente{
      
     }
     
-    //metodi getter
+    
+    ///<metodi getter
+    /** @brief Restituisce il nome dell'utente
+     *  
+     *  @post Il valore restituito corrisponde all'attributo interno 'nome'
+     *  
+     *  @return nome
+     */
    public String getNome(){
        return nome;
    }
-   
+
+
+    /** @brief Restituisce il cognome dell'utente
+     *  
+     *  @post Il valore restituito corrisponde all'attributo interno 'cognome'
+     *  
+     *  @return cognome
+     */
    public String getCognome(){
        return cognome;
    }
-   
+
+
+
+    /** @brief Restituisce la matricola dell'utente
+     *  
+     *  @post Il valore restituito corrisponde all'attributo interno 'matricola'
+     *  
+     *  @return matricola
+     */
    public String getMatricola(){
        return matricola;
    }
-   
+
+
+    /** @brief Restituisce l'email istituzionale dell'utente
+     *  
+     *  @post Il valore restituito corrisponde all'attributo interno 'email'
+     *  
+     *  @return email
+     */
    public String getEmail(){
        return email;
    }
    
-   //metodi setter
+   ///<metodi setter
+
+
+    /** @brief Imposta e aggiorna il nome dell'utente
+     *  
+     *  @pre nome non deve essere null
+     *  @post this.nome è uguale al parametro 'nome'
+     *
+     *  @param[in] nome Il nome dell'utente
+     */
    public void setNome(String nome){
        this.nome=nome;
    }
