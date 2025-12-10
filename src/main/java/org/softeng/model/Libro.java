@@ -50,22 +50,23 @@ public class Libro{
      */
     public Libro(String rigaCSV) 
     {
-        /* Ogni volta che viene trovato un ";" 
-        spezzo la stringa e inserisco il contenuto in un array di Stringhe */
+        /** Ogni volta che viene trovato un ";" 
+         *  spezzo la stringa e inserisco il contenuto in un array di Stringhe 
+         */
         String[] arrayChunks = rigaCSV.split(";");
         
         this.titolo=arrayChunks[0];
         this.autori=arrayChunks[1];
-        /* Da Stringa a LocalDate */
+        /// Da Stringa a LocalDate 
         this.annoPubblicazione = LocalDate.parse(arrayChunks[2]);
         this.codiceISBN=arrayChunks[3];
-        /* Da Stringa a intero */
+        /// Da Stringa a intero 
         this.numeroCopieDisponibili=Integer.parseInt(arrayChunks[4]);
         
     
     }
     
-    //metodi getter
+    ///metodi getter
     
     /**
      * @brief Restituisce il titolo del libro
@@ -124,7 +125,7 @@ public class Libro{
     }
     
     
-    //metodi setter
+    ///metodi setter
     
      /**
      * @brief Imposta o aggiorna il titolo del libro
@@ -174,7 +175,7 @@ public class Libro{
         this.numeroCopieDisponibili=q;
     }
     
-    /* Altri metodi */
+    /// Altri metodi 
     
     /**
      *@brief decrementa il numero di copie di un libro disponibili
@@ -214,17 +215,17 @@ public class Libro{
      */
     @Override
     public boolean equals(Object obj) {
-        /* Verifica dei casi degeneri */
+        /// Verifica dei casi degeneri 
         if (obj == null) return false;
         if (this == obj) return true;
 
-        /* Verifica che appartengano alla stessa classe */
+        /// Verifica che appartengano alla stessa classe 
         if (this.getClass() != obj.getClass()) 
             return false;
-        /* Downcast sicuro; in obj ho un riferimento di un libro */
+        /// Downcast sicuro; in obj ho un riferimento di un libro 
         Libro myLibro = (Libro) obj;
 
-        /* Essendo all'interno della stessa classe, accedo all'attributo "codice", che è privato, di myLibro */
+        /// Essendo all'interno della stessa classe, accedo all'attributo "codice", che è privato, di myLibro 
         return java.util.Objects.equals(this.codiceISBN, myLibro.codiceISBN);
     }
 
