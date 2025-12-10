@@ -24,8 +24,18 @@ public class Libro{
     private LocalDate annoPubblicazione;
     private final String codiceISBN;
     private int numeroCopieDisponibili;
-    
 
+
+    /** @brief Costruttore della classe Libro
+     *  Inizializza una nuova istanza della classe Libro
+     *  @param[in] titolo Il titolo del libro
+     *  @param[in] autori La stringa che contiene la lista degli autori del libro
+     *  @param[in] anno L'anno di publicazione del libro
+     *  @param[in] codiceISBN Il codice ISBN associato al libro
+     *  @param[in] numeroCopie Il numero di copie disponibili di quel libro
+     *  @return new Libro
+     *  @post L'oggetto creato della classe Libro è in uno stato coerente e valido
+     */
     public Libro(String titolo, String autori, LocalDate anno, String codiceISBN, int numeroCopie){
 
         this.titolo=titolo;
