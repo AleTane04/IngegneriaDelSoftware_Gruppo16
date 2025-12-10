@@ -30,7 +30,7 @@ public class Libro{
      *  Inizializza una nuova istanza della classe Libro
      *  @param[in] titolo Il titolo del libro
      *  @param[in] autori La stringa che contiene la lista degli autori del libro
-     *  @param[in] anno L'anno di publicazione del libro
+     *  @param[in] anno La data di publicazione del libro
      *  @param[in] codiceISBN Il codice ISBN associato al libro
      *  @param[in] numeroCopie Il numero di copie disponibili di quel libro
      *  @return new Libro
