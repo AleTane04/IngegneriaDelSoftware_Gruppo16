@@ -32,9 +32,9 @@ public class Prestito {
     private LocalDate dataRestituzioneEffettiva; ///< La data in cui il libro è stato effettivamente restituito (null se ancora in prestito).
     /**
      * @brief Costruttore della classe Prestito.
-     * * Inizializza un nuovo prestito attivo. La data di restituzione effettiva
+     * Inizializza un nuovo prestito attivo. La data di restituzione effettiva
      * viene inizializzata a null.
-     * * @param[in] u L'utente che richiede il prestito.
+     * @param[in] u L'utente che richiede il prestito.
      * @param[in] l Il libro da prestare.
      * @param[in] dI La data di inizio del prestito.
      * @param[in] dF La data di scadenza prevista.
