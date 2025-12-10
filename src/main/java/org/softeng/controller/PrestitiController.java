@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.aletane04.controller;
+package org.softeng.controller;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import org.aletane04.data.Biblioteca;
-import org.aletane04.model.*;
-import org.aletane04.exceptions.*;
+import org.softeng.data.Biblioteca;
+import org.softeng.model.*;
+import org.softeng.exceptions.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;

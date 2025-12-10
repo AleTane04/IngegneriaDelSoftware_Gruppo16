@@ -5,7 +5,7 @@
  * @date 05 Dicembre 2025
  * @version 1.0
  */
-package org.aletane04;
+package org.softeng;
 
 /**
  * @brief Classe di avvio (Launcher) per l'applicazione JavaFX.

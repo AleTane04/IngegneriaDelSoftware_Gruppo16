@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.aletane04.data;
+package org.softeng.data;
 
-import org.aletane04.model.*;
+import org.softeng.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.io.*;

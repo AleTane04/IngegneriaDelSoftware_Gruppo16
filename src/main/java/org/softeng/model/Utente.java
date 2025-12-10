@@ -3,12 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.aletane04.model;
-
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Map;
-import java.util.TreeMap;
+package org.softeng.model;
 
 /**
  *

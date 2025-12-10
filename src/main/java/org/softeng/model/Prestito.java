@@ -14,7 +14,7 @@
  * @date 08 Dicembre 2025
  * @version 1.1
  */
-package org.aletane04.model;
+package org.softeng.model;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;

@@ -30,7 +30,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>org.aletane04.Launcher</mainClass>
+                  <mainClass>org.softeng.Launcher</mainClass>
                 </transformer>
               </transformers>
             </configuration>
@@ -42,7 +42,7 @@
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.8</version>
         <configuration>
-          <mainClass>org.aletane04.Main</mainClass>
+          <mainClass>org.softeng.Main</mainClass>
         </configuration>
       </plugin>
     </plugins>

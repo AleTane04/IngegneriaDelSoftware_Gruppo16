@@ -5,10 +5,10 @@
  * @date 05 Dicembre 2025
  * @version 1.0
  */
-package org.aletane04;
+package org.softeng;
 
-import org.aletane04.controller.*;
-import org.aletane04.data.*;
+import org.softeng.controller.*;
+import org.softeng.data.*;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

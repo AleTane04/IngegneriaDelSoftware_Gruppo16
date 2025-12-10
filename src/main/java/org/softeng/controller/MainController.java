@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.aletane04.controller;
+package org.softeng.controller;
 
 import javafx.application.Platform;
 import javafx.fxml.*;
 import java.net.*;
 import java.util.*;
 import javafx.scene.control.*;
-import org.aletane04.data.*;
+import org.softeng.data.*;
 
 /**
  * FXML Controller class

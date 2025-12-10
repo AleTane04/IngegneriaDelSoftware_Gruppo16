@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.aletane04.controller;
+package org.softeng.controller;
 
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -11,12 +11,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.aletane04.data.Biblioteca;
-import org.aletane04.exceptions.UtenteGiaPresenteException;
-import org.aletane04.model.Utente;
+import org.softeng.data.Biblioteca;
+import org.softeng.exceptions.UtenteGiaPresenteException;
+import org.softeng.model.Utente;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.converter.IntegerStringConverter;
-import javafx.util.converter.LocalDateStringConverter;
 
 import java.net.URL;
 import java.util.Optional;

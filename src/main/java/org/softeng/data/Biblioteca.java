@@ -4,11 +4,11 @@
  * and open the template in the editor.
  */
 
-package org.aletane04.data;
+package org.softeng.data;
 
 import javafx.collections.ObservableList;
-import org.aletane04.model.*;
-import org.aletane04.exceptions.*;
+import org.softeng.model.*;
+import org.softeng.exceptions.*;
 import java.time.LocalDate;
 
 /**

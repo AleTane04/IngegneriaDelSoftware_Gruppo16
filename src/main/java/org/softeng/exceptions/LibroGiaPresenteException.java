@@ -1,4 +1,4 @@
-package org.aletane04.exceptions;
+package org.softeng.exceptions;
 
 public class LibroGiaPresenteException extends Exception
 {

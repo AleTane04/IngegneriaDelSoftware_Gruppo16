@@ -5,7 +5,7 @@
  * @date 04 Dicembre 2025
  * @version 1.0
  */
-package org.aletane04.model;
+package org.softeng.model;
 
 /**
  * @brief Definisce i possibili stati di un prestito all'interno del sistema.

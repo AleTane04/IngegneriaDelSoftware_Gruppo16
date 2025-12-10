@@ -9,7 +9,7 @@
  *
  * informazioni sul file e il suo ruolo nel progetto 
  */
-package org.aletane04.model;
+package org.softeng.model;
 
 
 import java.time.LocalDate;
