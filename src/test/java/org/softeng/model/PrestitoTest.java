@@ -87,13 +87,13 @@ public class PrestitoTest {
     LocalDate oggi = LocalDate.now();
 
     prestito.setDataInizio(oggi.minusDays(1));
-    prestito.setDataFine(oggi.plusDays(10)); // stato ATTIVO
+    prestito.setDataFine(oggi.plusDays(10)); // Stato ATTIVO
     assertEquals(StatoPrestito.ATTIVO, prestito.getStatoPrestito());
 
-    prestito.setDataFine(oggi.plusDays(5)); // stato IN_SCADENZA
+    prestito.setDataFine(oggi.plusDays(5)); // Stato IN_SCADENZA
     assertEquals(StatoPrestito.IN_SCADENZA, prestito.getStatoPrestito());
 
-    prestito.setDataFine(oggi.minusDays(1)); // stato SCADUTO
+    prestito.setDataFine(oggi.minusDays(1)); // Stato SCADUTO
     assertEquals(StatoPrestito.SCADUTO, prestito.getStatoPrestito());
 
     prestito.setDataRestituzioneEffettiva(oggi); // stato RESTITUITO
