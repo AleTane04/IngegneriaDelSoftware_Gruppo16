@@ -8,29 +8,48 @@
             fx:controller="org.softeng.controller.PrestitiController">
 
     <top>
-        <VBox style="-fx-padding: 10; -fx-background-color: #e6f2ff; -fx-border-color: #b3d9ff; -fx-border-width: 0 0 1 0;">
-            <Label text="Nuovo Prestito" style="-fx-font-weight: bold; -fx-padding: 0 0 5 0;"/>
-            <HBox spacing="15" alignment="CENTER_LEFT">
-                <VBox spacing="2">
-                    <Label text="Utente:" style="-fx-font-size: 10px;"/>
-                    <ComboBox fx:id="comboUtenti" promptText="Seleziona Utente" prefWidth="200"/>
+        <VBox spacing="15">
+
+            <VBox style="-fx-padding: 10; -fx-background-color: #e6f2ff; -fx-border-color: #b3d9ff; -fx-border-width: 0 0 1 0;">
+                <Label text="Nuovo Prestito" style="-fx-font-weight: bold; -fx-padding: 0 0 5 0;"/>
+                <HBox spacing="15" alignment="CENTER_LEFT">
+
+                    <VBox spacing="2">
+                        <Label text="Utente:" style="-fx-font-size: 10px;"/>
+                        <ComboBox fx:id="comboUtenti" promptText="Seleziona Utente" prefWidth="200"/>
+                    </VBox>
+
+                    <VBox spacing="2">
+                        <Label text="Libro:" style="-fx-font-size: 10px;"/>
+                        <ComboBox fx:id="comboLibri" promptText="Seleziona Libro" prefWidth="250"/>
+                    </VBox>
+
+                    <VBox spacing="2">
+                        <Label text="Data Restituzione:" style="-fx-font-size: 10px;"/>
+                        <DatePicker fx:id="dateFine" prefWidth="130"/>
+                    </VBox>
+
+                    <Region HBox.hgrow="ALWAYS" />
+
+                    <Button text="REGISTRA PRESTITO" onAction="#onRegistra"
+                            style="-fx-base: #4d94ff; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                </HBox>
+            </VBox>
+
+            <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 0 15 10 15;">
+
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Filtra per Utente:" style="-fx-font-size: 10px; -fx-text-fill: #666;"/>
+                    <TextField fx:id="txtRicercaUtente" promptText="Nome, Cognome o Matricola..." />
                 </VBox>
-                
-                <VBox spacing="2">
-                    <Label text="Libro:" style="-fx-font-size: 10px;"/>
-                    <ComboBox fx:id="comboLibri" promptText="Seleziona Libro" prefWidth="250"/>
+
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Filtra per Libro:" style="-fx-font-size: 10px; -fx-text-fill: #666;"/>
+                    <TextField fx:id="txtRicercaLibro" promptText="Titolo o ISBN..." />
                 </VBox>
-                
-                <VBox spacing="2">
-                    <Label text="Data Restituzione:" style="-fx-font-size: 10px;"/>
-                    <DatePicker fx:id="dateFine" prefWidth="130"/>
-                </VBox>
-                
-                <Region HBox.hgrow="ALWAYS" />
-                
-                <Button text="REGISTRA PRESTITO" onAction="#onRegistra" 
-                        style="-fx-base: #4d94ff; -fx-text-fill: white; -fx-font-weight: bold;"/>
+
             </HBox>
+
         </VBox>
     </top>
 

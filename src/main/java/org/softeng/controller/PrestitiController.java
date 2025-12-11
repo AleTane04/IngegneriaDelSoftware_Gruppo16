@@ -22,6 +22,8 @@ import org.softeng.exceptions.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 
 
 public class PrestitiController implements Initializable {
@@ -32,6 +34,8 @@ public class PrestitiController implements Initializable {
     @FXML private ComboBox<Utente> comboUtenti;
     @FXML private ComboBox<Libro> comboLibri;
     @FXML private DatePicker dateFine;
+    @FXML private TextField txtRicercaUtente; // Era txtRicercaPrestito
+    @FXML private TextField txtRicercaLibro;  // Nuovo
 
 
     private Biblioteca manager;
@@ -101,7 +105,7 @@ public class PrestitiController implements Initializable {
                                 setStyle("-fx-background-color: #ffffcc;"); ///< Colore giallo chiaro 
                                 break;
                             case ATTIVO:
-                                setStyle(""); ///< Colore biando: di default 
+                                setStyle(""); ///< Colore bianco: di default
                                 break;
                             case RESTITUITO:
                                 setStyle("-fx-background-color: #ccffcc;"); ///< Colore verde chiaro 
@@ -192,6 +196,60 @@ public class PrestitiController implements Initializable {
         comboUtenti.setItems(manager.getUtenti());
         comboLibri.setItems(manager.getLibri());
         tabellaPrestiti.setItems(manager.getPrestiti());
+
+        /* Logica di filtro doppia */
+
+        FilteredList<Prestito> prestitiFiltrati = new FilteredList<>(manager.getPrestiti(), p -> true);
+
+        /* Unico listener che "ascolta" cambiamenti per libro o utente */
+        javafx.beans.value.ChangeListener<String> listener = (obs, oldV, newV) -> {
+
+            prestitiFiltrati.setPredicate(prestito -> {
+
+                /* Verifica dell'utente per Nome, Cognome o Matricola */
+                boolean matchUtente = true;
+                String testoUtente = txtRicercaUtente.getText();
+
+                if (testoUtente != null && !testoUtente.isEmpty()) {
+                    String lowerU = testoUtente.toLowerCase();
+                    Utente u = prestito.getUtente();
+
+                    /* Ricerca se la stringa inserita è contenuta in Nome, Cognome o Matricola dell'Utente */
+                    matchUtente = u.getNome().toLowerCase().contains(lowerU) ||
+                            u.getCognome().toLowerCase().contains(lowerU) ||
+                            u.getMatricola().toLowerCase().contains(lowerU);
+                }
+
+                /* Controllo per libro */
+                boolean matchLibro = true;
+                String testoLibro = txtRicercaLibro.getText();
+
+                if (testoLibro != null && !testoLibro.isEmpty()) {
+                    String lowerL = testoLibro.toLowerCase();
+                    Libro l = prestito.getLibro();
+
+                    matchLibro = l.getTitolo().toLowerCase().contains(lowerL) ||
+                            l.getCodiceISBN().toLowerCase().contains(lowerL);
+                }
+
+                /* Vero se il Prestito soddisfa ambedue le condizioni */
+                return matchUtente && matchLibro;
+            });
+        };
+
+        /* Stesso listener per entrambe le barre di ricerca +/
+        txtRicercaUtente.textProperty().addListener(listener);
+        txtRicercaLibro.textProperty().addListener(listener);
+
+        /* Ordinamento quando si clicca sulle colonne */
+        SortedList<Prestito> prestitiOrdinati = new SortedList<>(prestitiFiltrati);
+
+       /* Comparatore collegato alla Table */
+        prestitiOrdinati.comparatorProperty().bind(tabellaPrestiti.comparatorProperty());
+
+        /* La tabella viene popolata in base ai valori della lista finale */
+        tabellaPrestiti.setItems(prestitiOrdinati);
+
     }
 
 

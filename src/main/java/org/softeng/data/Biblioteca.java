@@ -102,22 +102,41 @@ public class Biblioteca
 
     public void rimuoviUtente(Utente utenteDaRimuovere) throws Exception {
 
-        // 1. CONTROLLO: L'utente ha prestiti attivi?
-        boolean haPrestiti = false;
+        /* Verifica che l'utente abbia prestiti attivi */
+        boolean haPrestitiAttivi = false;
+
         for (Prestito p : listaPrestiti) {
-            // Uso equals (che si basa sulla matricola)
+            /* Verifica che l'utente corrisponda */
             if (p.getUtente().equals(utenteDaRimuovere)) {
-                haPrestiti = true;
-                break;
+
+                /* Se il prestito non è concluso, mi fermo */
+                if (p.getStatoPrestito() != StatoPrestito.RESTITUITO) {
+                    haPrestitiAttivi = true;
+                    break; /* Libro non restituito -> mi fermo */
+                }
             }
         }
 
-        // 2. SE HA PRESTITI -> BLOCCO TUTTO
-        if (haPrestiti) {
-            throw new Exception("Impossibile eliminare: l'utente ha ancora libri in prestito!");
+        /* Se ci sono prestiti attivi, lancio una eccezione */
+        if (haPrestitiAttivi) {
+            throw new Exception("Impossibile eliminare: l'utente deve restituire dei libri!");
         }
 
-        // 3. SE È LIBERO -> LO CANCELLO
+        /* Prestiti conclusi -> cancellazione */
+
+        /* Scelta progettuale:
+        Desideriamo lo storico dei prestiti nel file CSV anche dopo aver cancellato l'utente,
+        dunque non tocchiamo minimamente la listaPrestiti.
+        Così facendo, i vecchi prestiti "verdi" rimarranno orfani (punteranno a una matricola che non c'è più nell'elenco utenti).
+
+        Riassumendo:
+        Per mantenere la consistenza, se un utente viene rimosso fisicamente, il sistema al riavvio scarta i prestiti
+        orfani non potendo più risalire ai dati anagrafici del richiedente.
+
+
+        */
+
+
         listaUtenti.remove(utenteDaRimuovere);
 
 
