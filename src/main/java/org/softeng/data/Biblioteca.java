@@ -3,7 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+/**
+ * @file Biblioteca.java
+ * @brief Il file contiene l'implementazione della classe 'Biblioteca'
+ *
+ * informazioni sul file e il suo ruolo nel progetto
+ */
 package org.softeng.data;
 
 import javafx.collections.ObservableList;
@@ -26,25 +31,50 @@ public class Biblioteca
     private ObservableList<Libro> listaLibri;
     private ObservableList<Prestito> listaPrestiti;
     private final BibliotecaFileManager bibliotecaFileManager;
-    
+
+
+    /**
+     * @brief Costruttore predefinito per la classe Biblioteca.
+     *
+     * Inizializza il gestore file interno e carica lo stato completo della
+     * biblioteca dai file di persistenza.
+     *
+     * @post L'oggetto 'bibliotecaFileManager' è stato inizializzato.
+     * @post La lista di 'listaLibri' è stata popolata con tutti i Libri presenti nel FILE_LIBRI.
+     * @post La lista di 'listaUtenti' è stata popolata con tutti gli Utenti presenti nel FILE_UTENTI.
+     * @post La lista di 'listaPrestiti' è stata popolata con tutti i Prestiti presenti nel FILE_PRESTITI,
+     * associando gli Utenti e i Libri caricati in precedenza.
+     */
     public Biblioteca()
     {
         this.bibliotecaFileManager = new BibliotecaFileManager();
         
-        /* Carico le entità "indipendenti", ossia la lista di Libri e Utenti */
+        ///< Carico le entità "indipendenti", ossia la lista di Libri e Utenti 
         this.listaLibri = bibliotecaFileManager.caricaLibriDaFile(FILE_LIBRI);
         this.listaUtenti = bibliotecaFileManager.caricaUtentiDaFile(FILE_UTENTI);
         
-        /* Per caricare i prestiti, gli passo al BibliotecaFileManager
-           le liste appena popolate
-        */
+        /** Per caricare i prestiti, gli passo al BibliotecaFileManager
+         *  le liste appena popolate
+         */
         
         this.listaPrestiti = bibliotecaFileManager.caricaPrestitiDaFile(FILE_PRESTITI, listaUtenti, listaLibri);
         
     }
     
-    /* Metodi Getter */
-    
+    ///< Metodi Getter 
+
+
+    /**
+     * @brief Restituisce la lista di tutti i libri presenti nella biblioteca.
+     *
+     * Fornisce un accesso alla collezione interna dei libri gestiti dall'oggetto
+     * Biblioteca.
+     *
+     * 
+     * @post Viene restituita la collezione interna dei libri della biblioteca.
+     * @return Un oggetto ObservableList contenente tutti gli oggetti Libro 
+     * attualmente presenti nella biblioteca.
+     */
     public ObservableList<Libro> getLibri() 
     {
         return listaLibri;
