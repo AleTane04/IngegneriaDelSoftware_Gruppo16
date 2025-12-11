@@ -199,6 +199,8 @@ public class UtentiController implements Initializable {
         });
     }
 
+
+    
     /**
     * @brief Gestisce l'evento di aggiunta di un nuovo utente nel sistema.
     *
@@ -218,30 +220,29 @@ public class UtentiController implements Initializable {
     * avviso all'utente.
     *
     */
-
     @FXML
     public void onAggiungi() {
-        // 1. Leggo i dati
+        ///< 1. Leggo i dati
         String nome = txtNome.getText();
         String cognome = txtCognome.getText();
         String matricola = txtMatricola.getText();
         String email = txtEmail.getText();
 
-        // 2. Validazione base
+        ///< 2. Validazione base
         if (matricola.isEmpty() || cognome.isEmpty() || nome.isEmpty()) {
             mostraAlert(Alert.AlertType.WARNING, "Dati mancanti", "Nome, Cognome e Matricola sono obbligatori.");
             return;
         }
 
         try {
-            // 3. Creo e aggiungo
+            ///< 3. Creo e aggiungo
             Utente nuovoUtente = new Utente(nome, cognome, matricola, email);
             manager.aggiungiUtente(nuovoUtente);
 
-            // 4. Successo
+            ///< 4. Successo
             mostraAlert(Alert.AlertType.INFORMATION, "Successo", "Utente aggiunto correttamente.");
 
-            // 5. Pulisco usando il tuo metodo
+            ///< 5. Pulisco usando il tuo metodo
             pulisciCampi();
 
         } catch(UtenteGiaPresenteException e)
@@ -250,52 +251,78 @@ public class UtentiController implements Initializable {
         }
         catch (Exception e)
         {
-            // Gestione di eventuali errori imprevisti
+            ///< Gestione di eventuali errori imprevisti
             mostraAlert(Alert.AlertType.ERROR, "Errore", "Impossibile aggiungere l'utente.");
         }
     }
     
     /**
-     * Eliminare un utente selezionato
-     */
+    * @brief Gestisce l'evento di eliminazione dell'utente selezionato dalla tabella.
+    *
+    * Questa funzione recupera l'oggetto Utente selezionato nella tabella
+    * tabellaUtenti. Se è stata effettuata una selezione, mostra una
+    * finestra di dialogo di conferma all'utente. Se l'utente conferma
+    * l'operazione (ButtonType.OK), l'utente viene rimosso direttamente dalla lista
+    * gestita dal manager e i dati vengono salvati su file tramite manager.saveAll().
+    * Se nessuna riga è selezionata, viene mostrato un messaggio di avviso informativo.
+    *
+    * @pre La tabella tabellaUtenti deve essere stata popolata e il manager deve essere inizializzato.
+    * @post Se l'utente conferma l'eliminazione, l'oggetto Utente selezionato
+    * viene rimosso dalla lista interna del manager e i dati vengono salvati su disco.
+    * In caso di mancata selezione, viene mostrato un avviso.
+    *
+    * @param[in] tabellaUtenti La TableView da cui viene recuperata la selezione.
+    * @param[in] selezionato L'oggetto Utente selezionato (recuperato internamente).
+    *
+    */
     @FXML
     public void onElimina() {
-        // 1. Recupero la selezione
+        ///< 1. Recupero la selezione
         Utente selezionato = tabellaUtenti.getSelectionModel().getSelectedItem();
 
         if (selezionato == null) {
-            // Uso il tuo metodo helper
+            
             mostraAlert(Alert.AlertType.WARNING, "Attenzione", "Seleziona un utente dalla tabella per eliminarlo.");
             return;
         }
 
-        // 2. Chiedo conferma (Questo DEVE essere fatto a mano per leggere la risposta)
+        ///< 2. Chiedo conferma (Questo DEVE essere fatto a mano per leggere la risposta)
         Alert conferma = new Alert(Alert.AlertType.CONFIRMATION);
         conferma.setTitle("Conferma eliminazione");
         conferma.setHeaderText(null);
         conferma.setContentText("Vuoi davvero eliminare l'utente " + selezionato.getCognome() + "?");
 
-        // Mostro e aspetto
+        ///< Mostro e aspetto
         Optional<ButtonType> result = conferma.showAndWait();
 
-        // 3. Se conferma, procedo
+        ///< 3. Se conferma, procedo
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                // Chiamo il metodo SICURO del manager
+                
                 manager.rimuoviUtente(selezionato);
 
-                // Successo: Uso il tuo metodo con icona INFORMATION
+                
                 mostraAlert(Alert.AlertType.INFORMATION, "Operazione completata", "Utente rimosso con successo.");
 
             } catch (Exception e) {
-                // Errore (es. Utente ha libri): Uso il tuo metodo con icona ERROR
+                ///< Errore (es. Utente ha libri): Uso il tuo metodo con icona ERROR
                 mostraAlert(Alert.AlertType.ERROR, "Errore di rimozione", e.getMessage());
             }
         }
     }
 
-    // --- Metodi Helper privati ---
-
+    ///< --- Metodi Helper privati ---
+    
+   /**
+    * @brief Pulisce il contenuto testuale di tutti i campi di input dell'utente.
+    *
+    * Questa funzione è un metodo di utilità interno al controller.
+    * Rimuove tutti i dati inseriti dall'utente nei campi di testo FXML
+    * (txtNome, txtCognome, txtMatricola, txtEmail), riportandoli a uno stato vuoto.
+    * 
+    * @pre I campi di testo FXML devono essere stati iniettati e non nulli.
+    * @post Tutti i campi di testo (Nome, Cognome, Matricola, Email) sono vuoti.
+    */
     private void pulisciCampi() {
         txtNome.clear();
         txtCognome.clear();
@@ -303,6 +330,25 @@ public class UtentiController implements Initializable {
         txtEmail.clear();
     }
 
+
+   /**
+    * @brief Mostra una finestra di dialogo di tipo Alert all'utente.
+    *
+    * Crea un oggetto Alert con il tipo specificato,
+    * impostando il titolo e il testo del contenuto. L'intestazione (Header Text)
+    * della finestra di dialogo viene esplicitamente impostata a null per
+    * mostrare solo il titolo e il contenuto. La finestra viene visualizzata e
+    * l'esecuzione viene bloccata finché l'utente non la chiude.
+    *
+    * @post Viene visualizzata una finestra di dialogo modale di tipo Alert
+    * con le informazioni specificate, bloccando l'esecuzione del thread corrente
+    * finché l'utente non interagisce con essa.
+    * 
+    * @param[in] tipo Il tipo di alert che definisce l'icona della finestra.
+    * @param[in] titolo La stringa da usare come titolo della finestra di dialogo.
+    * @param[in] contenuto La stringa da usare come testo principale del messaggio.
+    * 
+    */
     private void mostraAlert(Alert.AlertType tipo, String titolo, String contenuto) {
         Alert alert = new Alert(tipo);
         alert.setTitle(titolo);
