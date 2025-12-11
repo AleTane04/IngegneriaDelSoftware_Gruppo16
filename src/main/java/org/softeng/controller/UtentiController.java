@@ -3,6 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+
+/** @file UtentiController.java
+ *  @brief Il file contiene l'implementazione della classe 'UtentiController'
+ *  
+ *  informazioni sul file e il suo ruolo nel progetto
+ */
+
 package org.softeng.controller;
 
 import javafx.collections.transformation.FilteredList;
@@ -22,45 +30,60 @@ import java.util.ResourceBundle;
 
 public class UtentiController implements Initializable {
 
-    /* Grafica - View */
+    ///< Grafica - View 
     @FXML private TableView<Utente> tabellaUtenti;
     
-    /* Colonne della tabella */
+    ///< Colonne della tabella 
     @FXML private TableColumn<Utente, String> colNome;
     @FXML private TableColumn<Utente, String> colCognome;
     @FXML private TableColumn<Utente, String> colMatricola;
     @FXML private TableColumn<Utente, String> colEmail;
 
-    /* Campi di input e ricerca */
+    ///< Campi di input e ricerca 
     @FXML private TextField txtNome;
     @FXML private TextField txtCognome;
     @FXML private TextField txtMatricola;
     @FXML private TextField txtEmail;
-    @FXML private TextField txtRicerca;
+    @FXML private TextField txtRicerca; ///< La barra di ricerca in alto
 
-   /* Riferimento al manager */
+   ///< Riferimento al manager 
     private Biblioteca manager;
 
-    /**
-     * Questo metodo è chiamato automaticamente da JavaFX appena caricato il file FXML.
-     * Necessario per configurare l'aspetto grafico (colonne).
-     */
+   /**
+    * @brief Inizializza il controller e configura il binding delle colonne della tabella Utenti.
+    *
+    * Questo metodo, richiesto dall'interfaccia Initializable di JavaFX,
+    * viene chiamato automaticamente dopo che tutti i componenti FXML
+    * (come la tabella e le sue colonne) sono stati caricati e iniettati.
+    * Configura il meccanismo di associazione tra le colonne della tabella
+    * tabellaUtenti e le proprietà della classe Utente.
+    *
+    * @pre Tutti i componenti FXML (colonne e tabella) devono essere stati iniettati
+    * correttamente dal FXMLLoader.
+    * @post Le colonne della tabella sono associate alle proprietà della classe Utente
+    * tramite PropertyValueFactory. Il testo placeholder è impostato
+    * per le tabelle vuote e la politica di ridimensionamento è impostata su
+    * CONSTRAINED_RESIZE_POLICY per riempire lo spazio disponibile.
+    *
+    * @param[in] location La posizione relativa dell'oggetto radice (non utilizzato).
+    * @param[in] resources Le risorse utilizzate per la localizzazione dell'oggetto radice (non utilizzato).
+    */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        /* Collego le colonne agli attributi della classe Utente */
-        /* nome -> getNome; cognome -> getCognome; In generale: xxx -> getXxx */
+        ///< Collego le colonne agli attributi della classe Utente 
+        ///< nome -> getNome; cognome -> getCognome; In generale: xxx -> getXxx 
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colCognome.setCellValueFactory(new PropertyValueFactory<>("cognome"));
         colMatricola.setCellValueFactory(new PropertyValueFactory<>("matricola"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         
-        /* Se la tabella è vuota, viene mostrato questo messaggio "di servizio" */
+        ///< Se la tabella è vuota, viene mostrato questo messaggio "di servizio" 
         tabellaUtenti.setPlaceholder(new Label("Nessun utente presente in archivio."));
 
-        /* Le colonne si adattano per occupare tutto lo spazio disponibile */
+        ///< Le colonne si adattano per occupare tutto lo spazio disponibile 
         tabellaUtenti.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        /* Modifica campi Utente con doppio click sulla cella */
+        ///< Modifica campi Utente con doppio click sulla cella 
         tabellaUtenti.setEditable(true);
 
         colNome.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -85,77 +108,116 @@ public class UtentiController implements Initializable {
 
     }
 
-    /**
-     * Metodo chiamato dal MainController per passare i dati.
-     * Qui avviene il collegamento logico vero e proprio.
-     */
+   /**
+    * @brief Associa il gestore della biblioteca (modello) al controller e inizializza il meccanismo di filtro e ordinamento per la tabella Utenti.
+    *
+    * Questo metodo stabilisce il legame tra il controller e l'istanza di Biblioteca
+    * che funge da modello (manager). Successivamente, imposta il data binding dinamico
+    * per la tabella degli utenti (tabellaUtenti), permettendo sia il filtraggio
+    * tramite la barra di ricerca (txtRicerca) sia l'ordinamento
+    * automatico quando l'utente clicca sulle intestazioni delle colonne.
+    * L'implementazione segue il pattern JavaFX:
+    * 1. La lista originale degli utenti viene avvolta in una FilteredList.
+    * 2. Un listener viene aggiunto alla proprietà del testo per aggiornare il predicato del filtro.
+    * 3. La FilteredList viene avvolta in una SortedList.
+    * 4. La proprietà del comparatore della SortedList viene legata (bind) alla proprietà
+    * *  del comparatore della TableView.
+    * 5. I dati finali (filtrati e ordinati) sono impostati come sorgente della tabella.
+    *
+    * @pre Il manager Biblioteca deve essere inizializzato e la tabella
+    * tabellaUtenti e il campo di testo txtRicerca devono essere
+    * stati iniettati correttamente dal FXML.
+    * @post L'istanza di Biblioteca è memorizzata nel campo manager.
+    * Il binding tra i dati della tabella e le liste dinamiche (filtrate e ordinate)
+    * è attivo, consentendo la ricerca per Nome, Cognome o Matricola e l'ordinamento
+    * cliccando sulle colonne.
+    *
+    * @param[in] manager L'istanza di Biblioteca che contiene i dati e la logica di business.
+    * 
+    */
     public void setBiblioteca(Biblioteca manager) {
         this.manager = manager;
 
-        // --- GESTIONE RICERCA E ORDINAMENTO ---
+        ///< --- GESTIONE RICERCA E ORDINAMENTO ---
         
-        /* Si avvolge la lista originale in una FilteredList, che inizialmente mostra tutto */
+        ///< Si avvolge la lista originale in una FilteredList, che inizialmente mostra tutto
         FilteredList<Utente> filteredData = new FilteredList<>(manager.getUtenti(), p -> true);
 
-        /* Listener per la barra di ricerca */
-        // Ogni volta che scrivo una lettera, il filtro si aggiorna
+        ///< Listener per la barra di ricerca 
+        ///< Ogni volta che scrivo una lettera, il filtro si aggiorna
         txtRicerca.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(utente -> {
-                // Se la barra è vuota, mostra tutti
+                ///< Se la barra è vuota, mostra tutti
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
 
-                // Confronto (case-insensitive) con Nome, Cognome o Matricola
+                ///< Confronto (case-insensitive) con Nome, Cognome o Matricola
                 String lowerCaseFilter = newValue.toLowerCase();
 
                 if (utente.getCognome().toLowerCase().contains(lowerCaseFilter)) return true;
                 if (utente.getNome().toLowerCase().contains(lowerCaseFilter)) return true;
                 if (utente.getMatricola().toLowerCase().contains(lowerCaseFilter)) return true;
-                /* Se non trovato */
+                ///< Se non trovato 
                 return false;
             });
         });
 
-        /* Pattern Decorator: avvolgo la FilteredList in una SortedList, in modo tale da riordinare quando clicco sulle colonne */
+        ///< Pattern Decorator: avvolgo la FilteredList in una SortedList, in modo tale da riordinare quando clicco sulle colonne 
         SortedList<Utente> sortedData = new SortedList<>(filteredData);
 
-        /* Collego il comparatore della tabella alla lista ordinata */
+        ///< Collego il comparatore della tabella alla lista ordinata 
         sortedData.comparatorProperty().bind(tabellaUtenti.comparatorProperty());
 
-        /* Inserimento dei dati finali nella tabella */
+        ///< Inserimento dei dati finali nella tabella 
         tabellaUtenti.setItems(sortedData);
 
-        /* Deselezionare premendo ESC */
+        ///< Deselezionare premendo ESC 
         tabellaUtenti.setOnKeyPressed(event -> {
             if (event.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
                 tabellaUtenti.getSelectionModel().clearSelection();
             }
         });
 
-        /* Deselezionare cliccando su uno spazio vuoto */
+        ///< Deselezionare cliccando su uno spazio vuoto 
         tabellaUtenti.setOnMouseClicked(event -> {
-            /* Viene verificato che il click è avvenuto su uno spazio vacuo */
+            ///< Viene verificato che il click è avvenuto su uno spazio vacuo 
             if (event.getTarget() instanceof javafx.scene.Node) {
                 javafx.scene.Node nodo = (javafx.scene.Node) event.getTarget();
 
-                /* Risalita della gerarchia */
+                ///< Risalita della gerarchia 
                 while (nodo != null && nodo != tabellaUtenti) {
                     if (nodo instanceof TableRow && ((TableRow) nodo).getItem() != null) {
-                        return; /* Riga valida -> esco senza far nulla */
+                        return; ///< Riga valida -> esco senza far nulla 
                     }
                     nodo = nodo.getParent();
                 }
 
-                /* È stato cliccato fuori dalle righe -> si procede con la pulizia della selezione */
+                ///< È stato cliccato fuori dalle righe -> si procede con la pulizia della selezione
                 tabellaUtenti.getSelectionModel().clearSelection();
             }
         });
     }
 
     /**
-     * Gestisce il click sul bottone "Aggiungi".
-     */
+    * @brief Gestisce l'evento di aggiunta di un nuovo utente nel sistema.
+    *
+    * Questa funzione recupera i dati dell'utente (Nome, Cognome, Matricola ed Email)
+    * dai campi di testo FXML. Esegue una **validazione di base** per assicurare
+    * che i campi obbligatori (Nome, Cognome e Matricola) non siano vuoti.
+    * In caso di validazione positiva, crea un nuovo oggetto Utente,
+    * lo passa al gestore manager per l'aggiunta (che gestisce la logica
+    * di business, inclusi i duplicati) e, infine, pulisce i campi di input.
+    *
+    * @pre I campi di testo FXML (txtNome, txtCognome, txtMatricola,
+    * txtEmail) devono essere stati iniettati e il manager manager
+    * deve essere inizializzato.
+    * @post Se i dati obbligatori sono presenti, un nuovo Utente è passato al
+    * gestore per l'aggiunta al sistema, e tutti i campi di input vengono puliti
+    * tramite pulisciCampi(). Se mancano dati obbligatori, viene mostrato un
+    * avviso all'utente.
+    *
+    */
 
     @FXML
     public void onAggiungi() {
