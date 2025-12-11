@@ -27,7 +27,7 @@ public class Utente{
      *  @param[in] cognome il cognome dell'utente
      *  @param[in] matricola La matricola dell'utente
      *  @param[in] email L'email istituzionale dell'utente
-     *  @return new Utente
+     *  @return Un nuovo oggetto della classe Utente
      *  @post L'oggetto creato della classe Utente è in uno stato coerente e valido
      */
     public Utente(String nome, String cognome, String matricola, String email){
@@ -42,8 +42,8 @@ public class Utente{
      *  Data una riga del file .csv in input, la spezzo in un array di stringhe, converto 
      *  i valori nei tipi giusti e popolo i campi del mio costruttore.
      *  @param[in] rigaCSV La riga del file .csv
-     *  @return new Utente
-     *  @post L'oggetto creati della classe Utente è in uno stato coerente e valido
+     *  @return Un nuovo oggetto della classe Utente
+     *  @post L'oggetto creato della classe Utente è in uno stato coerente e valido
      */
     public Utente(String rigaCSV) 
     {
@@ -65,7 +65,7 @@ public class Utente{
      *  
      *  @post Il valore restituito corrisponde all'attributo interno 'nome'
      *  
-     *  @return nome
+     *  @return Il nome dell'utente
      */
    public String getNome(){
        return nome;
@@ -76,7 +76,7 @@ public class Utente{
      *  
      *  @post Il valore restituito corrisponde all'attributo interno 'cognome'
      *  
-     *  @return cognome
+     *  @return Il cognome dell'utente
      */
    public String getCognome(){
        return cognome;
@@ -88,7 +88,7 @@ public class Utente{
      *  
      *  @post Il valore restituito corrisponde all'attributo interno 'matricola'
      *  
-     *  @return matricola
+     *  @return La matricola dell'utente
      */
    public String getMatricola(){
        return matricola;
@@ -99,7 +99,7 @@ public class Utente{
      *  
      *  @post Il valore restituito corrisponde all'attributo interno 'email'
      *  
-     *  @return email
+     *  @return L'email istituzionale dell'utente
      */
    public String getEmail(){
        return email;
@@ -118,43 +118,98 @@ public class Utente{
    public void setNome(String nome){
        this.nome=nome;
    }
+
+    /** @brief Imposta e aggiorna il cognome dell'utente
+     *  
+     *  @pre cognome non deve essere null
+     *  @post this.cognome è uguale al parametro 'cognome'
+     *
+     *  @param[in] cognome Il cognome dell'utente
+     */
    public void setCognome(String cognome){
        this.cognome=cognome;
    }
+
+    /** @brief Imposta e aggiorna l'email dell'utente
+     *  
+     *  @pre email non deve essere null
+     *  @post this.email è uguale al parametro 'email'
+     *
+     *  @param[in] email L'email istituzionale dell'utente
+     */
    public void setEmail(String email){
        this.email=email;
    }
-   
+
+
+    /**
+     * @brief Verifica l'uguaglianza tra questo utente e un altro oggetto
+     * 
+     * Due utenti sono considerati uguali se possiedono lo stesso 
+     * Viene effettuato un controllo preliminare sui riferimenti e sulla classe di appartenenza
+     *
+     * @param[in] obj L'oggetto da confrontare con l'istanza corrente
+     * @post Restituisce true se obj è un Utente e ha la stessa matricola, false altrimenti
+     *
+     * @return true se gli oggetti sono uguali (stessa matricola), false altrimenti
+     */
    @Override
     public boolean equals(Object obj) {
-        /* Verifica dei casi degeneri */
+        ///< Verifica dei casi degeneri 
         if (obj == null) return false;
         if (this == obj) return true;
 
-        /* Verifica che appartengano alla stessa classe */
+        ///< Verifica che appartengano alla stessa classe 
         if (this.getClass() != obj.getClass()) 
             return false;
-        /* Downcast sicuro; in obj ho un riferimento di un libro */
+        ///< Downcast sicuro; in obj ho un riferimento di un libro 
         Utente myUtente = (Utente) obj;
 
-        /* Essendo all'interno della stessa classe, accedo all'attributo "codice", che è privato, di myLibro */
-        return java.util.Objects.equals(this.matricola, myUtente.matricola);
+        ///< Essendo all'interno della stessa classe, accedo all'attributo "codice", che è privato, di myLibro 
+        return this.matricola.equals(myUtente.matricola);
    }
 
+
+    /**
+     * @brief Calcola il codice hash per l'utente.
+     *
+     * Il calcolo è basato esclusivamente sulla matricola per garantire la coerenza 
+     * con il metodo equals(). Se la matricola è null, restituisce 0.
+     *
+     * @return Un intero che rappresenta il codice hash dell'oggetto.
+     */
     @Override
     public int hashCode(){
         return matricola == null ? 0 : matricola.hashCode();
 
        
     }
+
     
+    /**
+     * @brief Restituisce una rappresentazione testuale completa dell'utente.
+     * 
+     * La stringa include nome, cognome, matricola e email istituzionale.
+     *
+     * @post La stringa restituita non è null e contiene i dati aggiornati dell'utente
+     *
+     * @return Una stringa descrittiva leggibile dall'utente.
+     */
     @Override
     public String toString(){
         return "Nome = " + getNome() + ", Cognome = " + getCognome() + ", Matricola = " + getMatricola() + ", Email istituzionale = " + getEmail() + "\n";
     }
     
-    /* Metodo per restituire le proprietà di un libro 
-    in una stringa adatta per il formato file .csv, i cui campi sono separati da ;  */
+    /**
+     * @brief Restituisce i dati dell'utente formattati per file .csv.
+     *
+     * I campi sono concatenati e separati da un punto e virgola (;).
+     * Ordine campi: nome;cognome;matricola;email.
+     *
+     * @post La stringa contiene 4 campi separati da ';'
+     *
+     * @return Una stringa pronta per essere scritta in un file .csv.
+     */
     public String toCSV() {
         return nome+";"+cognome+";"+matricola+";"+email;
     }
