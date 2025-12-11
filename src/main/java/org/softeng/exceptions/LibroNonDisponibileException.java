@@ -12,17 +12,25 @@ package org.softeng.exceptions;
 public class LibroNonDisponibileException extends Exception {
 
     /**
-     * Creates a new instance of <code>LibroNonDisponibileException</code>
-     * without detail message.
+     * @brief Costruttore predefinito per LibroNonDisponibileException.
+     *
+     * Crea una nuova istanza di LibroNonDisponibileException senza un
+     * messaggio di dettaglio. Questa eccezione deve essere sollevata
+     * quando si tenta di eseguire un'operazione un prestito
+     * su un libro che non è attualmente disponibile (esaurito o già in prestito).
      */
     public LibroNonDisponibileException() {
     }
 
     /**
-     * Constructs an instance of <code>LibroNonDisponibileException</code> with
-     * the specified detail message.
+     * @brief Costruttore predefinito per LibroNonDisponibileException con messaggio.
      *
-     * @param msg the detail message.
+     * Crea una nuova istanza di LibroNonDisponibileException con un
+     * messaggio di dettaglio. Questa eccezione deve essere sollevata
+     * quando si tenta di eseguire un prestito
+     * su un libro che non è attualmente disponibile (esaurito o già in prestito).
+     *
+     * @param[in] msg Il messaggio di dettaglio
      */
     public LibroNonDisponibileException(String msg) {
         super(msg);
