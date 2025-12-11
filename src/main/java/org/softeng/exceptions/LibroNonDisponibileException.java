@@ -3,6 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+/** 
+ * @file LibroNonDisponibileException.java
+ * @brief Il file contiene l'implementazione dell'eccezione LibroNonDisponibileException
+ * 
+ * informazioni sul file
+ */
+
 package org.softeng.exceptions;
 
 /**
