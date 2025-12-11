@@ -3,6 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+/** 
+ * @file LimitePrestitiSuperatoException.java
+ * @brief Il file contiene l'implementazione dell'eccezione LimitePrestitiSuperatoException
+ * 
+ * informazioni sul file
+ */
 package org.softeng.exceptions;
 
 /**
@@ -24,7 +31,7 @@ public class LimitePrestitiSuperatoException extends Exception {
     }
 
     /**
-     * @brief Costruttore predefinito per LimitePrestitiSuperatoException.
+     * @brief Costruttore predefinito per LimitePrestitiSuperatoException con messaggio.
      *
      * Crea una nuova istanza di LimitePrestitiSuperatoException con un
      * messaggio di dettaglio. Questa eccezione viene tipicamente sollevata
