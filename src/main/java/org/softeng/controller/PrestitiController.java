@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 
-/** @file LibriController.java
- *  @brief Il file contiene l'implementazione della classe 'LibriController'
+/** @file PrestitiController.java
+ *  @brief Il file contiene l'implementazione della classe 'PrestitiController'
  *  
  *  informazioni sul file e il suo ruolo nel progetto
  */
