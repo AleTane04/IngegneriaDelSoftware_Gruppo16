@@ -12,17 +12,27 @@ package org.softeng.exceptions;
 public class LimitePrestitiSuperatoException extends Exception {
 
     /**
-     * Creates a new instance of <code>LimitePrestitiSuperatoException</code>
-     * without detail message.
+     * @brief Costruttore predefinito per LimitePrestitiSuperatoException.
+     *
+     * Crea una nuova istanza di LimitePrestitiSuperatoException senza un
+     * messaggio di dettaglio. Questa eccezione viene tipicamente sollevata
+     * quando un'operazione di prestito fallisce perché è stato raggiunto
+     * o superato il limite massimo di prestiti consentiti per un utente o
+     * risorsa.
      */
     public LimitePrestitiSuperatoException() {
     }
 
     /**
-     * Constructs an instance of <code>LimitePrestitiSuperatoException</code>
-     * with the specified detail message.
+     * @brief Costruttore predefinito per LimitePrestitiSuperatoException.
      *
-     * @param msg the detail message.
+     * Crea una nuova istanza di LimitePrestitiSuperatoException con un
+     * messaggio di dettaglio. Questa eccezione viene tipicamente sollevata
+     * quando un'operazione di prestito fallisce perché è stato raggiunto
+     * o superato il limite massimo di prestiti consentiti per un utente o
+     * risorsa.
+     *
+     * @param[in] msg Il messaggio di dettaglio
      */
     public LimitePrestitiSuperatoException(String msg) {
         super(msg);
