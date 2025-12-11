@@ -24,7 +24,7 @@ public class LimitePrestitiSuperatoException extends Exception {
     }
 
     /**
-     * @brief Costruttore predefinito per LimitePrestitiSuperatoException.
+     * @brief Costruttore predefinito per LimitePrestitiSuperatoException con messaggio.
      *
      * Crea una nuova istanza di LimitePrestitiSuperatoException con un
      * messaggio di dettaglio. Questa eccezione viene tipicamente sollevata
