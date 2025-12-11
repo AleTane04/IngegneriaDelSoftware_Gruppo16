@@ -199,7 +199,7 @@ public class LibroTest {
     @Test
     public void testEqualsTrue() {
         
-        Libro secondoLibro = new Libro( " titolo", "autore",LocalDate.of(2000, 3, 2),"9781234567890",1);
+        Libro secondoLibro = new Libro( " titolo2", "autore2",LocalDate.of(2000, 3, 2),"9781234567890",1);
         assertTrue(libro.equals(secondoLibro));
     }
 
@@ -207,7 +207,7 @@ public class LibroTest {
      @Test
     public void testEqualsFalse() {
         
-        Libro terzoLibro = new Libro( " titolo2", "autore2",LocalDate.of(2000, 3 ,2),"1234567890123",1);
+        Libro terzoLibro = new Libro( " titolo3", "autore3",LocalDate.of(2000, 3 ,2),"1234567890123",1);
         assertFalse(libro.equals(terzoLibro));
     }
 
