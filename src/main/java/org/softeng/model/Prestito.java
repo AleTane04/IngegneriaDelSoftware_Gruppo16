@@ -39,6 +39,7 @@ public class Prestito {
      * @param[in] dI La data di inizio del prestito.
      * @param[in] dF La data di scadenza prevista.
      * @post dataRestituzioneEffettiva è null.
+     * @return Una nuova istanza della classe Prestito
      */
     public Prestito(Utente u, Libro l, LocalDate dI, LocalDate dF) 
     {
@@ -119,13 +120,13 @@ public class Prestito {
 
     /**
      * @brief Calcola e restituisce lo stato attuale del prestito.
-     * * Lo stato viene determinato dinamicamente confrontando la data odierna
+     * Lo stato viene determinato dinamicamente confrontando la data odierna
      * con la data di fine prestito o verificando la presenza dell'effettiva data di restituzione:
-     * - <b>RESTITUITO</b>: Se è stata registrata una data di restituzione effettiva.
-     * - <b>SCADUTO</b>: Se la data odierna è successiva alla data di fine.
-     * - <b>IN_SCADENZA</b>: Se mancano 7 giorni o meno alla scadenza (inclusa).
-     * - <b>ATTIVO</b>: In tutti gli altri casi.
-     * * @return Il valore dell'enum StatoPrestito corrispondente alla situazione attuale.
+     * - RESTITUITO: Se è stata registrata una data di restituzione effettiva.
+     * - SCADUTO: Se la data odierna è successiva alla data di fine.
+     * - IN_SCADENZA: Se mancano 7 giorni o meno alla scadenza (inclusa).
+     * - ATTIVO: In tutti gli altri casi.
+     * @return Il valore dell'enum StatoPrestito corrispondente alla situazione attuale.
      */
     public StatoPrestito getStatoPrestito() 
     {
@@ -158,7 +159,7 @@ public class Prestito {
 
     /**
      * @brief Imposta l'utente associato al prestito.
-     * @param u Il nuovo oggetto Utente da associare.
+     * @param[in] u Il nuovo oggetto Utente da associare.
      */
     public void setUtente(Utente u) 
     {
@@ -167,7 +168,7 @@ public class Prestito {
 
     /**
      * @brief Imposta il libro oggetto del prestito.
-     * @param l Il nuovo oggetto Libro da associare.
+     * @param[in] l Il nuovo oggetto Libro da associare.
      */
     public void setLibro(Libro l) 
     {
@@ -176,7 +177,7 @@ public class Prestito {
 
     /**
      * @brief Imposta la data di inizio del prestito.
-     * @param dI La nuova data di inizio.
+     * @param[in] dI La nuova data di inizio.
      */
     public void setDataInizio(LocalDate dI) 
     {
@@ -185,7 +186,7 @@ public class Prestito {
 
     /**
      * @brief Imposta la data di fine (scadenza) del prestito.
-     * @param dF La nuova data di fine.
+     * @param[in] dF La nuova data di fine.
      */
     public void setDataFine(LocalDate dF) 
     {
@@ -194,7 +195,7 @@ public class Prestito {
 
     /**
      * @brief Imposta la data di effettiva fine del prestito.
-     * @param dRE La data effettiva di fine del prestito.
+     * @param[in] dRE La data effettiva di fine del prestito.
      */
     public void setDataRestituzioneEffettiva(LocalDate dRE)
     {
@@ -208,7 +209,7 @@ public class Prestito {
      * La stringa contiene i riferimenti chiave del prestito separati da punto e virgola (;).
      * Se il prestito non è concluso, l'ultimo campo sarà la stringa "null".
      * Ordine dei campi: Matricola Utente; ISBN Libro; Data Inizio; Data Fine; Data Fine Prestito Effettiva.
-     * * @return Una stringa formattata pronta per la scrittura su file.
+     * @return Una stringa formattata pronta per la scrittura su file.
      */
     public String toCSV() 
     {
