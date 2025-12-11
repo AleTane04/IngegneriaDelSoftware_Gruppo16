@@ -236,7 +236,7 @@ public class Libro{
         Libro myLibro = (Libro) obj;
 
         ///< Essendo all'interno della stessa classe, accedo all'attributo "codice", che è privato, di myLibro 
-        return java.util.Objects.equals(this.codiceISBN, myLibro.codiceISBN);
+        return this.codiceISBN.equals(myLibro.codiceISBN);
     }
 
 
