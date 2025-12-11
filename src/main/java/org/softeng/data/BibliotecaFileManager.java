@@ -56,7 +56,7 @@ public class BibliotecaFileManager
     
     public void salvaPrestiti(List<Prestito> prestiti, String fileName) 
     {
-        scriviSuFile(fileName, prestiti,"MATRICOLA_UTENTE;ISBN_LIBRO;DATA_INIZIO;DATA_FINE");
+        scriviSuFile(fileName, prestiti,"MATRICOLA_UTENTE;ISBN_LIBRO;DATA_INIZIO;DATA_FINE;DATA_RESTITUZIONE");
     }
     
     public ObservableList<Libro> caricaLibriDaFile(String fileName) 
@@ -126,7 +126,7 @@ public class BibliotecaFileManager
     }
     
 
-    /* Questo metodo ricollega gli ID (ISBN/Matricola) agli oggetti veri */
+    /* Questo metodo ricollega gli ID (ISBN/Matricola) agli oggetti veri. Carica i prestiti e ricostruisce i collegamenti tra gli oggetti*/
     public ObservableList<Prestito> caricaPrestitiDaFile(String nomeFile, ObservableList<Utente> utenti, ObservableList<Libro> libri) 
     {
         ObservableList<Prestito> listaPrestiti = FXCollections.observableArrayList();
@@ -148,28 +148,44 @@ public class BibliotecaFileManager
                 String[] chunks = riga.split(";");
                 if (chunks.length < 4) continue;
 
-                String matricola = chunks[0];
-                String isbn = chunks[1];
+                String matricolaCercata = chunks[0];
+                String isbnCercato = chunks[1];
                 LocalDate dataInizio = LocalDate.parse(chunks[2]);
                 LocalDate dataFine = chunks.length > 3 ? LocalDate.parse(chunks[3]) : LocalDate.now();
 
-                // 1. Cerco l'Utente vero
-                Utente u = utenti.stream()
-                        .filter(utente -> utente.getMatricola().equals(matricola))
-                        .findFirst()
-                        .orElse(null);
+                // ---------------------------------------------------------
+                // 1. RICERCA DELL'UTENTE (Sostituzione Stream -> Ciclo For)
+                // ---------------------------------------------------------
+                Utente utenteTrovato = null;
 
-                // 2. Cerco il Libro vero
-                Libro l = libri.stream()
-                        .filter(libro -> libro.getCodiceISBN().equals(isbn))
-                        .findFirst()
-                        .orElse(null);
+                // Scorro la lista degli utenti caricata in memoria
+                for (Utente u : utenti) {
+                    // Se la matricola dell'utente corrente corrisponde a quella scritta nel file prestiti...
+                    if (u.getMatricola().equals(matricolaCercata)) {
+                        utenteTrovato = u; // ...ho trovato l'oggetto giusto!
+                        break;             // Interrompo il ciclo, inutile continuare
+                    }
+                }
+
+                // ---------------------------------------------------------
+                // 2. RICERCA DEL LIBRO (Sostituzione Stream -> Ciclo For)
+                // ---------------------------------------------------------
+                Libro libroTrovato = null;
+
+                // Scorro la lista dei libri caricata in memoria
+                for (Libro l : libri) {
+                    // Se l'ISBN del libro corrente corrisponde a quello scritto nel file prestiti...
+                    if (l.getCodiceISBN().equals(isbnCercato)) {
+                        libroTrovato = l; // ...ho trovato l'oggetto giusto!
+                        break;            // Interrompo il ciclo
+                    }
+                }
 
                 // 3. Se esistono entrambi, ricreo il prestito
                 try {
-                        if (u != null && l != null)
+                        if (utenteTrovato != null && libroTrovato != null)
                         {
-                            Prestito myPrestito = new Prestito(u, l, dataInizio, dataFine);
+                            Prestito myPrestito = new Prestito(utenteTrovato, libroTrovato, dataInizio, dataFine);
 
                             if(chunks.length >= 5)
                             {
