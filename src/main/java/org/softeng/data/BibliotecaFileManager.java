@@ -22,25 +22,27 @@ import java.util.List;
  * @author 39392
  */
 
-/**
- * @brief Scrive il contenuto di una lista su un file, preceduto da una riga di intestazione.
- *
- * Questa funzione scrive l'intestazione specificata, e poi itera sulla lista fornita, 
- * delegando la formattazione di ciascun oggetto (Libro, Utente o Prestito)
- * al rispettivo metodo toCSV().
- *
- * @pre Il parametro myList deve contenere oggetti che implementano il metodo toCSV() 
- * o essere vuoto.
- * @post I dati contenuti in myList e l'intestazione myFileHeader sono stati scritti 
- * nel file specificato da fileName. In caso di successo, il file viene chiuso.
- *
- * @param[in] fileName Il nome del file su cui scrivere i dati.
- * @param[in] myList La lista generica contenente gli oggetti da salvare 
- * @param[in] myFileHeader La stringa da utilizzare come intestazione del file.
- *
- */
+
 public class BibliotecaFileManager 
 {
+
+    /**
+     * @brief Scrive il contenuto di una lista su un file, preceduto da una riga di intestazione.
+     *
+     * Questa funzione scrive l'intestazione specificata, e poi itera sulla lista fornita, 
+     * delegando la formattazione di ciascun oggetto (Libro, Utente o Prestito)
+     * al rispettivo metodo toCSV().
+     *
+     * @pre Il parametro myList deve contenere oggetti che implementano il metodo toCSV() 
+     * o essere vuoto.
+     * @post I dati contenuti in myList e l'intestazione myFileHeader sono stati scritti 
+     * nel file specificato da fileName. In caso di successo, il file viene chiuso.
+     *
+     * @param[in] fileName Il nome del file su cui scrivere i dati.
+     * @param[in] myList La lista generica contenente gli oggetti da salvare 
+     * @param[in] myFileHeader La stringa da utilizzare come intestazione del file.
+     *
+     */
     public void scriviSuFile(String fileName, List<?> myList, String myFileHeader) 
     {
         ///< Uso il try con le risorse 
