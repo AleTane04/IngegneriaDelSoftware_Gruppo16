@@ -176,13 +176,23 @@ public class Libro{
     /**
      * @brief Sovrascrive il numero di copie disponibili
      *
-     * @pre q >= 0 (il numero di copie non può essere negativo) 
+     * @pre q >= 0 (il numero di copie non può essere negativo)
      * @post this.numeroCopieDisponibili è uguale a 'q'
      *
      * @param[in] q La nuova quantità di copie disponibili da impostare
+     * @throws IllegalArgumentException se q è negativo (violazione della precondizione)
      */
-    public void setNumeroCopieDisponibili(int q){
-        this.numeroCopieDisponibili=q;
+    public void setNumeroCopieDisponibili(int q)
+    {
+        ///< Controllo della PRECONDIZIONE
+        if (q < 0)
+        {
+            ///< Violazione del contratto! Lancio un'eccezione non controllata
+            throw new IllegalArgumentException("Violazione precondizione: le copie non possono essere negative (" + q + ")");
+        }
+
+        ///< Eseguo se, e solo se, la precondizione è vera
+        this.numeroCopieDisponibili = q;
     }
     
     ///< Altri metodi 
