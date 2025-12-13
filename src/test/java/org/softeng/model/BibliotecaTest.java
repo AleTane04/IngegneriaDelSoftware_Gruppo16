@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.softeng.data.Biblioteca;
+import org.softeng.exceptions.*;
 
 
 public class BibliotecaTest{
@@ -27,9 +29,9 @@ public class BibliotecaTest{
   ///< Oracolo: le liste non devono mai essere null dopo l'inizializzazione
   @Test
   public void testConsturctorEGetters(){
-    assertNotNull("la lista dei libri non deve essere null dopo l'inizializzazione",b.getLibri());
-    assertNoNtull("la lista degli utenti non deve essere null dopo l'iniziliazzazione",b.getUtenti());
-    assertNotNull("la lista dei prestiti non deve essere null dopo l'inizializzazione",b.getPrestiti());
+    assertNotNull(b.getLibri());
+    assertNotNull(b.getUtenti());
+    assertNotNull(b.getPrestiti());
   }
 
 
@@ -43,7 +45,7 @@ public class BibliotecaTest{
   public void testAggiungiLibro() throws LibroGiaPresenteException{
     Libro newLibro = new Libro("Reti di Calcolatori", "Kurose", LocalDate.of(2022,1,21), "978-8871929385", 5);
     b.aggiungiLibro(newLibro);
-    asserTrue(b.getLibri().contains(newLibro));
+    assertTrue(b.getLibri().contains(newLibro));
     assertEquals(1, b.getLibri().size());
     
   }
@@ -88,7 +90,7 @@ public class BibliotecaTest{
     Libro l = new Libro("Struttura e progetto dei calcolatori", "Patterson", LocalDate.of(2005,3,4), "978-8871929385", 4);
     b.aggiungiUtente(u);
     b.aggiungiLibro(l);
-    b.registraPrestito(u, l, LocalDate.now(), LocalDate.now().plusDays(30));
+    b.registraPrestito(u, l, LocalDate.now().plusDays(30));
 
     b.rimuoviLibro(l);
   }
@@ -99,7 +101,7 @@ public class BibliotecaTest{
    * Oracolo: Dimensione lista +1, utente presente
    */
   @Test
-  public void testAggiungiUtente(){
+  public void testAggiungiUtente() throws UtenteGiaPresenteException{
     Utente u = new Utente("Antonio", "Banderas", "0612709678", "a.banderas@studenti.unisa.it");
 
     b.aggiungiUtente(u);
@@ -114,7 +116,7 @@ public class BibliotecaTest{
    * Oracolo: solleva UtenteGiaPresenteException
    */
   @Test
-  public void testAggiungiUtenteDuplicato(){
+  public void testAggiungiUtenteDuplicato() throws UtenteGiaPresenteException{
     Utente u1 = new Utente("Luigi", "Verdi", "0612708872", "l.verdi@studenti.unisa.it");
     b.aggiungiUtente(u1);
 
@@ -132,10 +134,10 @@ public class BibliotecaTest{
     Libro l = new Libro("Struttura e progetto dei calcolatori", "Patterson", LocalDate.of(2005,3,4), "978-8871929385", 4);
     b.aggiungiUtente(u);
     b.aggiungiLibro(l);
-    b.registraPrestito(u, l, LocalDate.now(), LocalDate.now().plusDays(15));
+    b.registraPrestito(u, l, LocalDate.now().plusDays(15));
 
     try{
-      biblioteca.rimuoviUtente(u);
+      b.rimuoviUtente(u);
       fail("Avrebbe dovuto lanciare un'eccezione perché l'utente ha prestiti attivi");
     }catch(Exception ex){
       assertTrue(ex.getMessage().contains("Impossibile eliminare"));
@@ -165,8 +167,8 @@ public class BibliotecaTest{
     Utente u = new Utente("Lorena", "Luciano", "0612707777", "l.luciano@studenti.unisa.it");
     b.aggiungiUtente(u);
     b.aggiungiLibro(l);
-    b.registraPrestito(u, l, LocalDate.now(), LocalDate.now().plusDays(15));
-    asssertEquals(1, b.getPrestiti().size());
+    b.registraPrestito(u, l, LocalDate.now().plusDays(15));
+    assertEquals(1, b.getPrestiti().size());
     assertEquals(4, l.getNumeroCopieDisponibili());
   }
 
@@ -181,7 +183,7 @@ public class BibliotecaTest{
     Libro l = new Libro("Struttura e progetto dei calcolatori", "Patterson", LocalDate.of(2005,3,4), "978-8871929385", 4);
     b.aggiungiUtente(u);
     b.aggiungiLibro(l);
-    b.registraPrestito(u, l, LocalDate.now(), LocalDate.now().plusDays(15));
+    b.registraPrestito(u, l, LocalDate.now().plusDays(15));
   }
 
   /**
@@ -190,7 +192,7 @@ public class BibliotecaTest{
    * Oracolo: solleva LimitePrestitiSuperatoException 
    */
   @Test
-  public void testLimitePrestitiSuperato() throws LimitePrestitiSuperatoException{
+  public void testLimitePrestitiSuperato() throws LimitePrestitiSuperatoException, UtenteGiaPresenteException, LibroGiaPresenteException, LibroNonDisponibileException{
     Utente u = new Utente("Federico", "Olivieri", "0612708674", "f.olivieri@studenti.unisa.it");
     b.aggiungiUtente(u);
     Libro l1 = new Libro("Reti di Calcolatori", "Kurose", LocalDate.of(2022,1,21), "978-8871929385", 5);
@@ -203,10 +205,10 @@ public class BibliotecaTest{
     b.aggiungiLibro(l3);
     b.aggiungiLibro(l4);
 
-    b.registraPrestito(u, l1, LocalDate.now(), LocalDate.now().plusDays(10));
-    b.registraPrestito(u, l2, LocalDate.now(), LocalDate.now().plusDays(10));
-    b.registraPrestito(u, l3, LocalDate.now(), LocalDate.now().plusDays(10));
-    b.registraPrestito(u, l4, LocalDate.now(), LocalDate.now().plusDays(10));
+    b.registraPrestito(u, l1, LocalDate.now().plusDays(10));
+    b.registraPrestito(u, l2, LocalDate.now().plusDays(10));
+    b.registraPrestito(u, l3, LocalDate.now().plusDays(10));
+    b.registraPrestito(u, l4, LocalDate.now().plusDays(10));
   }
 
 
@@ -222,7 +224,7 @@ public class BibliotecaTest{
     b.aggiungiLibro(l);
     b.aggiungiUtente(u);
 
-    b.registraPrestito(u, l, LocalDate.now(), LocalDate.now().plusDays(30);
+    b.registraPrestito(u, l, LocalDate.now().plusDays(30));
     Prestito p = b.getPrestiti().get(0);
 
     b.restituisciPrestito(p);
@@ -243,5 +245,6 @@ public class BibliotecaTest{
     } catch (Exception e) {
         fail("Il metodo saveAll ha lanciato un'eccezione imprevista: " + e.getMessage());
     }
+  }
   
 }
