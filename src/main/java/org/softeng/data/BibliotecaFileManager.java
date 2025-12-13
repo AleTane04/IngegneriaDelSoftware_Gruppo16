@@ -282,37 +282,44 @@ public class BibliotecaFileManager
                 LocalDate dataInizio = LocalDate.parse(chunks[2]);
                 LocalDate dataFine = chunks.length > 3 ? LocalDate.parse(chunks[3]) : LocalDate.now();
 
-                ///< ---------------------------------------------------------
-                ///< 1. RICERCA DELL'UTENTE (Sostituzione Stream -> Ciclo For)
-                ///< ---------------------------------------------------------
+
+                ///< RICERCA DELL'UTENTE
+
                 Utente utenteTrovato = null;
 
                 ///< Scorro la lista degli utenti caricata in memoria
-                for (Utente u : utenti) {
+                for (Utente u : utenti)
+                {
                     ///< Se la matricola dell'utente corrente corrisponde a quella scritta nel file prestiti...
-                    if (u.getMatricola().equals(matricolaCercata)) {
+                    if (u.getMatricola().equals(matricolaCercata))
+                    {
                         utenteTrovato = u; ///< ...ho trovato l'oggetto giusto!
                         break;             ///< Interrompo il ciclo, inutile continuare
                     }
                 }
 
-                ///< ---------------------------------------------------------
-                ///< 2. RICERCA DEL LIBRO (Sostituzione Stream -> Ciclo For)
-                ///< ---------------------------------------------------------
+                ///< Se un utente è stato rimosso, ne creo uno nuovo "fittizio" per non perdere lo storico dei prestiti associato.
+                if (utenteTrovato == null)
+                {
+                    utenteTrovato = new Utente("Utente", "Rimosso", matricolaCercata, "N/A");
+                }
+
+                ///< RICERCA DEL LIBRO
+
                 Libro libroTrovato = null;
 
-                ///< Scorro la lista dei libri caricata in memoria
+                ///< Si scorre la lista dei libri caricata in memoria
                 for (Libro l : libri) {
-                    ///< Se l'ISBN del libro corrente corrisponde a quello scritto nel file prestiti...
+                    ///< Se l'ISBN del libro corrente corrisponde a quello scritto nel file prestiti:
                     if (l.getCodiceISBN().equals(isbnCercato)) {
-                        libroTrovato = l; ///< ...ho trovato l'oggetto giusto!
-                        break;            ///< Interrompo il ciclo
+                        libroTrovato = l; ///< Il libro 'giusto' è stato trovato;
+                        break;            ///< Si interrompe il ciclo
                     }
                 }
 
-                ///< 3. Se esistono entrambi, ricreo il prestito
+                ///< Se esiste il libro, si ricrea il prestito
                 try {
-                        if (utenteTrovato != null && libroTrovato != null)
+                        if (libroTrovato != null)
                         {
                             Prestito myPrestito = new Prestito(utenteTrovato, libroTrovato, dataInizio, dataFine);
 
