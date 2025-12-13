@@ -174,7 +174,7 @@ public class LibroTest {
     }
 
     @Test
-    public void testSetNumeroCopieDisponibili(){
+    public void testSetNumeroCopieDisponibiliNegativo(){
 
         assertThrows(IllegalArgumentException.class, () -> {
 
