@@ -173,6 +173,17 @@ public class LibroTest {
         assertEquals(10, libro.getNumeroCopieDisponibili());
     }
 
+    @Test
+    public void testSetNumeroCopieDisponibili(){
+
+        assertThrows(IllegalArgumentException.class, () -> {
+
+            libro.setNumeroCopieDisponibili(-1);
+
+        });
+
+    }
+
     /**
      * Test of decrementaNumeroCopieDisponibili method, of class Libro.
      */
