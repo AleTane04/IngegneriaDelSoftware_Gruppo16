@@ -36,12 +36,17 @@ public class Libro{
      *  @return new Libro
      *  @post L'oggetto creato della classe Libro è in uno stato coerente e valido
      */
-    public Libro(String titolo, String autori, LocalDate anno, String codiceISBN, int numeroCopie){
+    public Libro(String titolo, String autori, LocalDate anno, String codiceISBN, int numeroCopie)
+    {
 
         this.titolo=titolo;
         this.autori=autori;
         this.annoPubblicazione=anno;
         this.codiceISBN=codiceISBN;
+        if (numeroCopie < 0)
+        {
+            throw new IllegalArgumentException("Il numero di copie non può essere negativo");
+        }
         this.numeroCopieDisponibili=numeroCopie;
     }
     

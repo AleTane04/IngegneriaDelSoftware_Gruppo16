@@ -75,7 +75,19 @@ public class LibriController implements Initializable {
         });
 
 
-        colCopie.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        colCopie.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()
+        {
+            @Override
+            public Integer fromString(String value) {
+                try
+                {
+                    return super.fromString(value);
+                } catch (NumberFormatException e) {
+
+                    return -1; ///< Valore "sentinella", usato per indicare l'errore
+                }
+            }
+        }));
         colCopie.setOnEditCommit(event -> {
             Libro libro = event.getRowValue();
             Integer numCopie = event.getNewValue();
@@ -200,7 +212,7 @@ public class LibriController implements Initializable {
    /**
     * @brief Gestisce l'evento di aggiunta di un nuovo libro alla biblioteca
     *
-    * Questo metodo recupera i dati dai campi di input del moduolo, esegue una validazione di base, (controllo dei campi obbligatori e formato numerico) e, 
+    * Questo metodo recupera i dati dai campi di input del modulo, esegue una validazione di base, (controllo dei campi obbligatori e formato numerico) e,
     * in caso di successo aggiunge un nuovo oggetto della classe Libro al modello dati
     *
     * @pre il manager della biblioteca deve essere inizializzato e disponibile per invocare il metodo
@@ -219,8 +231,15 @@ public class LibriController implements Initializable {
             String autore = txtAutore.getText();
             String isbn = txtIsbn.getText();
             int copie = Integer.parseInt(txtCopie.getText());
-            LocalDate data = pickerAnno.getValue() != null ? pickerAnno.getValue() : LocalDate.now();
-
+            LocalDate data;
+            if(pickerAnno.getValue() != null)
+            {
+               data = pickerAnno.getValue();
+            }
+                else
+            {
+                data = LocalDate.now();
+            }
 
             if (data.isAfter(LocalDate.now())) {
                 mostraErrore("La data di pubblicazione non può essere nel futuro!");
@@ -229,6 +248,11 @@ public class LibriController implements Initializable {
             if (titolo.isEmpty() || isbn.isEmpty()) 
             {
                 mostraErrore("Campi obbligatori mancanti!");
+                return;
+            }
+            if (copie < 0)
+            {
+                mostraErrore("Il numero di copie non può essere negativo!");
                 return;
             }
 
