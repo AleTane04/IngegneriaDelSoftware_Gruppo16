@@ -237,7 +237,7 @@ public class PrestitiController implements Initializable {
             });
         };
 
-        /* Stesso listener per entrambe le barre di ricerca +/
+        /* Stesso listener per entrambe le barre di ricerca */
         txtRicercaUtente.textProperty().addListener(listener);
         txtRicercaLibro.textProperty().addListener(listener);
 
