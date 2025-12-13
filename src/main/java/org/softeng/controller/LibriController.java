@@ -78,7 +78,23 @@ public class LibriController implements Initializable {
         colCopie.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         colCopie.setOnEditCommit(event -> {
             Libro libro = event.getRowValue();
-            libro.setNumeroCopieDisponibili(event.getNewValue());
+            Integer numCopie = event.getNewValue();
+            if(numCopie==null || numCopie<0)
+            {
+                ///< Mostro Alert per avvisare l'utente
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Attenzione");
+                alert.setHeaderText("Valore non valido");
+                alert.setContentText("Il numero di copie non può essere negativo!");
+                alert.showAndWait();
+
+                ///< Refresh tabella
+                tabellaLibri.refresh();
+            }
+                else
+            {
+                libro.setNumeroCopieDisponibili(numCopie);
+            }
         });
 
         colAnno.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter()));
