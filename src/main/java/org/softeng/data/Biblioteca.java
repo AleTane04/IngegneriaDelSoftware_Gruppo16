@@ -224,7 +224,7 @@ public class Biblioteca
 
         ///< Se ci sono prestiti attivi, lancio una eccezione 
         if (haPrestitiAttivi) {
-            throw new Exception("Impossibile eliminare: l'utente deve restituire dei libri!");
+            throw new Exception("Impossibile eliminare: l'utente ha ancora dei libri da restituire!");
         }
 
         ///< Prestiti conclusi -> cancellazione 
