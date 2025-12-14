@@ -152,16 +152,14 @@ public class PrestitiController implements Initializable {
             ///< Verifica che è stato premuto uno spazio vuoto
             if (event.getTarget() instanceof javafx.scene.Node) {
                 javafx.scene.Node nodo = (javafx.scene.Node) event.getTarget();
-
-                ///< Risalita della gerarchia 
                 while (nodo != null && nodo != tabellaPrestiti) {
                     if (nodo instanceof TableRow && ((TableRow) nodo).getItem() != null) {
-                        return; ///< Riga valida -> esco senza far nulla 
+                        return; 
                     }
                     nodo = nodo.getParent();
                 }
 
-                ///< È stato cliccato fuori dalle righe -> si procede con la pulizia della selezione 
+                ///< Il click è avvenuto fuori dalle righe, viene dunque ripulita la selezione
                 tabellaPrestiti.getSelectionModel().clearSelection();
             }
         });
@@ -196,16 +194,16 @@ public class PrestitiController implements Initializable {
         comboLibri.setItems(manager.getLibri());
         tabellaPrestiti.setItems(manager.getPrestiti());
 
-        /* Logica di filtro doppia */
+        ///< Logica di filtro doppia 
 
         FilteredList<Prestito> prestitiFiltrati = new FilteredList<>(manager.getPrestiti(), p -> true);
 
-        /* Unico listener che "ascolta" cambiamenti per libro o utente */
+        ///< Unico listener che "ascolta" cambiamenti per libro o utente 
         javafx.beans.value.ChangeListener<String> listener = (obs, oldV, newV) -> {
 
             prestitiFiltrati.setPredicate(prestito -> {
 
-                /* Verifica dell'utente per Nome, Cognome o Matricola */
+                ///< Verifica dell'utente per Nome, Cognome o Matricola 
                 boolean matchUtente = true;
                 String testoUtente = txtRicercaUtente.getText();
 
@@ -213,13 +211,13 @@ public class PrestitiController implements Initializable {
                     String lowerU = testoUtente.toLowerCase();
                     Utente u = prestito.getUtente();
 
-                    /* Ricerca se la stringa inserita è contenuta in Nome, Cognome o Matricola dell'Utente */
+                    ///< Ricerca se la stringa inserita è contenuta in Nome, Cognome o Matricola dell'Utente 
                     matchUtente = u.getNome().toLowerCase().contains(lowerU) ||
                             u.getCognome().toLowerCase().contains(lowerU) ||
                             u.getMatricola().toLowerCase().contains(lowerU);
                 }
 
-                /* Controllo per libro */
+                ///< Controllo per libro 
                 boolean matchLibro = true;
                 String testoLibro = txtRicercaLibro.getText();
 
@@ -231,22 +229,22 @@ public class PrestitiController implements Initializable {
                             l.getCodiceISBN().toLowerCase().contains(lowerL);
                 }
 
-                /* Vero se il Prestito soddisfa ambedue le condizioni */
+                ///< Vero se il Prestito soddisfa ambedue le condizioni 
                 return matchUtente && matchLibro;
             });
         };
 
-        /* Stesso listener per entrambe le barre di ricerca */
+        ///< Stesso listener per entrambe le barre di ricerca 
         txtRicercaUtente.textProperty().addListener(listener);
         txtRicercaLibro.textProperty().addListener(listener);
 
-        /* Ordinamento quando si clicca sulle colonne */
+        ///< Avviene un ordinamento quando si clicca sulle colonne 
         SortedList<Prestito> prestitiOrdinati = new SortedList<>(prestitiFiltrati);
 
-       /* Comparatore collegato alla Table */
+        ///< Comparatore collegato alla Table 
         prestitiOrdinati.comparatorProperty().bind(tabellaPrestiti.comparatorProperty());
 
-        /* La tabella viene popolata in base ai valori della lista finale */
+        ///< La tabella viene popolata in base ai valori della lista finale 
         tabellaPrestiti.setItems(prestitiOrdinati);
 
     }
