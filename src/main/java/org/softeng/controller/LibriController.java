@@ -322,17 +322,17 @@ public class LibriController implements Initializable {
 
 
     /**
-    * @brief Resetta il contenuto di tutti i campi di input del modulo di aggiunta libro.
-    *
-    * Questo è un metodo di utilità interno che pulisce i campi di testo e resetta 
-    * il selettore di data, preparando l'interfaccia utente per un nuovo inserimento 
-    * di dati. Viene tipicamente chiamato dopo un'operazione di aggiunta completata 
-    * con successo.
-    *
-    * @pre I campi di testo txtTitolo, txtAutore, txtIsbn, txtCopie e il selettore di data pickerAnno devono essere stati iniettati.
-    * @post Tutti i campi di testo specificati sono vuoti (il loro contenuto è stato cancellato).
-    * 
-    **/
+     * @brief Resetta il contenuto di tutti i campi di input del modulo di aggiunta libro.
+     *
+     * Questo è un metodo di utilità interno che pulisce i campi di testo e resetta 
+     * il selettore di data, preparando l'interfaccia utente per un nuovo inserimento 
+     * di dati. Viene tipicamente chiamato dopo un'operazione di aggiunta completata 
+     * con successo.
+     *
+     * @pre I campi di testo txtTitolo, txtAutore, txtIsbn, txtCopie e il selettore di data pickerAnno devono essere stati iniettati.
+     * @post Tutti i campi di testo specificati sono vuoti (il loro contenuto è stato cancellato).
+     * 
+     */
     private void pulisciCampi()
     {
         txtTitolo.clear(); txtAutore.clear(); txtIsbn.clear(); txtCopie.clear();
