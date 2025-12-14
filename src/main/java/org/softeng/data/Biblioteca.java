@@ -292,7 +292,7 @@ public class Biblioteca
 
         for(Prestito p : listaPrestiti)
         {
-            if(p.getUtente().equals((u)))
+            if(p.getUtente().equals((u)) && p.getStatoPrestito() != StatoPrestito.RESTITUITO)
                 numeroPrestitiAttivi++;
         }
 
