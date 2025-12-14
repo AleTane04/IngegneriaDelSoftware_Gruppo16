@@ -25,7 +25,7 @@ public class Launcher
      */
     public static void main(String[] args) 
     {
-        ///< Chiamo il main della classe che estende Application 
+        ///< richiama il main
         Main.main(args);
     }
     
