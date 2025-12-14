@@ -47,9 +47,6 @@ public class Utente{
      */
     public Utente(String rigaCSV) 
     {
-        /** Ogni volta che viene trovato un ";" 
-         * spezzo la stringa e inserisco il contenuto in un array di Stringhe 
-         */
         String[] arrayChunks = rigaCSV.split(";");
         
         this.nome=arrayChunks[0];
@@ -154,18 +151,12 @@ public class Utente{
      * @return true se gli oggetti sono uguali (stessa matricola), false altrimenti
      */
    @Override
-    public boolean equals(Object obj) {
-        ///< Verifica dei casi degeneri 
+    public boolean equals(Object obj) { 
         if (obj == null) return false;
-        if (this == obj) return true;
-
-        ///< Verifica che appartengano alla stessa classe 
+        if (this == obj) return true; 
         if (this.getClass() != obj.getClass()) 
-            return false;
-        ///< Downcast sicuro; in obj ho un riferimento di un libro 
-        Utente myUtente = (Utente) obj;
-
-        ///< Essendo all'interno della stessa classe, accedo all'attributo "codice", che è privato, di myLibro 
+            return false; 
+        Utente myUtente = (Utente) obj; 
         return this.matricola.equals(myUtente.matricola);
    }
 
@@ -212,7 +203,6 @@ public class Utente{
      */
     public String toCSV()
     {
-        ///< Si rimuovono gli eventuali punti e virgola dai campi testuali per non corrompere il CSV
         String safeNome = (nome != null) ? nome.replace(";", "") : "";
         String safeCognome = (cognome != null) ? cognome.replace(";", "") : "";
         String safeMatricola = (matricola != null) ? matricola.replace(";", "") : "";
