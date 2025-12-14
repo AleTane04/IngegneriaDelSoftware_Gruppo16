@@ -18,7 +18,7 @@
         <TableView fx:id="tabellaLibri">
             <columns>
                 <TableColumn fx:id="colTitolo" text="Titolo" prefWidth="200"/>
-                <TableColumn fx:id="colAutore" text="Autore" prefWidth="150"/>
+                <TableColumn fx:id="colAutore" text="Autori" prefWidth="150"/>
                 <TableColumn fx:id="colIsbn" text="ISBN" prefWidth="120"/>
                 <TableColumn fx:id="colAnno" text="Data Pubbl." prefWidth="100"/>
                 <TableColumn fx:id="colCopie" text="Copie" prefWidth="60"/>
