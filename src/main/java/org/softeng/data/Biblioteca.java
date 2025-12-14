@@ -189,7 +189,7 @@ public class Biblioteca
     /**
      * @brief Rimuove un utente dalla lista degli utenti gestiti.
      *
-     * Questa funzione rimuove l'oggetto Utente specificato dalla lista 
+     * Questa funzione non rimuove l'oggetto Utente specificato dalla lista;
      * se e solo se non ha prestiti attivi in corso (StatoPrestito diverso da RESTITUITO).
      * La rimozione non ha impatto sullo storico dei prestiti conclusi 
      * (listaPrestiti), rendendo i record orfani.
@@ -205,46 +205,22 @@ public class Biblioteca
      * @param[in] utenteDaRimuovere L'oggetto Utente da rimuovere.
      * 
      */
-    public void rimuoviUtente(Utente utenteDaRimuovere) throws Exception {
-
-        ///< Verifica che l'utente abbia prestiti attivi 
-        boolean haPrestitiAttivi = false;
-
+    public void rimuoviUtente(Utente utente) throws Exception
+    {
+        ///< Verifico che l'utente non abbia prestiti pendenti;
         for (Prestito p : listaPrestiti) {
-            ///< Verifica che l'utente corrisponda 
-            if (p.getUtente().equals(utenteDaRimuovere)) {
-
-                ///< Se il prestito non è concluso, mi fermo 
-                if (p.getStatoPrestito() != StatoPrestito.RESTITUITO) {
-                    haPrestitiAttivi = true;
-                    break; ///< Libro non restituito -> mi fermo 
-                }
+            if (p.getUtente().equals(utente) && p.getStatoPrestito() != StatoPrestito.RESTITUITO) {
+                throw new Exception("L'utente ha prestiti attivi! Impossibile rimuovere.");
             }
         }
 
-        ///< Se ci sono prestiti attivi, lancio una eccezione 
-        if (haPrestitiAttivi) {
-            throw new Exception("Impossibile eliminare: l'utente ha ancora dei libri da restituire!");
-        }
+        /// < Fase di cancellazione logica: non si invoca il metodo .remove, ma viene impostato il flag a 'disattivo'
 
-        ///< Prestiti conclusi -> cancellazione 
+        utente.setStatoUtente(false);
 
-        /** Scelta progettuale:
-         *  Desideriamo lo storico dei prestiti nel file CSV anche dopo aver cancellato l'utente,
-         *  dunque non tocchiamo minimamente la listaPrestiti.
-         *  Così facendo, i vecchi prestiti "verdi" rimarranno orfani (punteranno a una matricola che non c'è più nell'elenco utenti).
-
-         *  Riassumendo:
-         *  Per mantenere la consistenza, se un utente viene rimosso fisicamente, il sistema al riavvio scarta i prestiti
-         *  orfani non potendo più risalire ai dati anagrafici del richiedente.
-         */
-
-
-        listaUtenti.remove(utenteDaRimuovere);
-
-
+        ///< In questo modo l'oggetto non cessa di esistere, dunque si possono ancora invocare
+        ///< i metodi u.getNome() e u.getCognome()!
     }
-
     
     ///< Metodo concernente gli Utenti 
 

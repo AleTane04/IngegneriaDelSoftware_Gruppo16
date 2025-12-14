@@ -293,8 +293,8 @@ public class BibliotecaFileManager
                     ///< Se la matricola dell'utente corrente corrisponde a quella scritta nel file prestiti...
                     if (u.getMatricola().equals(matricolaCercata))
                     {
-                        utenteTrovato = u; ///< ...ho trovato l'oggetto giusto!
-                        break;             ///< Interrompo il ciclo, inutile continuare
+                        utenteTrovato = u; ///< Ho trovato l'oggetto giusto;
+                        break;             ///< Interrompo il ciclo;
                     }
                 }
 
