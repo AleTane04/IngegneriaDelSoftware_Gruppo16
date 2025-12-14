@@ -57,14 +57,14 @@ public class LibriController implements Initializable {
         colAnno.setCellValueFactory(new PropertyValueFactory<>("annoPubblicazione"));
 
         tabellaLibri.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        ///< La tabella diventa modificabile 
+        ///< La tabella viene settata come modificabile 
         tabellaLibri.setEditable(true);
 
         colTitolo.setCellFactory(TextFieldTableCell.forTableColumn());
         colTitolo.setOnEditCommit(event -> {
-            ///< Salvo il riferimento del libro il cui titolo è stato modificato 
+            ///< Il riferimento del libro è salvato e il suo titolo è stato modificato 
             Libro libro = event.getRowValue();
-            ///< Aggiorno il valore del campo Titolo 
+            ///< Il valore del campo Titolo è salvato
             libro.setTitolo(event.getNewValue());
         });
 
@@ -84,7 +84,7 @@ public class LibriController implements Initializable {
                     return super.fromString(value);
                 } catch (NumberFormatException e) {
 
-                    return -1; ///< Valore "sentinella", usato per indicare l'errore
+                    return -1; ///< nel caso viene catturato un'eccezione, il valore di ritorno indica l'errore
                 }
             }
         }));
@@ -93,14 +93,15 @@ public class LibriController implements Initializable {
             Integer numCopie = event.getNewValue();
             if(numCopie==null || numCopie<0)
             {
-                ///< Mostro Alert per avvisare l'utente
+                
+                ///< Viene lanciato un alert da mostrare
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Attenzione");
                 alert.setHeaderText("Valore non valido");
                 alert.setContentText("Il numero di copie non può essere negativo!");
                 alert.showAndWait();
 
-                ///< Refresh tabella
+                ///< La tabella viene aggiornata
                 tabellaLibri.refresh();
             }
                 else
@@ -123,7 +124,7 @@ public class LibriController implements Initializable {
             }
 
         });
-        ///< ISBN NON MODIFICABILE 
+        ///< l'ISBN viene settato come non modificabile
         colIsbn.setEditable(false);
 
         pickerAnno.setDayCellFactory(picker -> new DateCell() {
@@ -131,39 +132,37 @@ public class LibriController implements Initializable {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
 
-               ///< Verifico che la data inserita sia successiva a quella del giorno odierno 
+               ///< Viene verificato se la data inserita è successiva a quella di oggi
                 if (date.isAfter(LocalDate.now())) {
-                    ///< Disabilito la selezione della data 
+                    ///< Se è vero viene disabilita la selezione della data 
                     setDisable(true);
 
                 }
             }
         });
-        ///< Rendo il campo non editabile manualmente(via tastiera) 
+        ///< Il campo viene settato come non modificabile 
         pickerAnno.setEditable(false);
 
-        ///< Deselezionare premendo ESC 
+        ///< La deselezione avviene premendo il tasto ESC 
         tabellaLibri.setOnKeyPressed(event -> {
             if (event.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
                 tabellaLibri.getSelectionModel().clearSelection();
             }
         });
 
-        ///< Deselezionare cliccando su uno spazio vuoto 
+        ///< La deselezione avviene premendo su uno spazio vuoto
         tabellaLibri.setOnMouseClicked(event -> {
-            ///< Viene verificato che il click è avvenuto su uno spazio vacuo 
+            ///< Verifica che è stato cliccato uno spazio vuoto
             if (event.getTarget() instanceof javafx.scene.Node) {
-                javafx.scene.Node nodo = (javafx.scene.Node) event.getTarget();
-
-                ///< Risalita della gerarchia 
+                javafx.scene.Node nodo = (javafx.scene.Node) event.getTarget(); 
                 while (nodo != null && nodo != tabellaLibri) {
                     if (nodo instanceof TableRow && ((TableRow) nodo).getItem() != null) {
-                        return; ///< Riga valida -> esco senza far nulla 
+                        return;
                     }
                     nodo = nodo.getParent();
                 }
-
-                ///< È stato cliccato fuori dalle righe -> si procede con la pulizia della selezione 
+                
+                ///< Il click è avvenuto fuori dalla righe si passa alla pulizia della selezione
                 tabellaLibri.getSelectionModel().clearSelection();
             }
         });
@@ -190,7 +189,7 @@ public class LibriController implements Initializable {
     {
         this.manager = manager;
 
-        ///< Setup dei dati, una volta ricevuto il manager 
+        ///< i dati vengono settati
         FilteredList<Libro> filteredData = new FilteredList<>(manager.getLibri(), b -> true);
 
         txtRicerca.textProperty().addListener((obs, oldV, newV) -> {
@@ -296,24 +295,27 @@ public class LibriController implements Initializable {
     */
     @FXML
     public void onRimuovi() {
-       ///< Riga selezionata dall'utente 
+       ///< Selezione della riga per rimuovere
         Libro selezionato = tabellaLibri.getSelectionModel().getSelectedItem();
 
-        ///< Se l'utente non ha selezionato alcuna riga, viene avvisato 
+        ///< Se non viene selezionata una riga, viene mostrato un errore
         if (selezionato == null) {
             mostraErrore("Seleziona prima un libro dalla tabella!");
             return;
         }
 
-        ///< Provo a cancellare il libro 
+        ///< Rimozione del libro 
          try {
             manager.rimuoviLibro(selezionato);
         
-            ///< Se arrivo qui, non c'è stata eccezione -> Successo!
+            ///< Avviso di rimozione con successo
             mostraSuccesso("Libro eliminato con successo.");
         
         } catch (Exception e) {
-            ///< Se il manager lancia l'eccezione (libro in prestito), la catturo qui
+            /** 
+             * Il manager lancia l'eccezione perché il libro non può essere rimosso.
+             * Viene quindi catturata l'eccezione e viene mostrato l'errore
+             */
             mostraErrore(e.getMessage());
         }
     }
