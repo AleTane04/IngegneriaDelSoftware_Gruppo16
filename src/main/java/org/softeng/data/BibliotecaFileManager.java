@@ -45,15 +45,15 @@ public class BibliotecaFileManager
      */
     public void scriviSuFile(String fileName, List<?> myList, String myFileHeader) 
     {
-        ///< Uso il try-with-resources
-        try(PrintWriter pw = new PrintWriter(new FileWriter(fileName))) 
+        ///< Uso il try con le risorse
+        try(PrintWriter pw = new PrintWriter(new FileWriter(fileName)))
         {
-            
+            ///< Scrivo l'intestazione del mio file
             pw.println(myFileHeader);
-            
-            for(Object obj : myList) 
+
+            for(Object obj : myList)
             {
-                ///< Scrivo l'intestazione
+                ///< Scrivo l'header
                 if(obj instanceof Libro)
                     pw.println(((Libro) obj).toCSV());
                 else
@@ -64,7 +64,7 @@ public class BibliotecaFileManager
                     pw.println(((Prestito) obj).toCSV());
             }
         }
-        catch(IOException e) 
+        catch(IOException e)
         {
             System.err.println("Errore nella scrittura del file: "+ fileName + "; Errore: "+ e.getMessage());
         }
@@ -74,19 +74,19 @@ public class BibliotecaFileManager
     /**
      * @brief Salva la lista di tutti gli oggetti Libro su un file specificato.
      *
-     * Questa funzione è un metodo specifico che delega l'operazione di scrittura 
-     * al metodo generico scriviSuFile(), fornendo l'intestazione standard 
+     * Questa funzione è un metodo specifico che delega l'operazione di scrittura
+     * al metodo generico scriviSuFile(), fornendo l'intestazione standard
      * per il file dei libri in formato CSV.
      *
      *
      * @pre La lista libri deve contenere oggetti Libro validi.
-     * @post Il file specificato (fileName) è stato creato o sovrascritto, e contiene 
-     * l'intestazione "TITOLO;AUTORI;DATA;ISBN;COPIE" seguita dai dati di ciascun libro 
+     * @post Il file specificato (fileName) è stato creato o sovrascritto, e contiene
+     * l'intestazione "TITOLO;AUTORI;DATA;ISBN;COPIE" seguita dai dati di ciascun libro
      * in formato CSV.
      * @param[in] libri La lista di oggetti Libro da rendere persistente.
      * @param[in] fileName Il nome del file su cui salvare i dati.
      */
-    public void salvaLibri(List<Libro> libri, String fileName) 
+    public void salvaLibri(List<Libro> libri, String fileName)
     {
         scriviSuFile(fileName, libri,"TITOLO;AUTORI;DATA;ISBN;COPIE");
     }
@@ -95,18 +95,18 @@ public class BibliotecaFileManager
     /**
      * @brief Salva la lista di tutti gli oggetti Utente su un file specificato.
      *
-     * Questa funzione è un metodo specifico che delega l'operazione di scrittura 
-     * al metodo generico scriviSuFile(), fornendo l'intestazione standard 
+     * Questa funzione è un metodo specifico che delega l'operazione di scrittura
+     * al metodo generico scriviSuFile(), fornendo l'intestazione standard
      * per il file degli utenti in formato CSV.
      *
      * @pre La lista utenti deve contenere oggetti Utente validi.
-     * @post Il file specificato (fileName) è stato creato o sovrascritto, e contiene 
-     * l'intestazione "NOME;COGNOME;MATRICOLA;EMAIL" seguita dai dati di ciascun utente 
+     * @post Il file specificato (fileName) è stato creato o sovrascritto, e contiene
+     * l'intestazione "NOME;COGNOME;MATRICOLA;EMAIL" seguita dai dati di ciascun utente
      * in formato CSV.
      * @param[in] utenti La lista di oggetti Utente da rendere persistente.
      * @param[in] fileName Il nome del file su cui salvare i dati.
      */
-    public void salvaUtenti(List<Utente> utenti, String fileName) 
+    public void salvaUtenti(List<Utente> utenti, String fileName)
     {
         scriviSuFile(fileName, utenti,"NOME;COGNOME;MATRICOLA;EMAIL");
     }
@@ -115,19 +115,19 @@ public class BibliotecaFileManager
     /**
      * @brief Salva la lista di tutti gli oggetti Prestito su un file specificato.
      *
-     * Questa funzione è un metodo specifico che delega l'operazione di scrittura 
-     * al metodo generico scriviSuFile(), fornendo l'intestazione standard 
+     * Questa funzione è un metodo specifico che delega l'operazione di scrittura
+     * al metodo generico scriviSuFile(), fornendo l'intestazione standard
      * per il file dei libri in formato CSV.
      *
      *
      * @pre La lista prestiti deve contenere oggetti Prestito validi.
-     * @post Il file specificato (fileName) è stato creato o sovrascritto, e contiene 
-     * l'intestazione "MATRICOLA_UTENTE;ISBN_LIBRO;DATA_INIZIO;DATA_FINE;DATA_RESTITUZIONE" seguita dai dati di ciascun prestito 
+     * @post Il file specificato (fileName) è stato creato o sovrascritto, e contiene
+     * l'intestazione "MATRICOLA_UTENTE;ISBN_LIBRO;DATA_INIZIO;DATA_FINE;DATA_RESTITUZIONE" seguita dai dati di ciascun prestito
      * in formato CSV.
      * @param[in] prestiti La lista di oggetti Prestito da rendere persistente.
      * @param[in] fileName Il nome del file su cui salvare i dati.
      */
-    public void salvaPrestiti(List<Prestito> prestiti, String fileName) 
+    public void salvaPrestiti(List<Prestito> prestiti, String fileName)
     {
         scriviSuFile(fileName, prestiti,"MATRICOLA_UTENTE;ISBN_LIBRO;DATA_INIZIO;DATA_FINE;DATA_RESTITUZIONE");
     }
@@ -136,7 +136,7 @@ public class BibliotecaFileManager
     /**
      * @brief Carica e deserializza gli oggetti Libro da un file di testo.
      *
-     * Questa funzione legge il file specificato, saltando la prima riga (intestazione), 
+     * Questa funzione legge il file specificato, saltando la prima riga (intestazione),
      * e tenta di creare un nuovo oggetto Libro per ogni riga successiva.
      * Le righe corrotte (che sollevano un'eccezione durante la costruzione del Libro)
      * vengono ignorate e segnalate su System.err.
@@ -146,27 +146,27 @@ public class BibliotecaFileManager
      * @pre Il file specificato deve esistere. Se non esiste, viene restituita una lista vuota.
      * @pre Il file, se esistente, deve essere un file di testo con la prima riga come intestazione.
      *
-     * @return Una lista osservabile contenente tutti gli oggetti Libro 
+     * @return Una lista osservabile contenente tutti gli oggetti Libro
      * caricati con successo dal file. La lista è vuota se il file non esiste o è vuoto.
      *
      */
-    public ObservableList<Libro> caricaLibriDaFile(String fileName) 
+    public ObservableList<Libro> caricaLibriDaFile(String fileName)
     {
         ObservableList<Libro> libri = FXCollections.observableArrayList();
         File f = new File(fileName);
-        if (!f.exists()) 
+        if (!f.exists())
             return libri;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(f))) 
+        try (BufferedReader br = new BufferedReader(new FileReader(f)))
         {
-            ///< Lettura a vuoto
-            br.readLine(); 
+            ///< Lettura a vuoto, salto l'intestazione
+            br.readLine();
             String riga;
-            while ((riga = br.readLine()) != null) 
+            while ((riga = br.readLine()) != null)
             {
                 if(riga.isEmpty())
                     continue;
-                ///< Aggiungo un nuovo Libro dalla lettura della riga 
+                ///< Aggiungo un nuovo Libro dalla lettura della riga
                 try
                 {
                     libri.add(new Libro(riga));
@@ -188,7 +188,7 @@ public class BibliotecaFileManager
     /**
      * @brief Carica e deserializza gli oggetti Utente da un file di testo.
      *
-     * Questa funzione legge il file specificato, saltando la prima riga (intestazione), 
+     * Questa funzione legge il file specificato, saltando la prima riga (intestazione),
      * e tenta di creare un nuovo oggetto Utente per ogni riga successiva.
      * Le righe corrotte (che sollevano un'eccezione durante la costruzione del Libro)
      * vengono ignorate e segnalate su System.err.
@@ -198,29 +198,30 @@ public class BibliotecaFileManager
      * @pre Il file specificato deve esistere. Se non esiste, viene restituita una lista vuota.
      * @pre Il file, se esistente, deve essere un file di testo con la prima riga come intestazione.
      *
-     * @return Una lista osservabile contenente tutti gli oggetti Utente 
+     * @return Una lista osservabile contenente tutti gli oggetti Utente
      * caricati con successo dal file. La lista è vuota se il file non esiste o è vuoto.
      *
      */
-    public ObservableList<Utente> caricaUtentiDaFile(String nomeFile) 
+    public ObservableList<Utente> caricaUtentiDaFile(String nomeFile)
     {
         ObservableList<Utente> utenti = FXCollections.observableArrayList();
         File f = new File(nomeFile);
         if (!f.exists())
             return utenti;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(f))) 
+        try (BufferedReader br = new BufferedReader(new FileReader(f)))
         {
-            ///< Lettura a vuoto
+            ///< Lettura a vuoto, salto l'intestazione
             br.readLine();
             String riga;
-            while ((riga = br.readLine()) != null) 
+            while ((riga = br.readLine()) != null)
             {
                 if(riga.isEmpty())
                     continue;
-                ///< Aggiungo un nuovo utente dalla lettura della riga 
+                ///< Aggiungo un nuovo utente dalla lettura della riga
                 try
                 {
+                    ///< Uso il costruttore CSV
                     utenti.add(new Utente(riga));
                 }
                 catch(Exception e)
@@ -233,13 +234,13 @@ public class BibliotecaFileManager
         }
         return utenti;
     }
-    
 
-    
+
+    ///< Questo metodo ricollega gli ID (ISBN/Matricola) agli oggetti veri. Carica i prestiti e ricostruisce i collegamenti tra gli oggetti
     /**
      * @brief Carica e deserializza gli oggetti Prestito da un file di testo.
      *
-     * Questa funzione legge il file specificato, saltando la prima riga (intestazione), 
+     * Questa funzione legge il file specificato, saltando la prima riga (intestazione),
      * e tenta di creare un nuovo oggetto Prestito per ogni riga successiva.
      * Le righe corrotte (che sollevano un'eccezione durante la costruzione del Libro)
      * vengono ignorate e segnalate su System.err.
@@ -249,29 +250,29 @@ public class BibliotecaFileManager
      * @pre Il file specificato deve esistere. Se non esiste, viene restituita una lista vuota.
      * @pre Il file, se esistente, deve essere un file di testo con la prima riga come intestazione.
      *
-     * @return Una lista osservabile contenente tutti gli oggetti Prestito 
+     * @return Una lista osservabile contenente tutti gli oggetti Prestito
      * caricati con successo dal file. La lista è vuota se il file non esiste o è vuoto.
      *
      */
-    public ObservableList<Prestito> caricaPrestitiDaFile(String nomeFile, ObservableList<Utente> utenti, ObservableList<Libro> libri) 
+    public ObservableList<Prestito> caricaPrestitiDaFile(String nomeFile, ObservableList<Utente> utenti, ObservableList<Libro> libri)
     {
         ObservableList<Prestito> listaPrestiti = FXCollections.observableArrayList();
         File f = new File(nomeFile);
         if (!f.exists())
             return listaPrestiti;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(f))) 
+        try (BufferedReader br = new BufferedReader(new FileReader(f)))
         {
-            ///< Lettura a vuoto
-            br.readLine(); 
+            ///< Lettura a vuoto, salto l'intestazione
+            br.readLine();
             String riga;
-            while ((riga = br.readLine()) != null) 
+            while ((riga = br.readLine()) != null)
             {
-                if (riga.isEmpty()) 
+                if (riga.isEmpty())
                     continue;
-        /** 
-         * Ogni volta che viene trovato un ";" 
-         * la stringa è spezzata e il suo contenuto è inserito in un array di String 
+        /**
+         * Ogni volta che viene trovato un ";"
+         * spezzo la stringa e inserisco il contenuto in un array di Stringhe
          */
                 String[] chunks = riga.split(";");
                 if (chunks.length < 4) continue;
@@ -286,18 +287,18 @@ public class BibliotecaFileManager
 
                 Utente utenteTrovato = null;
 
-                
+                ///< Scorro la lista degli utenti caricata in memoria
                 for (Utente u : utenti)
                 {
-                    ///< Se la matricola dell'utente corrente corrisponde a quella scritta nel file prestiti, l'utente è stato individuato
+                    ///< Se la matricola dell'utente corrente corrisponde a quella scritta nel file prestiti...
                     if (u.getMatricola().equals(matricolaCercata))
                     {
-                        utenteTrovato = u; 
-                        break;             ///< Se l'utente viene trovato, il ciclo viene interrotto
+                        utenteTrovato = u; ///< Ho trovato l'oggetto giusto!
+                        break;             ///< Interrompo il ciclo, inutile continuare
                     }
                 }
 
-                ///< Se un utente è stato rimosso, ne viene creato uno "fittizio" per non perderne lo storico dei prestiti associato.
+                ///< Se un utente è stato rimosso, ne creo uno nuovo "fittizio" per non perdere lo storico dei prestiti associato.
                 if (utenteTrovato == null)
                 {
                     utenteTrovato = new Utente("Utente", "Rimosso", matricolaCercata, "N/A");
@@ -307,12 +308,12 @@ public class BibliotecaFileManager
 
                 Libro libroTrovato = null;
 
-                
+                ///< Si scorre la lista dei libri caricata in memoria
                 for (Libro l : libri) {
-                    ///< Se l'ISBN del libro corrente corrisponde a quello scritto nel file prestiti, il libro è stato individuato
+                    ///< Se l'ISBN del libro corrente corrisponde a quello scritto nel file prestiti:
                     if (l.getCodiceISBN().equals(isbnCercato)) {
-                        libroTrovato = l; 
-                        break;            ///< Si interrompe il ciclo se l'utente è stato trovato
+                        libroTrovato = l; ///< Il libro 'giusto' è stato trovato;
+                        break;            ///< Si interrompe il ciclo
                     }
                 }
 

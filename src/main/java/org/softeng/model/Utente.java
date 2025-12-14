@@ -15,13 +15,11 @@ package org.softeng.model;
  *
  * informazioni sul file e il suo ruolo nel progetto 
  */
-public class Utente
-{
+public class Utente{
     private String nome;
     private String cognome;
     private final String matricola;
     private String email;
-    public boolean statoUtente;
     
     /** @brief Costruttore della classe Utente
      *  Inizializza una nuova istanza della classe Utente.
@@ -32,13 +30,11 @@ public class Utente
      *  @return Un nuovo oggetto della classe Utente
      *  @post L'oggetto creato della classe Utente è in uno stato coerente e valido
      */
-    public Utente(String nome, String cognome, String matricola, String email)
-    {
+    public Utente(String nome, String cognome, String matricola, String email){
         this.nome=nome;
         this.cognome=cognome;
         this.matricola=matricola;
         this.email=email;
-        this.statoUtente = true;
         
     }
     
@@ -60,16 +56,6 @@ public class Utente
         this.cognome=arrayChunks[1];
         this.matricola = arrayChunks[2];
         this.email=arrayChunks[3];
-
-        ///< Se il file .csv presenta una quinta colonna, la leggo, altrimenti imposto di 'default' a true lo stato;
-        if (arrayChunks.length >= 5)
-        {
-            this.statoUtente = Boolean.parseBoolean(arrayChunks[4]);
-        }
-            else
-        {
-            this.statoUtente = true;
-        }
      
     }
     
@@ -119,13 +105,6 @@ public class Utente
        return email;
    }
 
-    /** @brief Restituisce lo stato dell'utente
-     *
-     *  @post Il valore restituito corrisponde all'attributo interno 'statoUtente'
-     *
-     *  @return Lo stato dell'Utente nella biblioteca;
-     */
-    public boolean getStatoUtente() { return statoUtente; }
    ///<metodi setter
 
 
@@ -161,15 +140,6 @@ public class Utente
    public void setEmail(String email){
        this.email=email;
    }
-
-    /** @brief Imposta e aggiorna lo stato dell'utente
-     *
-     *  @pre flag statoUtente non deve essere null
-     *  @post this.statoUtente è uguale al parametro 'statoUtente'
-     *
-     *  @param[in] statoUtente Un flag che descrive lo stato dell'utente
-     */
-   public void setStatoUtente(boolean statoUtente) { this.statoUtente = statoUtente; }
 
 
     /**
@@ -209,9 +179,10 @@ public class Utente
      * @return Un intero che rappresenta il codice hash dell'oggetto.
      */
     @Override
-    public int hashCode()
-    {
+    public int hashCode(){
         return matricola == null ? 0 : matricola.hashCode();
+
+
     }
 
     
@@ -239,8 +210,7 @@ public class Utente
      *
      * @return Una stringa pronta per essere scritta in un file .csv.
      */
-    public String toCSV()
-    {
-        return nome+";"+cognome+";"+matricola+";"+email+";"+statoUtente;
+    public String toCSV() {
+        return nome+";"+cognome+";"+matricola+";"+email;
     }
 }

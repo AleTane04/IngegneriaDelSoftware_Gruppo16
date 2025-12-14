@@ -49,19 +49,19 @@ public class Biblioteca
     {
         this.bibliotecaFileManager = new BibliotecaFileManager();
         
-        ///< Carico le le liste di Libri e Utenti 
+        ///< Carico le entità "indipendenti", ossia la lista di Libri e Utenti
         this.listaLibri = bibliotecaFileManager.caricaLibriDaFile(FILE_LIBRI);
         this.listaUtenti = bibliotecaFileManager.caricaUtentiDaFile(FILE_UTENTI);
-        
+
         /** Per caricare i prestiti, gli passo al BibliotecaFileManager
          *  le liste appena popolate
          */
-        
+
         this.listaPrestiti = bibliotecaFileManager.caricaPrestitiDaFile(FILE_PRESTITI, listaUtenti, listaLibri);
-        
+
     }
-    
-    ///< Metodi Getter 
+
+    ///< Metodi Getter
 
 
     /**
@@ -70,12 +70,12 @@ public class Biblioteca
      * Fornisce un accesso alla collezione interna dei libri gestiti dall'oggetto
      * Biblioteca.
      *
-     * 
+     *
      * @post Viene restituita la collezione interna dei libri della biblioteca.
-     * @return Un oggetto ObservableList contenente tutti gli oggetti Libro 
+     * @return Un oggetto ObservableList contenente tutti gli oggetti Libro
      * attualmente presenti nella biblioteca.
      */
-    public ObservableList<Libro> getLibri() 
+    public ObservableList<Libro> getLibri()
     {
         return listaLibri;
     }
@@ -87,12 +87,12 @@ public class Biblioteca
      * Fornisce un accesso alla collezione interna degli utenti gestiti dall'oggetto
      * Biblioteca.
      *
-     * 
+     *
      * @post Viene restituita la collezione interna degli utenti della biblioteca.
      * @return Un oggetto ObservableList contenente tutti gli oggetti Utente
      * attualmente presenti nella biblioteca.
      */
-    public ObservableList<Utente> getUtenti() 
+    public ObservableList<Utente> getUtenti()
     {
         return listaUtenti;
     }
@@ -104,174 +104,170 @@ public class Biblioteca
      * Fornisce un accesso alla collezione interna dei prestiti gestiti dall'oggetto
      * Biblioteca.
      *
-     * 
+     *
      * @post Viene restituita la collezione interna dei prestiti della biblioteca.
      * @return Un oggetto ObservableList contenente tutti gli oggetti Prestito
      * attualmente presenti nella biblioteca.
      */
-    public ObservableList<Prestito> getPrestiti() 
+    public ObservableList<Prestito> getPrestiti()
     {
         return listaPrestiti;
     }
-    
+
     ///< Metodi concernenti i Libri
 
-    ///< Aggiunta di un libro
     /**
      * @brief Aggiunge un nuovo libro alla lista, se non è già presente.
      * Questa funzione tenta di inserire un oggetto Libro nella collezione.
      * Se il libro (identificato dalla sua chiave unica, l'ISBN
      * contenuto in newLibro) è già presente, viene sollevata un'eccezione.
      *
-     * 
-     * @pre Il parametro newLibro non deve essere nullo e deve contenere 
+     *
+     * @pre Il parametro newLibro non deve essere nullo e deve contenere
      * un identificatore (ISBN) valido e unico.
-     * @post Se l'operazione ha successo, la lista dei libri contiene newLibro 
+     * @post Se l'operazione ha successo, la lista dei libri contiene newLibro
      * e la sua dimensione è aumentata di uno. L'oggetto newLibro viene aggiunto
      * solo se non è già presente nella lista.
      * @param[in] newLibro L'oggetto Libro da aggiungere
-     * 
+     *
      */
     public void aggiungiLibro(Libro newLibro) throws LibroGiaPresenteException
     {
-    
+
         if(listaLibri.contains(newLibro) == false) {
             listaLibri.add(newLibro);
         }
             else
         {
-           ///< Lancio una eccezione 
+           ///< Lancio una eccezione
              throw new LibroGiaPresenteException("Esiste già un libro con ISBN " + newLibro.getCodiceISBN() + ".\nRiprovare, o, in alternativa, aggiornare il numero di copie.");
-            
+
         }
     }
-    
-    ///< Rimozione di un libro 
+
+    ///< Rimozione di un libro
     /**
      * @brief Rimuove un libro dalla lista di libri gestiti.
      *
-     * Questa funzione rimuove l'oggetto Libro specificato dalla lista 
+     * Questa funzione rimuove l'oggetto Libro specificato dalla lista
      * se e solo se non è attualmente associato ad alcun prestito.
      *
      * @pre Il libro specificato non deve essere attualmente in prestito.
-     * @post Se l'operazione ha successo (il libro non era in prestito), 
-     * il libro viene rimosso dalla lista, e la dimensione della lista si 
+     * @post Se l'operazione ha successo (il libro non era in prestito),
+     * il libro viene rimosso dalla lista, e la dimensione della lista si
      * riduce di uno.
      * @param[in] libroDaRimuovere L'oggetto Libro da rimuovere dalla collezione.
-     * 
+     *
      */
-    public void rimuoviLibro(Libro libroDaRimuovere) throws Exception 
+    public void rimuoviLibro(Libro libroDaRimuovere) throws Exception
     {
-        
-    
-    
-    ///< Scorro la lista dei prestiti e cerco se c'è quel libro
-    boolean inPrestito = false;
-    for (Prestito p : listaPrestiti) {
-        if (p.getLibro().equals(libroDaRimuovere)) {
-            inPrestito = true;
-            break;
+        for (Prestito p : listaPrestiti) {
+        if (p.getLibro().equals(libroDaRimuovere))
+        {
+            if (p.getStatoPrestito() != StatoPrestito.RESTITUITO)
+            {
+                throw new Exception("Impossibile eliminare: il libro è attualmente in prestito da un utente!");
+            }
+
         }
     }
 
-    ///< se il libro è ancora in prestito, viene lanciata una Exception
-    if (inPrestito) {
-        throw new Exception("Impossibile cancellare: il libro è attualmente in prestito");
-    }
-
-    
-    ///< Se invece è libero la lista si aggiorna, rimuovendo il libro
+    ///< 3. SE È LIBERO -> LO CANCELLO
+    ///< La lista si aggiorna, e grazie a ObservableList anche la tabella sparirà da sola
     listaLibri.remove(libroDaRimuovere);
     }
 
 
 
 
-    ///< Metodi concernenti gli utenti
-    
-    ///< Rimozione di un utente
     /**
      * @brief Rimuove un utente dalla lista degli utenti gestiti.
      *
-     * Questa funzione rimuove l'oggetto Utente specificato dalla lista 
+     * Questa funzione rimuove l'oggetto Utente specificato dalla lista
      * se e solo se non ha prestiti attivi in corso (StatoPrestito diverso da RESTITUITO).
-     * La rimozione non ha impatto sullo storico dei prestiti conclusi,
-     * rendendo i record orfani.
+     * La rimozione non ha impatto sullo storico dei prestiti conclusi
+     * (listaPrestiti), rendendo i record orfani.
      *
-     * 
      *
-     * @pre L'utente specificato non deve avere prestiti attivi in corso (ovvero, tutti 
+     *
+     * @pre L'utente specificato non deve avere prestiti attivi in corso (ovvero, tutti
      * i prestiti a lui associati devono avere StatoPrestito.RESTITUITO).
-     * @post Se l'operazione ha successo (nessun prestito attivo), l'utente viene 
+     * @post Se l'operazione ha successo (nessun prestito attivo), l'utente viene
      * rimosso dalla lista, e la dimensione della lista si riduce di uno. I record
      * dei prestiti conclusi associati a questo utente vengono mantenuti.
      *
      * @param[in] utenteDaRimuovere L'oggetto Utente da rimuovere.
-     * 
+     *
      */
     public void rimuoviUtente(Utente utenteDaRimuovere) throws Exception {
 
-        ///< Il flag serve a verificare che l'utente ha prestiti attivi, ed inizialmente è false
+        ///< Verifica che l'utente abbia prestiti attivi
         boolean haPrestitiAttivi = false;
 
         for (Prestito p : listaPrestiti) {
-            
+            ///< Verifica che l'utente corrisponda
             if (p.getUtente().equals(utenteDaRimuovere)) {
 
-                ///< Se il prestito non è concluso, il flag haPrestitiAttivi viene impostato a true
+                ///< Se il prestito non è concluso, mi fermo
                 if (p.getStatoPrestito() != StatoPrestito.RESTITUITO) {
                     haPrestitiAttivi = true;
-                    break; ///< Se il libro non è restituito, il ciclo è interrotto
+                    break; ///< Libro non restituito -> mi fermo
                 }
             }
         }
 
-        ///< Se ci sono prestiti attivi, viene lanciata una Exception
+        ///< Se ci sono prestiti attivi, lancio una eccezione
         if (haPrestitiAttivi) {
             throw new Exception("Impossibile eliminare: l'utente ha ancora dei libri da restituire!");
         }
 
-        
+        ///< Prestiti conclusi -> cancellazione
 
-        /** Siccome si vuole mantenere lo storico dei prestiti nonostante un utente venga rimosso, 
-         *  allora la lista dei prestiti non viene intaccata dalla rimozione dell'utente
+        /** Scelta progettuale:
+         *  Desideriamo lo storico dei prestiti nel file CSV anche dopo aver cancellato l'utente,
+         *  dunque non tocchiamo minimamente la listaPrestiti.
+         *  Così facendo, i vecchi prestiti "verdi" rimarranno orfani (punteranno a una matricola che non c'è più nell'elenco utenti).
+
+         *  Riassumendo:
+         *  Per mantenere la consistenza, se un utente viene rimosso fisicamente, il sistema al riavvio scarta i prestiti
+         *  orfani non potendo più risalire ai dati anagrafici del richiedente.
          */
+
 
         listaUtenti.remove(utenteDaRimuovere);
 
 
     }
 
-    
-    ///< Aggiunta di un utente
+
+    ///< Metodo concernente gli Utenti
+
     /**
      * @brief Aggiunge un nuovo utente alla lista, se non è già presente.
      *
      * Questa funzione tenta di inserire un oggetto Utente nella collezione.
-     * Se l'utente (identificato in base al criterio di uguaglianza dell'oggetto, tramite la matricola) 
+     * Se l'utente (identificato in base al criterio di uguaglianza dell'oggetto, tramite la matricola)
      * è già presente, viene sollevata un'eccezione.
-     * 
-     * @pre Il parametro newUtente non deve essere nullo e deve contenere 
+     *
+     * @pre Il parametro newUtente non deve essere nullo e deve contenere
      * una matricola valida.
-     * @post Se l'operazione ha successo, la lista degli utenti contiene newUtente 
+     * @post Se l'operazione ha successo, la lista degli utenti contiene newUtente
      * e la sua dimensione è aumentata di uno.
      *
      * @param[in] newUtente L'oggetto Utente da aggiungere.
      */
     public void aggiungiUtente(Utente newUtente) throws UtenteGiaPresenteException
     {
-    
+
         if(listaUtenti.contains(newUtente) == false) {
             listaUtenti.add(newUtente);
         } else {
 
             throw new UtenteGiaPresenteException("Esiste già un utente con Matricola: " + newUtente.getMatricola());
-            
+
         }
     }
 
-    ///< Metodi concernenti i prestiti
-    
     ///< Inserimento di un nuovo prestito
     /**
      * @brief Registra un nuovo prestito di un libro a un utente.
@@ -285,59 +281,69 @@ public class Biblioteca
      * @pre Il libro deve avere almeno una copia disponibile (NumeroCopieDisponibili > 0).
      * @pre L'utente deve avere meno di 3 prestiti attivi.
      * @post Se l'operazione ha successo
-     * viene creato e aggiunto alla listaPrestiti un nuovo oggetto Prestito 
+     * viene creato e aggiunto alla listaPrestiti un nuovo oggetto Prestito
      * con la data di inizio odierna e la data di fine specificata.
      * @post Il numero di copie disponibili del libro viene decrementato di uno.
      * @post La vista della lista libri viene aggiornata per riflettere il decremento.
-     * 
+     *
      *
      */
-    public void registraPrestito(Utente u, Libro l, LocalDate dataFine) 
-            throws LibroNonDisponibileException, LimitePrestitiSuperatoException 
+    public void registraPrestito(Utente u, Libro l, LocalDate dataFine)
+            throws LibroNonDisponibileException, LimitePrestitiSuperatoException
     {
-        ///< Viene controllato il numero di copie a disposizione e se insufficiente viene lanciata LibroNonDisponibileException 
-        if (l.getNumeroCopieDisponibili() <= 0) 
+        ///< Eseguo il controllo del numero di copie a disposizione
+        if (l.getNumeroCopieDisponibili() <= 0)
         {
             throw new LibroNonDisponibileException("Copie esaurite per il libro: " + l.getTitolo());
         }
 
-        ///< Viene controllato il numero di prestiti associati ad un Libro
+        ///< Eseguo il controllo del numero di Prestiti associati a un Testo
+
         int numeroPrestitiAttivi = 0;
-        
-        for(Prestito p : listaPrestiti) 
+
+        for(Prestito p : listaPrestiti)
         {
             if(p.getUtente().equals((u)))
                 numeroPrestitiAttivi++;
         }
 
-        if (numeroPrestitiAttivi >= 3) 
+        if (numeroPrestitiAttivi >= 3)
         {
             throw new LimitePrestitiSuperatoException("L'utente " + u.getNome() + " ha già 3 prestiti attivi.");
         }
 
-        ///< Viene creato un nuovo prestito, la cui data di inizio è quella odierna 
+        ///< Creazione di un nuovo prestito, la cui data di inizio è quella odierna
         Prestito nuovoPrestito = new Prestito(u, l, LocalDate.now(), dataFine);
-        
-        
-        ///< Viene aggiornato lo stato del prestito e il numero di copie disponibili per quel libro viene decrementato
+
+        /**
+         * Aggiornamento dello Stato: si aggiunge il prestito alla Lista e si decrementa
+         * il numero di copie del volume associato
+         */
+
         listaPrestiti.add(nuovoPrestito);
-        l.decrementaNumeroCopieDisponibili(); 
+        l.decrementaNumeroCopieDisponibili(); ///< Metodo nel model che fa copie--
+
+
+
+        /** Si forza il refresh della lista libri per aggiornare,
+         *  in modo immediato, il numero di copie visualizzato
+         *  sulla tabella
+         */
         int i = listaLibri.indexOf(l);
         if(i >= 0) listaLibri.set(i, l);
     }
 
 
-    ///< Restituzione di un libro
     /**
      * @brief Registra la restituzione di un prestito e aggiorna la disponibilità del libro.
      *
      * Questa funzione registra la data di restituzione effettiva per un prestito in corso,
-     * impostandola alla data odierna, e aumenta di conseguenza il numero di copie 
+     * impostandola alla data odierna, e aumenta di conseguenza il numero di copie
      * disponibili del libro associato.
      *
-     * 
      *
-     * @pre Il prestito deve essere attualmente in corso (StatoPrestito diverso da RESTITUITO). 
+     *
+     * @pre Il prestito deve essere attualmente in corso (StatoPrestito diverso da RESTITUITO).
      * Se il prestito è già restituito, la funzione termina senza effettuare modifiche.
      *
      * @post Se l'operazione ha avuto luogo (il prestito non era già RESTITUITO):
@@ -345,47 +351,49 @@ public class Biblioteca
      * Lo stato del prestito è aggiornato (implicito dal cambiamento della data/stato).
      * Il numero di copie disponibili del libro associato viene incrementato di uno.
      * Le liste di libri e prestiti vengono aggiornate per riflettere le modifiche.
-     * 
+     *
      */
     public void restituisciPrestito(Prestito p)
     {
-        ///< Se lo stato del prestito è restituito, si esce dal metodo
+        ///< Controllo di sicurezza: se la data esiste, esco
         if (p.getStatoPrestito() == StatoPrestito.RESTITUITO)
             return;
 
-        ///< La data di restituzione è settata alla data odierna 
+        ///< Logica di Business: setto come data di restituzione quella odierna
         p.setDataRestituzioneEffettiva(LocalDate.now());
 
         Libro l = p.getLibro();
         l.incrementaNumeroCopieDisponibili();
 
-        ///< Il numero di copie è incrementato
+        ///< Aggiorno il numero di copie
         int indexLibro = listaLibri.indexOf(l);
         if(indexLibro >= 0) {
             listaLibri.set(indexLibro, l);
         }
 
-        ///< La lista dei prestiti è aggiornata
+        /**
+         *  Aggiornamento lista prestiti (per notificare il cambiamento di stato):
+         *  Necessario per far "capire" a JavaFX che quel prestito è cambiato.
+         */
         int indexPrestito = listaPrestiti.indexOf(p);
         if(indexPrestito >= 0) {
             listaPrestiti.set(indexPrestito, p);
         }
     }
 
-    ///< Metodo di salvataggio su file
    /**
      * @brief Salva lo stato attuale della biblioteca su file di persistenza.
      *
-     * Questa funzione delega al gestore dei file (bibliotecaFileManager) il compito di 
-     * scrivere tutte le liste principali (libri, utenti e prestiti) nei rispettivi 
-     * file di salvataggio (in formato CSV).
+     * Questa funzione delega al gestore dei file (bibliotecaFileManager) il compito di
+     * scrivere tutte le liste principali (libri, utenti e prestiti) nei rispettivi
+     * file di persistenza (in formato CSV).
      *
-     * @post Tutte le modifiche apportate alle liste (listaLibri, listaUtenti, listaPrestiti) 
+     * @post Tutte le modifiche apportate alle liste (listaLibri, listaUtenti, listaPrestiti)
      * sono state salvate in modo permanente sui file esterni.
      */
     public void saveAll()
     {
-        ///< Il file manager è delegato a salvare le liste sui file rispettivi 
+        ///< Delega al FileManager la scrittura fisica
         bibliotecaFileManager.salvaLibri(listaLibri, FILE_LIBRI);
         bibliotecaFileManager.salvaUtenti(listaUtenti, FILE_UTENTI);
         bibliotecaFileManager.salvaPrestiti(listaPrestiti, FILE_PRESTITI);
