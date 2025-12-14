@@ -76,7 +76,7 @@ public class PrestitiController implements Initializable {
             }
                 else
             {
-                ///< Se il testo è tornato, mostro la data 
+                ///< Se il testo è tornato, viene mostrata la data
                 return new SimpleStringProperty(dataRientro.toString());
             }
         });
@@ -130,9 +130,8 @@ public class PrestitiController implements Initializable {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
 
-                ///< Se la data precede quella del giorno odierno 
+                ///< Se la data precede quella del giorno odierno, viene disabilitata
                 if (date.isBefore(LocalDate.now())) {
-                    ///< La disabilito 
                     setDisable(true);
 
                 }
@@ -141,16 +140,16 @@ public class PrestitiController implements Initializable {
         dateFine.setEditable(false);
         tabellaPrestiti.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        ///< Deselezionare premendo ESC 
+        ///< La deselezione avviene premendo ESC
         tabellaPrestiti.setOnKeyPressed(event -> {
             if (event.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
                 tabellaPrestiti.getSelectionModel().clearSelection();
             }
         });
 
-        ///< Deselezionare cliccando su uno spazio vuoto 
+        ///< La deselezione avviene premendo uno spazio vuoto 
         tabellaPrestiti.setOnMouseClicked(event -> {
-            ///< Viene verificato che il click è avvenuto su uno spazio vacuo 
+            ///< Verifica che è stato premuto uno spazio vuoto
             if (event.getTarget() instanceof javafx.scene.Node) {
                 javafx.scene.Node nodo = (javafx.scene.Node) event.getTarget();
 
