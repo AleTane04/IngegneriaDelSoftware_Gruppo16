@@ -65,9 +65,7 @@ public class Libro{
      */
     public Libro(String rigaCSV) 
     {
-        /** Ogni volta che viene trovato un ";" 
-         *  spezzo la stringa e inserisco il contenuto in un array di Stringhe 
-         */
+        
         String[] arrayChunks = rigaCSV.split(";");
         
         this.titolo=arrayChunks[0];
@@ -192,11 +190,11 @@ public class Libro{
         ///< Controllo della PRECONDIZIONE
         if (q < 0)
         {
-            ///< Violazione del contratto! Lancio un'eccezione non controllata
+            ///<solleva un'eccezione non controllata
             throw new IllegalArgumentException("Violazione precondizione: le copie non possono essere negative (" + q + ")");
         }
 
-        ///< Eseguo se, e solo se, la precondizione è vera
+        ///< Esecuziione se la precondizione è vera
         this.numeroCopieDisponibili = q;
     }
     
@@ -240,17 +238,11 @@ public class Libro{
      */
     @Override
     public boolean equals(Object obj) {
-        ///< Verifica dei casi degeneri 
         if (obj == null) return false;
         if (this == obj) return true;
-
-        ///< Verifica che appartengano alla stessa classe 
         if (this.getClass() != obj.getClass()) 
             return false;
-        ///< Downcast sicuro; in obj ho un riferimento di un libro 
         Libro myLibro = (Libro) obj;
-
-        ///< Essendo all'interno della stessa classe, accedo all'attributo "codice", che è privato, di myLibro 
         return this.codiceISBN.equals(myLibro.codiceISBN);
     }
 
