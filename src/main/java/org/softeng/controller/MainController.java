@@ -34,7 +34,7 @@ public class MainController implements Initializable
     private Biblioteca myBiblioteca;
 
     /**
-     * Initializes the controller class.
+     * Inizializzazione della classe controller
      */
 
    /**
@@ -54,7 +54,7 @@ public class MainController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources) 
     {
-        ///< Vuoto, non è  necessario fare set-up grafico generale 
+         
     }
 
 
@@ -78,7 +78,7 @@ public class MainController implements Initializable
     */
     public void setBiblioteca(Biblioteca myBiblioteca) {
         this.myBiblioteca = myBiblioteca;
-        ///< Passo il mio oggetto "manager" agli altri controller 
+        ///< Il manager è passato agli alri controller
         if (libriViewController != null)
             libriViewController.setBiblioteca(myBiblioteca);
         if (utentiViewController != null)
@@ -109,7 +109,7 @@ public class MainController implements Initializable
     @FXML public void onSalvaClick() 
     {
         myBiblioteca.saveAll();
-        ///< Popup Semplice
+        ///< Viene mostrato un popup
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Salvataggio");
         alert.setHeaderText(null);
