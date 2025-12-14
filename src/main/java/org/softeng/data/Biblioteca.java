@@ -49,12 +49,12 @@ public class Biblioteca
     {
         this.bibliotecaFileManager = new BibliotecaFileManager();
         
-        ///< Carico le entità "indipendenti", ossia la lista di Libri e Utenti
+        ///< vengono caricate le liste di utenti e libri dai rispettivi file
         this.listaLibri = bibliotecaFileManager.caricaLibriDaFile(FILE_LIBRI);
         this.listaUtenti = bibliotecaFileManager.caricaUtentiDaFile(FILE_UTENTI);
 
-        /** Per caricare i prestiti, gli passo al BibliotecaFileManager
-         *  le liste appena popolate
+        /** Per caricare i prestiti, 
+         *  le liste vengono passate al file manager
          */
 
         this.listaPrestiti = bibliotecaFileManager.caricaPrestitiDaFile(FILE_PRESTITI, listaUtenti, listaLibri);
@@ -139,7 +139,7 @@ public class Biblioteca
         }
             else
         {
-           ///< Lancio una eccezione
+       
              throw new LibroGiaPresenteException("Esiste già un libro con ISBN " + newLibro.getCodiceISBN() + ".\nRiprovare, o, in alternativa, aggiornare il numero di copie.");
 
         }
@@ -172,8 +172,8 @@ public class Biblioteca
         }
     }
 
-    ///< 3. SE È LIBERO -> LO CANCELLO
-    ///< La lista si aggiorna, e grazie a ObservableList anche la tabella sparirà da sola
+    
+    ///< La lista si aggiorna, e la tabella sparirà da sola
     listaLibri.remove(libroDaRimuovere);
     }
 
@@ -201,39 +201,28 @@ public class Biblioteca
      */
     public void rimuoviUtente(Utente utenteDaRimuovere) throws Exception {
 
-        ///< Verifica che l'utente abbia prestiti attivi
+        ///< flag usato per verificare se l'utente ha prestiti attivi ed è impostato a false
         boolean haPrestitiAttivi = false;
 
         for (Prestito p : listaPrestiti) {
-            ///< Verifica che l'utente corrisponda
+            ///< controlla se l'utente è lo stesso
             if (p.getUtente().equals(utenteDaRimuovere)) {
 
-                ///< Se il prestito non è concluso, mi fermo
+                ///< Se il prestito non è concluso, il flag è impostato a true 
                 if (p.getStatoPrestito() != StatoPrestito.RESTITUITO) {
                     haPrestitiAttivi = true;
-                    break; ///< Libro non restituito -> mi fermo
+                    break; 
                 }
             }
         }
 
-        ///< Se ci sono prestiti attivi, lancio una eccezione
+        ///< Se ci sono prestiti attivi, si solleva una Exception
         if (haPrestitiAttivi) {
             throw new Exception("Impossibile eliminare: l'utente ha ancora dei libri da restituire!");
         }
 
-        ///< Prestiti conclusi -> cancellazione
-
-        /** Scelta progettuale:
-         *  Desideriamo lo storico dei prestiti nel file CSV anche dopo aver cancellato l'utente,
-         *  dunque non tocchiamo minimamente la listaPrestiti.
-         *  Così facendo, i vecchi prestiti "verdi" rimarranno orfani (punteranno a una matricola che non c'è più nell'elenco utenti).
-
-         *  Riassumendo:
-         *  Per mantenere la consistenza, se un utente viene rimosso fisicamente, il sistema al riavvio scarta i prestiti
-         *  orfani non potendo più risalire ai dati anagrafici del richiedente.
-         */
-
-
+        
+        ///< per scelta progettuale di mantenere lo storico dei prestiti nel file CSV, l'utente è rimosso solo dalla lista degli utenti
         listaUtenti.remove(utenteDaRimuovere);
 
 
@@ -291,13 +280,13 @@ public class Biblioteca
     public void registraPrestito(Utente u, Libro l, LocalDate dataFine)
             throws LibroNonDisponibileException, LimitePrestitiSuperatoException
     {
-        ///< Eseguo il controllo del numero di copie a disposizione
+        ///< Controllo del numero di copie a disposizione
         if (l.getNumeroCopieDisponibili() <= 0)
         {
             throw new LibroNonDisponibileException("Copie esaurite per il libro: " + l.getTitolo());
         }
 
-        ///< Eseguo il controllo del numero di Prestiti associati a un Testo
+        ///< Controllo del numero di Prestiti associati a un libro
 
         int numeroPrestitiAttivi = 0;
 
@@ -316,19 +305,11 @@ public class Biblioteca
         Prestito nuovoPrestito = new Prestito(u, l, LocalDate.now(), dataFine);
 
         /**
-         * Aggiornamento dello Stato: si aggiunge il prestito alla Lista e si decrementa
-         * il numero di copie del volume associato
+         * Lo stato del prestito viene aggiornato e il numero di copie disponibili è decrementato
          */
 
         listaPrestiti.add(nuovoPrestito);
-        l.decrementaNumeroCopieDisponibili(); ///< Metodo nel model che fa copie--
-
-
-
-        /** Si forza il refresh della lista libri per aggiornare,
-         *  in modo immediato, il numero di copie visualizzato
-         *  sulla tabella
-         */
+        l.decrementaNumeroCopieDisponibili(); 
         int i = listaLibri.indexOf(l);
         if(i >= 0) listaLibri.set(i, l);
     }
@@ -355,26 +336,23 @@ public class Biblioteca
      */
     public void restituisciPrestito(Prestito p)
     {
-        ///< Controllo di sicurezza: se la data esiste, esco
+        ///< Controllo di sicurezza: se la data esiste, si esce dal metodo
         if (p.getStatoPrestito() == StatoPrestito.RESTITUITO)
             return;
 
-        ///< Logica di Business: setto come data di restituzione quella odierna
+        ///< Viene settata come data di restituzione quella odierna
         p.setDataRestituzioneEffettiva(LocalDate.now());
 
         Libro l = p.getLibro();
         l.incrementaNumeroCopieDisponibili();
 
-        ///< Aggiorno il numero di copie
+        ///< il numero di copie è aggiornato
         int indexLibro = listaLibri.indexOf(l);
         if(indexLibro >= 0) {
             listaLibri.set(indexLibro, l);
         }
 
-        /**
-         *  Aggiornamento lista prestiti (per notificare il cambiamento di stato):
-         *  Necessario per far "capire" a JavaFX che quel prestito è cambiato.
-         */
+        ///< viene aggiornata la lista dei prestiti
         int indexPrestito = listaPrestiti.indexOf(p);
         if(indexPrestito >= 0) {
             listaPrestiti.set(indexPrestito, p);
@@ -393,7 +371,7 @@ public class Biblioteca
      */
     public void saveAll()
     {
-        ///< Delega al FileManager la scrittura fisica
+        ///< il FileManager è delegato a scrivere su file le liste
         bibliotecaFileManager.salvaLibri(listaLibri, FILE_LIBRI);
         bibliotecaFileManager.salvaUtenti(listaUtenti, FILE_UTENTI);
         bibliotecaFileManager.salvaPrestiti(listaPrestiti, FILE_PRESTITI);
