@@ -30,7 +30,7 @@ import java.util.ResourceBundle;
 
 public class UtentiController implements Initializable {
 
-    ///< Grafica - View 
+    ///< Tabella Grafica
     @FXML private TableView<Utente> tabellaUtenti;
     
     ///< Colonne della tabella 
@@ -70,20 +70,20 @@ public class UtentiController implements Initializable {
     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ///< Collego le colonne agli attributi della classe Utente 
-        ///< nome -> getNome; cognome -> getCognome; In generale: xxx -> getXxx 
+        ///< Gli attributi della classe Utente vengono collegati alle colonne 
+        
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colCognome.setCellValueFactory(new PropertyValueFactory<>("cognome"));
         colMatricola.setCellValueFactory(new PropertyValueFactory<>("matricola"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         
-        ///< Se la tabella è vuota, viene mostrato questo messaggio "di servizio" 
+        ///< Se la tabella è vuota, viene mostrato questo messaggio 
         tabellaUtenti.setPlaceholder(new Label("Nessun utente presente in archivio."));
 
         ///< Le colonne si adattano per occupare tutto lo spazio disponibile 
         tabellaUtenti.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        ///< Modifica campi Utente con doppio click sulla cella 
+        ///< Per modificare i campi della cella basta cliccare due volte
         tabellaUtenti.setEditable(true);
 
         colNome.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -144,7 +144,7 @@ public class UtentiController implements Initializable {
         FilteredList<Utente> filteredData = new FilteredList<>(manager.getUtenti(), p -> true);
 
         ///< Listener per la barra di ricerca 
-        ///< Ogni volta che scrivo una lettera, il filtro si aggiorna
+        ///< Ogni volta che si scrive una lettera, il filtro si aggiorna
         txtRicerca.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(utente -> {
                 ///< Se la barra è vuota, mostra tutti
@@ -172,7 +172,7 @@ public class UtentiController implements Initializable {
         ///< Inserimento dei dati finali nella tabella 
         tabellaUtenti.setItems(sortedData);
 
-        ///< Deselezionare premendo ESC 
+        ///< Deselezione avviene cliccando ESC
         tabellaUtenti.setOnKeyPressed(event -> {
             if (event.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
                 tabellaUtenti.getSelectionModel().clearSelection();
@@ -181,19 +181,17 @@ public class UtentiController implements Initializable {
 
         ///< Deselezionare cliccando su uno spazio vuoto 
         tabellaUtenti.setOnMouseClicked(event -> {
-            ///< Viene verificato che il click è avvenuto su uno spazio vacuo 
+            ///< Verifica di aver cliccato uno spazio vuoto
             if (event.getTarget() instanceof javafx.scene.Node) {
                 javafx.scene.Node nodo = (javafx.scene.Node) event.getTarget();
-
-                ///< Risalita della gerarchia 
                 while (nodo != null && nodo != tabellaUtenti) {
                     if (nodo instanceof TableRow && ((TableRow) nodo).getItem() != null) {
-                        return; ///< Riga valida -> esco senza far nulla 
+                        return; 
                     }
                     nodo = nodo.getParent();
                 }
 
-                ///< È stato cliccato fuori dalle righe -> si procede con la pulizia della selezione
+                ///< Avendo cliccato fuori dalla righe, la selezione viene ripulita
                 tabellaUtenti.getSelectionModel().clearSelection();
             }
         });
@@ -222,27 +220,27 @@ public class UtentiController implements Initializable {
     */
     @FXML
     public void onAggiungi() {
-        ///< 1. Leggo i dati
+        ///< Lettura dei dati
         String nome = txtNome.getText();
         String cognome = txtCognome.getText();
         String matricola = txtMatricola.getText();
         String email = txtEmail.getText();
 
-        ///< 2. Validazione base
+        ///< Validazione base
         if (matricola.isEmpty() || cognome.isEmpty() || nome.isEmpty()) {
             mostraAlert(Alert.AlertType.WARNING, "Dati mancanti", "Nome, Cognome e Matricola sono obbligatori.");
             return;
         }
 
         try {
-            ///< 3. Creo e aggiungo
+            ///< Creazione e aggiunta
             Utente nuovoUtente = new Utente(nome, cognome, matricola, email);
             manager.aggiungiUtente(nuovoUtente);
 
-            ///< 4. Successo
+            ///< Viene mostrato un messaggio di successo
             mostraAlert(Alert.AlertType.INFORMATION, "Successo", "Utente aggiunto correttamente.");
 
-            ///< 5. Pulisco usando il tuo metodo
+            ///< Pulizia
             pulisciCampi();
 
         } catch(UtenteGiaPresenteException e)
@@ -277,7 +275,7 @@ public class UtentiController implements Initializable {
     */
     @FXML
     public void onElimina() {
-        ///< 1. Recupero la selezione
+        ///< Recupero della selezione
         Utente selezionato = tabellaUtenti.getSelectionModel().getSelectedItem();
 
         if (selezionato == null) {
@@ -286,16 +284,14 @@ public class UtentiController implements Initializable {
             return;
         }
 
-        ///< 2. Chiedo conferma (Questo DEVE essere fatto a mano per leggere la risposta)
+        ///< Messaggio mostrato per richiedere conferma
         Alert conferma = new Alert(Alert.AlertType.CONFIRMATION);
         conferma.setTitle("Conferma eliminazione");
         conferma.setHeaderText(null);
         conferma.setContentText("Vuoi davvero eliminare l'utente " + selezionato.getCognome() + "?");
-
-        ///< Mostro e aspetto
         Optional<ButtonType> result = conferma.showAndWait();
 
-        ///< 3. Se conferma, procedo
+        ///< A seguito della conferma, l'utente è rimosso e viene mostrato un messaggio di avvenuta rimozione
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
                 
@@ -305,7 +301,7 @@ public class UtentiController implements Initializable {
                 mostraAlert(Alert.AlertType.INFORMATION, "Operazione completata", "Utente rimosso con successo.");
 
             } catch (Exception e) {
-                ///< Errore (es. Utente ha libri): Uso il tuo metodo con icona ERROR
+                ///< Messaggio mostrato nel caso in cui l'utente ha dei prestiti attivi
                 mostraAlert(Alert.AlertType.ERROR, "Errore di rimozione", e.getMessage());
             }
         }
