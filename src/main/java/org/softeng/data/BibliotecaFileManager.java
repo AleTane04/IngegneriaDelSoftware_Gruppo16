@@ -45,15 +45,15 @@ public class BibliotecaFileManager
      */
     public void scriviSuFile(String fileName, List<?> myList, String myFileHeader) 
     {
-        ///< Uso il try con le risorse
+        ///< try-with-resources
         try(PrintWriter pw = new PrintWriter(new FileWriter(fileName)))
         {
-            ///< Scrivo l'intestazione del mio file
+            
             pw.println(myFileHeader);
 
             for(Object obj : myList)
             {
-                ///< Scrivo l'header
+                
                 if(obj instanceof Libro)
                     pw.println(((Libro) obj).toCSV());
                 else
@@ -159,14 +159,14 @@ public class BibliotecaFileManager
 
         try (BufferedReader br = new BufferedReader(new FileReader(f)))
         {
-            ///< Lettura a vuoto, salto l'intestazione
+            
             br.readLine();
             String riga;
             while ((riga = br.readLine()) != null)
             {
                 if(riga.isEmpty())
                     continue;
-                ///< Aggiungo un nuovo Libro dalla lettura della riga
+                ///< Aggiunta di un nuovo libro dalla lettura di una riga
                 try
                 {
                     libri.add(new Libro(riga));
@@ -211,17 +211,17 @@ public class BibliotecaFileManager
 
         try (BufferedReader br = new BufferedReader(new FileReader(f)))
         {
-            ///< Lettura a vuoto, salto l'intestazione
+            
             br.readLine();
             String riga;
             while ((riga = br.readLine()) != null)
             {
                 if(riga.isEmpty())
                     continue;
-                ///< Aggiungo un nuovo utente dalla lettura della riga
+                ///< Aggiunta di un nuovo utente dalla lettura di una riga
                 try
                 {
-                    ///< Uso il costruttore CSV
+                    
                     utenti.add(new Utente(riga));
                 }
                 catch(Exception e)
@@ -263,7 +263,7 @@ public class BibliotecaFileManager
 
         try (BufferedReader br = new BufferedReader(new FileReader(f)))
         {
-            ///< Lettura a vuoto, salto l'intestazione
+            
             br.readLine();
             String riga;
             while ((riga = br.readLine()) != null)
@@ -272,7 +272,7 @@ public class BibliotecaFileManager
                     continue;
         /**
          * Ogni volta che viene trovato un ";"
-         * spezzo la stringa e inserisco il contenuto in un array di Stringhe
+         * la stringa è spezzata e viene inserito il contenuto in un array di Stringhe
          */
                 String[] chunks = riga.split(";");
                 if (chunks.length < 4) continue;
@@ -287,18 +287,18 @@ public class BibliotecaFileManager
 
                 Utente utenteTrovato = null;
 
-                ///< Scorro la lista degli utenti caricata in memoria
+                ///< la lista degli utenti caricata in memoria viene visitata
                 for (Utente u : utenti)
                 {
-                    ///< Se la matricola dell'utente corrente corrisponde a quella scritta nel file prestiti...
+                    ///< Se la matricola dell'utente corrente corrisponde a quella scritta nel file prestiti viene salavata e il ciclo è interrotto
                     if (u.getMatricola().equals(matricolaCercata))
                     {
-                        utenteTrovato = u; ///< Ho trovato l'oggetto giusto!
-                        break;             ///< Interrompo il ciclo, inutile continuare
+                        utenteTrovato = u; 
+                        break;
                     }
                 }
 
-                ///< Se un utente è stato rimosso, ne creo uno nuovo "fittizio" per non perdere lo storico dei prestiti associato.
+                ///< Se un utente è stato rimosso, ne creato uno nuovo fittizio per non perdere lo storico dei prestiti ad esso associato.
                 if (utenteTrovato == null)
                 {
                     utenteTrovato = new Utente("Utente", "Rimosso", matricolaCercata, "N/A");
@@ -310,17 +310,15 @@ public class BibliotecaFileManager
 
                 ///< Si scorre la lista dei libri caricata in memoria
                 for (Libro l : libri) {
-                    ///< Se l'ISBN del libro corrente corrisponde a quello scritto nel file prestiti:
+                    ///< Se l'ISBN del libro corrente corrisponde a quello scritto nel file prestiti, il libro viene salvato e il ciclo interrotto
                     if (l.getCodiceISBN().equals(isbnCercato)) {
-                        libroTrovato = l; ///< Il libro 'giusto' è stato trovato;
-                        break;            ///< Si interrompe il ciclo
+                        libroTrovato = l; 
+                        break;
                     }
                 }
 
-                ///< Se il libro è stato rimosso dalla biblioteca, ne creo uno "fittizio" per lo storico
+                ///< Se il libro è stato rimosso dalla biblioteca, ne viene creato uno fittizio per lo storico
                 if (libroTrovato == null) {
-                    ///< Creo un libro placeholder con titolo evidente.
-
                     libroTrovato = new Libro("RIMOSSO (ISBN: " + isbnCercato + ")", "N/A", LocalDate.of(1900, 1, 1), isbnCercato, 0);
                 }
 
