@@ -44,18 +44,18 @@ public class Main extends Application
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainView.fxml"));
         Parent root = loader.load();
         
-        ///< Qui passo il mio oggetto Biblioteca al controller 
+        ///< l'oggetto Biblioteca è passato al controller 
         MainController myMainController = loader.getController();
         myMainController.setBiblioteca(myBiblioteca); 
        
-        ///< Creo la scena e la mostro in risoluzione HD e formato 16:9 
+        ///< Creazione scena  
         Scene scene = new Scene(root, 1280, 720);
         stage.setTitle("Gestione Biblioteca - G16");
         stage.setScene(scene);
         stage.setOnCloseRequest(event -> {
-            ///< Blocco la chiusura immediata di JavaFX 
+            ///< chiusura dell'applicativo
             event.consume();
-            ///< Chiedo conferma all'utente (nel caso prema la X per uscire dall'applicativo)
+            ///< richiesta conferma all'utente 
             myMainController.onEsciClick();
         });
         stage.show();
