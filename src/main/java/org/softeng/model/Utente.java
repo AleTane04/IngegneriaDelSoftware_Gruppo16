@@ -210,7 +210,14 @@ public class Utente{
      *
      * @return Una stringa pronta per essere scritta in un file .csv.
      */
-    public String toCSV() {
-        return nome+";"+cognome+";"+matricola+";"+email;
+    public String toCSV()
+    {
+        ///< Si rimuovono gli eventuali punti e virgola dai campi testuali per non corrompere il CSV
+        String safeNome = (nome != null) ? nome.replace(";", "") : "";
+        String safeCognome = (cognome != null) ? cognome.replace(";", "") : "";
+        String safeMatricola = (matricola != null) ? matricola.replace(";", "") : "";
+        String safeEmail = (email != null) ? email.replace(";", "") : "";
+
+        return safeNome + ";" + safeCognome + ";" + safeMatricola + ";" + safeEmail;
     }
 }

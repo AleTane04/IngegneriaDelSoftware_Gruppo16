@@ -293,8 +293,13 @@ public class Libro{
      *
      * @return Una stringa pronta per essere scritta in un file .csv.
      */
-    public String toCSV() {
-        return titolo+";"+autori+";"+annoPubblicazione.toString()+";"+codiceISBN+";"+numeroCopieDisponibili;
+    public String toCSV()
+    {
+        String safeTitolo = (titolo != null) ? titolo.replace(";", "") : "";
+        String safeAutori = (autori != null) ? autori.replace(";", "") : "";
+        String safeISBN = (codiceISBN != null) ? codiceISBN.replace(";", "") : "";
+
+        return safeTitolo + ";" + safeAutori + ";" + annoPubblicazione + ";" + safeISBN + ";" + numeroCopieDisponibili;
     }
     
     
