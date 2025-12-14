@@ -317,6 +317,13 @@ public class BibliotecaFileManager
                     }
                 }
 
+                ///< Se il libro è stato rimosso dalla biblioteca, ne creo uno "fittizio" per lo storico
+                if (libroTrovato == null) {
+                    ///<Creo un libro placeholder con titolo evidente.
+
+                    libroTrovato = new Libro("RIMOSSO (ISBN: " + isbnCercato + ")", "N/A", LocalDate.of(1900, 1, 1), isbnCercato, 0);
+                }
+
                 ///< Se esiste il libro, si ricrea il prestito
                 try {
                         if (libroTrovato != null)
