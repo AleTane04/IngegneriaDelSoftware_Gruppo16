@@ -12,7 +12,7 @@ Un'applicazione per la gestione di una biblioteca, sviluppata in **Java** con in
 - [Architettura e Tecnologie](#-architettura-e-tecnologie)
 - [Requisiti e Analisi](#-requisiti-e-analisi)
 - [Installazione e Avvio](#-installazione-e-avvio)
-- [Struttura del Progetto](#-struttura-del-progetto)
+  
 
 ---
 
