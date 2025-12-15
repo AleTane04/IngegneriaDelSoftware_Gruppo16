@@ -298,7 +298,7 @@ public class BibliotecaFileManager
                     }
                 }
 
-                ///< Se un utente è stato rimosso, ne creato uno nuovo fittizio per non perdere lo storico dei prestiti ad esso associato.
+                ///< Se un utente è stato rimosso, ne viene creato uno nuovo fittizio per non perdere lo storico dei prestiti ad esso associato.
                 if (utenteTrovato == null)
                 {
                     utenteTrovato = new Utente("Utente", "Rimosso", matricolaCercata, "N/A");
@@ -331,7 +331,7 @@ public class BibliotecaFileManager
                             if(chunks.length >= 5)
                             {
                                 String dataRestString = chunks[4];
-                                ///< Se la data è diversa da "null", allora è valida 
+                                ///< Se la data è diversa da null, allora è valida 
                                 if (!dataRestString.equals("null") && !dataRestString.isEmpty())
                                 {
                                     myPrestito.setDataRestituzioneEffettiva(LocalDate.parse(dataRestString));
