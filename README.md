@@ -74,6 +74,7 @@ Il sistema opera in osservanza delle direttive ricevute, come il limite massimo 
 3. **Adoperare Maven per il build automatico**
    ```bash   
    mvn package
-4. **Eseguire il file jar più grande**
+4. **Eseguire il file .jar più grande**
   ```bash   
-   java -jar target/IngSW_GestioneBiblioteca-1.0-SNAPSHOT.jar
+java -jar target
+IngSW_GestioneBiblioteca-1.0-SNAPSHOT.jar
