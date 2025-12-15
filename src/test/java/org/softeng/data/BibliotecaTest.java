@@ -15,8 +15,9 @@ public class BibliotecaTest{
   private Biblioteca b;
 
   @BeforeEach
-  public void setUp(){
-    Biblioteca b = new Biblioteca();
+  public void setUp()
+  {
+      b = new Biblioteca();
     ///< Input: liste vuote per testare isolatamente
     b.getLibri().clear();
     b.getUtenti().clear();
@@ -40,12 +41,12 @@ public class BibliotecaTest{
    *  Oracolo: Dimensione +1, libro presente
    */
   @Test
-  public void testAggiungiLibro() throws LibroGiaPresenteException{
-    Libro newLibro = new Libro("Reti di Calcolatori", "Kurose", LocalDate.of(2022,1,21), "978-8871929385", 5);
-    b.aggiungiLibro(newLibro);
-    assertTrue(b.getLibri().contains(newLibro));
-    assertEquals(1, b.getLibri().size());
-    
+  public void testAggiungiLibro() throws LibroGiaPresenteException
+  {
+      Libro newLibro = new Libro("Reti di Calcolatori", "Kurose", LocalDate.of(2022,1,21), "978-8871929385", 5);
+      b.aggiungiLibro(newLibro);
+      assertTrue(b.getLibri().contains(newLibro));
+      assertEquals(1, b.getLibri().size());
   }
 
 
@@ -55,12 +56,16 @@ public class BibliotecaTest{
    *  Oracolo: solleva LibroGiaPresenteException
    */
   @Test
-  public void testAggiungiLibroDuplicato() throws LibroGiaPresenteException{
-    Libro libro1 = new Libro("Reti di Calcolatori", "Kurose", LocalDate.of(2022,1,21), "978-8871929385", 5);
-    b.aggiungiLibro(libro1);
+  public void testAggiungiLibroDuplicato() throws LibroGiaPresenteException
+  {
+      Libro libro1 = new Libro("Reti di Calcolatori", "Kurose", LocalDate.of(2022,1,21), "978-8871929385", 5);
+      b.aggiungiLibro(libro1);
 
-    Libro libro2 = new Libro("Struttura e progetto dei calcolatori", "Patterson", LocalDate.of(2005,3,4), "978-8871929385", 4);
-    b.aggiungiLibro(libro2);
+      Libro libro2 = new Libro("Struttura e progetto dei calcolatori", "Patterson", LocalDate.of(2005,3,4), "978-8871929385", 4);
+
+      assertThrows(LibroGiaPresenteException.class, () -> {
+          b.aggiungiLibro(libro2);
+      });
   }
 
   /** 
@@ -90,7 +95,9 @@ public class BibliotecaTest{
     b.aggiungiLibro(l);
     b.registraPrestito(u, l, LocalDate.now().plusDays(30));
 
-    b.rimuoviLibro(l);
+      assertThrows(Exception.class, () -> {
+          b.rimuoviLibro(l);
+      });
   }
 
   /** 
@@ -119,7 +126,10 @@ public class BibliotecaTest{
     b.aggiungiUtente(u1);
 
     Utente u2 = new Utente("Luigio", "Verdila", "0612708872", "l.verdila@studenti.unisa.it");
-    b.aggiungiUtente(u2);
+
+      assertThrows(UtenteGiaPresenteException.class, () -> {
+          b.aggiungiUtente(u2);
+      });
   }
 
   /**
@@ -134,12 +144,10 @@ public class BibliotecaTest{
     b.aggiungiLibro(l);
     b.registraPrestito(u, l, LocalDate.now().plusDays(15));
 
-    try{
-      b.rimuoviUtente(u);
-      fail("Avrebbe dovuto lanciare un'eccezione perché l'utente ha prestiti attivi");
-    }catch(Exception ex){
-      assertTrue(ex.getMessage().contains("Impossibile eliminare"));
-    }
+      Exception exception = assertThrows(Exception.class, () -> {
+          b.rimuoviUtente(u);
+      });
+      assertTrue(exception.getMessage().contains("Impossibile eliminare"));
   }
 
   /**
@@ -172,16 +180,36 @@ public class BibliotecaTest{
 
   /**
    * Test Case: Prestito con copie esaurite.
-   * Input: Libro con 0 copie
    * Oracolo: solleva LibroNonDisponibileException
    */
   @Test
   public void testRegistraPrestitoCopieEsaurite() throws Exception{
-    Utente u = new Utente("Daniele", "Montefusco", "0612709023", "d.montefusco@studenti.unisa.it");
-    Libro l = new Libro("Struttura e progetto dei calcolatori", "Patterson", LocalDate.of(2005,3,4), "978-8871929385", 4);
-    b.aggiungiUtente(u);
-    b.aggiungiLibro(l);
-    b.registraPrestito(u, l, LocalDate.now().plusDays(15));
+      Utente u1 = new Utente("Daniele", "Montefusco", "0612709023", "d.montefusco@studenti.unisa.it");
+      Utente u2 = new Utente("Giuseppe", "Verdi", "0612709024", "g.verdi@studenti.unisa.it");
+      Utente u3 = new Utente("Tizio", "Caio", "0612709025", "t.caio@studenti.unisa.it");
+      Utente u4 = new Utente("Sempronio", "Rossi", "0612709026", "s.rossi@studenti.unisa.it");
+      Utente u5 = new Utente("Pippo", "Franco", "0612709027", "p.franco@studenti.unisa.it");
+
+      Libro l = new Libro("Struttura e progetto dei calcolatori", "Patterson", LocalDate.of(2005,3,4), "978-8871929385", 4); // 4 copie
+
+      b.aggiungiUtente(u1);
+      b.aggiungiUtente(u2);
+      b.aggiungiUtente(u3);
+      b.aggiungiUtente(u4);
+      b.aggiungiUtente(u5);
+
+      b.aggiungiLibro(l);
+
+
+      b.registraPrestito(u1, l, LocalDate.now().plusDays(15));
+      b.registraPrestito(u2, l, LocalDate.now().plusDays(15));
+      b.registraPrestito(u3, l, LocalDate.now().plusDays(15));
+      b.registraPrestito(u4, l, LocalDate.now().plusDays(15));
+
+
+      assertThrows(LibroNonDisponibileException.class, () -> {
+          b.registraPrestito(u5, l, LocalDate.now().plusDays(15));
+      });
   }
 
   /**
@@ -196,7 +224,7 @@ public class BibliotecaTest{
     Libro l1 = new Libro("Reti di Calcolatori", "Kurose", LocalDate.of(2022,1,21), "978-8871929385", 5);
     Libro l2 = new Libro("Ingegneria del software", "Sommerville", LocalDate.of(2017, 2, 2), "978-8891902245", 3);
     Libro l3 = new Libro("UML Distilled", "Fowler", LocalDate.of(2018, 1, 19), "978-8891907820", 6);
-    Libro l4 = new Libro("Struttura e progetto dei calcolatori", "Patterson", LocalDate.of(2005,3,4), "978-8871929385", 4);
+    Libro l4 = new Libro("Struttura e progetto dei calcolatori", "Patterson", LocalDate.of(2005,3,4), "978-8871929315", 4);
 
     b.aggiungiLibro(l1);
     b.aggiungiLibro(l2);
@@ -206,7 +234,11 @@ public class BibliotecaTest{
     b.registraPrestito(u, l1, LocalDate.now().plusDays(10));
     b.registraPrestito(u, l2, LocalDate.now().plusDays(10));
     b.registraPrestito(u, l3, LocalDate.now().plusDays(10));
-    b.registraPrestito(u, l4, LocalDate.now().plusDays(10));
+
+
+      assertThrows(LimitePrestitiSuperatoException.class, () -> {
+          b.registraPrestito(u, l4, LocalDate.now().plusDays(10));
+      });
   }
 
 
