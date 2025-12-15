@@ -19,15 +19,15 @@ public class BibliotecaFileManager
 {
     public void scriviSuFile(String fileName, List<?> myList, String myFileHeader) 
     {
-        /* Uso il try con le risorse */
+        ///< try-with-resources
         try(PrintWriter pw = new PrintWriter(new FileWriter(fileName))) 
         {
-            /* Scrivo l'intestazione del mio file */
+            ///< intestazione del file 
             pw.println(myFileHeader);
             
             for(Object obj : myList) 
             {
-                /* Scrivo l'header */
+                ///< scrittura header
                 if(obj instanceof Libro)
                     pw.println(((Libro) obj).toCSV());
                 else
@@ -68,12 +68,11 @@ public class BibliotecaFileManager
 
         try (BufferedReader br = new BufferedReader(new FileReader(f))) 
         {
-            /* Lettura a vuoto, salto l'intestazione */
             br.readLine(); 
             String riga;
             while ((riga = br.readLine()) != null) 
             {
-                /* Aggiungo un nuovo Libro dalla lettura della riga */
+                ///< Aggiunta di un nuovo libro da lettura riga
                 if (!riga.isEmpty()) 
                     libri.add(new Libro(riga)); 
             }
@@ -92,13 +91,12 @@ public class BibliotecaFileManager
 
         try (BufferedReader br = new BufferedReader(new FileReader(f))) 
         {
-            /* Lettura a vuoto, salto l'intestazione */
             br.readLine();
             String riga;
             while ((riga = br.readLine()) != null) 
             {
                 if (!riga.isEmpty()) 
-                    utenti.add(new Utente(riga)); // Uso il costruttore CSV
+                    utenti.add(new Utente(riga)); 
             }
         } catch (IOException e) {
             System.err.println("Errore lettura utenti: " + e.getMessage());
@@ -106,8 +104,8 @@ public class BibliotecaFileManager
         return utenti;
     }
     
-    // QUESTO È IL METODO PIÙ IMPORTANTE
-    // Deve ricollegare gli ID (ISBN/Matricola) agli oggetti veri
+    
+    ///< Deve ricollegare gli ID (ISBN/Matricola) agli oggetti veri
     public ObservableList<Prestito> caricaPrestitiDaFile(String nomeFile, ObservableList<Utente> utenti, ObservableList<Libro> libri) 
     {
         ObservableList<Prestito> listaPrestiti = FXCollections.observableArrayList();
