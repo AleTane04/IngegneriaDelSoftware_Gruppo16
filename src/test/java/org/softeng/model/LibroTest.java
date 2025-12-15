@@ -218,7 +218,7 @@ public class LibroTest {
      @Test
     public void testEqualsFalse() {
         
-        Libro terzoLibro = new Libro( " titolo3", "autore3",LocalDate.of(2000, 3 ,2),"1234567890123",1);
+        Libro terzoLibro = new Libro( " Il signore degli anelli ", "J. R. R. Tolkien",LocalDate.of(1954, 7 ,29),"1234567890123",1);
         assertFalse(libro.equals(terzoLibro));
     }
 
