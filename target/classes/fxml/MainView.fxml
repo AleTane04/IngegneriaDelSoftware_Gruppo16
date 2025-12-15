@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="org.softeng.controller.MainController">
+
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu text="File">
+                    <items>
+                        <MenuItem text="Salva" onAction="#onSalvaClick"/>
+                        <SeparatorMenuItem />
+                        <MenuItem text="Esci" onAction="#onEsciClick"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="Gestione Libri">
+                    <content>
+                        <fx:include fx:id="libriView" source="LibriView.fxml"/>
+                    </content>
+                </Tab>
+                <Tab text="Gestione Utenti">
+                    <content>
+                        <fx:include fx:id="utentiView" source="UtentiView.fxml"/>
+                    </content>
+                </Tab>
+                <Tab text="Gestione Prestiti">
+                    <content>
+                        <fx:include fx:id="prestitiView" source="PrestitiView.fxml"/>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </center>
+    
+</BorderPane>

@@ -1,0 +1,65 @@
+@startuml
+' Stile conforme alla Slide 13 (Diagrammi di Interazione)
+skinparam style strictuml
+skinparam sequenceArrowThickness 1.5
+skinparam roundcorner 5
+skinparam maxmessagesize 150
+skinparam sequenceParticipant underline
+
+' Definizione Partecipanti
+actor "Bibliotecario" as User
+participant ":PrestitiView" as View
+participant ":PrestitiController" as Controller
+participant ":Biblioteca" as Service
+participant "p:Prestito" as Prestito
+participant "l:Libro" as Libro
+
+' --- INIZIO FLUSSO ---
+Note over User, View : Il bibliotecario seleziona un prestito attivo dalla tabella
+
+User -> View : Clicca su "Restituisci"
+activate View
+
+    View -> Controller : handleRestituzione()
+    activate Controller
+
+        ' Recupero del prestito selezionato
+        Controller -> View : p = getPrestitoSelezionato()
+
+        ' Chiamata al Service (Facade)
+        Controller -> Service : restituisciLibro(p)
+        activate Service
+
+            ' Aggiornamento Entità Prestito
+            Service -> Prestito : chiudiPrestito(dataOggi)
+            activate Prestito
+            deactivate Prestito
+
+            ' Recupero Libro associato per aggiornare disponibilità
+            Service -> Prestito : l = getLibro()
+            activate Prestito
+            Prestito --> Service : l
+            deactivate Prestito
+
+            ' Aggiornamento Disponibilità (BF-2)
+            Service -> Libro : incrementaCopie()
+            activate Libro
+            deactivate Libro
+
+            ' Rimozione dalla lista prestiti attivi (logica interna)
+            Service -> Service : registroPrestiti.remove(p)
+            
+            ' Persistenza (FC-1)
+            Service -> Service : salvaTutto()
+            
+            Service --> Controller : conferma
+            
+            ' Aggiornamento UI
+            Controller -> View : rimuoviRigaTabella(p)
+            View --> User : Mostra conferma restituzione
+
+        deactivate Service
+    deactivate Controller
+deactivate View
+
+@enduml

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="org.softeng.controller.LibriController">
+
+    <top>
+        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10; -fx-background-color: #f4f4f4;">
+            <Label text="Cerca Libro:"/>
+            <TextField fx:id="txtRicerca" promptText="Titolo, Autore o ISBN..." HBox.hgrow="ALWAYS"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="tabellaLibri">
+            <columns>
+                <TableColumn fx:id="colTitolo" text="Titolo" prefWidth="200"/>
+                <TableColumn fx:id="colAutore" text="Autori" prefWidth="150"/>
+                <TableColumn fx:id="colIsbn" text="ISBN" prefWidth="120"/>
+                <TableColumn fx:id="colAnno" text="Data Pubbl." prefWidth="100"/>
+                <TableColumn fx:id="colCopie" text="Copie" prefWidth="60"/>
+            </columns>
+            
+        </TableView>
+    </center>
+
+    <bottom>
+        <VBox spacing="5" style="-fx-padding: 10; -fx-border-color: #cccccc; -fx-border-width: 1 0 0 0;">
+            <Label text="Nuovo Libro" style="-fx-font-weight: bold;"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <TextField fx:id="txtTitolo" promptText="Titolo" HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="txtAutore" promptText="Autore" prefWidth="150"/>
+                <TextField fx:id="txtIsbn" promptText="ISBN" prefWidth="100"/>
+                <TextField fx:id="txtCopie" promptText="Copie" prefWidth="60"/>
+                <DatePicker fx:id="pickerAnno" promptText="Data Pubblicazione" prefWidth="130"/>
+                <Button text="Aggiungi" onAction="#onAggiungi" style="-fx-base: #b6e7c9;"/>
+                <Button text="Rimuovi" onAction="#onRimuovi" style="-fx-base: #ffcccc;"/>
+            </HBox>
+        </VBox>
+    </bottom>
+
+</BorderPane>

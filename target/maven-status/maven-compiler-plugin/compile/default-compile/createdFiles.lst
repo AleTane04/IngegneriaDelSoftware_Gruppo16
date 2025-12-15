@@ -1,0 +1,16 @@
+org\aletane04\controller\PrestitiController.class
+org\aletane04\model\Prestito.class
+org\aletane04\Launcher.class
+org\aletane04\controller\MainController.class
+org\aletane04\Main.class
+org\aletane04\model\Libro.class
+org\aletane04\controller\PrestitiController$1.class
+org\aletane04\controller\PrestitiController$2.class
+org\aletane04\data\Biblioteca.class
+org\aletane04\controller\LibriController.class
+org\aletane04\model\StatoPrestito.class
+org\aletane04\exceptions\LimitePrestitiSuperatoException.class
+org\aletane04\controller\UtentiController.class
+org\aletane04\data\BibliotecaFileManager.class
+org\aletane04\model\Utente.class
+org\aletane04\exceptions\LibroNonDisponibileException.class

@@ -1,0 +1,298 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+/**
+ * @file Libro.java
+ * @brief Il file contiene l'implementazione della classe 'Libro'
+ *
+ * informazioni sul file e il suo ruolo nel progetto 
+ */
+package org.softeng.model;
+
+
+import java.time.LocalDate;
+
+/**
+ *
+ * @author angel
+ */
+public class Libro{
+    private String titolo;
+    private String autori;
+    private LocalDate annoPubblicazione;
+    private final String codiceISBN;
+    private int numeroCopieDisponibili;
+
+
+    /** @brief Costruttore della classe Libro
+     *  Inizializza una nuova istanza della classe Libro
+     *  @param[in] titolo Il titolo del libro
+     *  @param[in] autori La stringa che contiene la lista degli autori del libro
+     *  @param[in] anno La data di publicazione del libro
+     *  @param[in] codiceISBN Il codice ISBN associato al libro
+     *  @param[in] numeroCopie Il numero di copie disponibili di quel libro
+     *  @return new Libro
+     *  @post L'oggetto creato della classe Libro è in uno stato coerente e valido
+     */
+    public Libro(String titolo, String autori, LocalDate anno, String codiceISBN, int numeroCopie)
+    {
+
+        this.titolo=titolo;
+        this.autori=autori;
+        this.annoPubblicazione=anno;
+        this.codiceISBN=codiceISBN;
+        if (numeroCopie < 0)
+        {
+            throw new IllegalArgumentException("Il numero di copie non può essere negativo");
+        }
+        this.numeroCopieDisponibili=numeroCopie;
+    }
+    
+    /** 
+     * @brief passa una riga di un file .csv al costruttore
+     *
+     * Data una riga del file .csv in input, la spezzo in un array di stringhe, converto 
+     * i valori nei tipi giusti e popolo i campi del mio costruttore 
+     *
+     * @pre La stringa non deve essere null
+     * @pre rigaCSV deve contenere esattamente 5 campi separati da ';'
+     * @pre Il campo data deve essere nel formato ISO (YYYY-MM-DD) 
+     * @post Una nuova istanza di Libro è inizializzata con i rispettivi campi popolati dai valori estratti dalla stringa 
+     *
+     * @param[in] rigaCSV la riga del file .csv passata
+     */
+    public Libro(String rigaCSV) 
+    {
+        
+        String[] arrayChunks = rigaCSV.split(";");
+        
+        this.titolo=arrayChunks[0];
+        this.autori=arrayChunks[1];
+        ///< Da Stringa a LocalDate 
+        this.annoPubblicazione = LocalDate.parse(arrayChunks[2]);
+        this.codiceISBN=arrayChunks[3];
+        ///< Da Stringa a intero 
+        this.numeroCopieDisponibili=Integer.parseInt(arrayChunks[4]);
+        
+    
+    }
+    
+    ///< metodi getter
+    
+    /**
+     * @brief Restituisce il titolo del libro
+     *
+     * @pre L'oggetto deve essere istanziato
+     * @post Il valore restituito corrisponde all'attributo interno 'titolo'
+     *
+     * @return Il titolo del libro.
+     */
+    public String getTitolo(){
+        return titolo;
+    }
+
+    /**
+     * @brief Restituisce gli autori del libro
+     *
+     * @post Il valore restituito corrisponde all'attributo interno 'autori'
+     *
+     * @return Una stringa contenente i nomi degli autori
+     */
+    public String getAutori(){
+        return autori;
+    }
+
+    /**
+     * @brief Restituisce la data di pubblicazione del libro
+     *
+     * @post Il valore restituito corrisponde all'attributo interno 'annoPubblicazione'
+     *
+     * @return La data di pubblicazione 
+     */
+    public LocalDate getAnnoPubblicazione(){
+        return annoPubblicazione;
+    }
+
+    /**
+     * @brief Restituisce il codice ISBN del libro
+     *
+     * @post Il valore restituito corrisponde all'attributo interno 'codiceISBN'
+     *
+     * @return Il codice ISBN
+     */
+    public String getCodiceISBN(){
+        return codiceISBN;
+    }
+
+    /**
+     * @brief Restituisce il numero attuale di copie disponibili
+     *
+     * @post Il valore restituito corrisponde all'attributo interno 'numeroCopieDisponibili'
+     *
+     * @return Il numero di copie disponibili
+     */
+    public int getNumeroCopieDisponibili(){
+        return numeroCopieDisponibili;
+    }
+    
+    
+    ///< metodi setter
+    
+     /**
+     * @brief Imposta o aggiorna il titolo del libro
+     * 
+     * @pre titolo non deve essere null
+     * @post this.titolo è uguale al parametro 'titolo'
+     * 
+     * @param[in] titolo Il nuovo titolo da assegnare al libro
+     */
+    public void setTitolo(String titolo){
+        this.titolo=titolo;
+    }
+
+    /**
+     * @brief Imposta o aggiorna gli autori del libro
+     *
+     * @pre autori non deve essere null
+     * @post this.autori è uguale al parametro 'autori'
+     *
+     * @param[in] autori La stringa contenente i nuovi autori
+     */
+    public void setAutori(String autori){
+        this.autori=autori;
+    }
+
+    /**
+     * @brief Imposta la data di pubblicazione del libro
+     *
+     * @pre data non deve essere null
+     * @post this.annoPubblicazione è uguale al parametro 'data'
+     *
+     * @param[in] data La nuova data di pubblicazione
+     */
+    public void setAnnoPubblicazione(LocalDate data){
+        this.annoPubblicazione=data;
+    }
+
+    /**
+     * @brief Sovrascrive il numero di copie disponibili
+     *
+     * @pre q >= 0 (il numero di copie non può essere negativo)
+     * @post this.numeroCopieDisponibili è uguale a 'q'
+     *
+     * @param[in] q La nuova quantità di copie disponibili da impostare
+     * @throws IllegalArgumentException se q è negativo (violazione della precondizione)
+     */
+    public void setNumeroCopieDisponibili(int q)
+    {
+        ///< Controllo della PRECONDIZIONE
+        if (q < 0)
+        {
+            ///<solleva un'eccezione non controllata
+            throw new IllegalArgumentException("Violazione precondizione: le copie non possono essere negative (" + q + ")");
+        }
+
+        ///< Esecuziione se la precondizione è vera
+        this.numeroCopieDisponibili = q;
+    }
+    
+    ///< Altri metodi 
+    
+    /**
+     *@brief decrementa il numero di copie di un libro disponibili
+     *
+     * L'operazione viene effettuata solo se il numero di copie attuali è maggiore di 0
+     * 
+     * @invariant numeroCopieDisponibili >= 0
+     * @post Se (numeroCopieDisponibili > 0) allora (numeroCopieDisponibili = numeroCopieDisponibili - 1)
+     * @post Se (numeroCopieDisponibili == 0) allora (numeroCopieDisponibili == 0)
+    */
+    public void decrementaNumeroCopieDisponibili() 
+    {
+        if(this.numeroCopieDisponibili > 0)
+            this.numeroCopieDisponibili--;
+    }
+
+    /**
+    *@brief incrementa il numero di copie di un libro disponibili 
+    *
+    * @post numeroCopieDisponibili = numeroCopieDisponibili + 1
+    */
+    public void incrementaNumeroCopieDisponibili() 
+    {
+        this.numeroCopieDisponibili++;
+    }
+
+    /**
+     * @brief Verifica l'uguaglianza tra questo libro e un altro oggetto
+     * 
+     * Due libri sono considerati uguali se possiedono lo stesso codice ISBN
+     * Viene effettuato un controllo preliminare sui riferimenti e sulla classe di appartenenza
+     *
+     * @param[in] obj L'oggetto da confrontare con l'istanza corrente
+     * @post Restituisce true se obj è un Libro e ha lo stesso ISBN, false altrimenti
+     *
+     * @return true se gli oggetti sono uguali (stesso ISBN), false altrimenti
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (this == obj) return true;
+        if (this.getClass() != obj.getClass()) 
+            return false;
+        Libro myLibro = (Libro) obj;
+        return this.codiceISBN.equals(myLibro.codiceISBN);
+    }
+
+
+    /**
+     * @brief Calcola il codice hash per il libro.
+     *
+     * Il calcolo è basato esclusivamente sul codice ISBN per garantire la coerenza 
+     * con il metodo equals(). Se l'ISBN è null, restituisce 0.
+     *
+     * @return Un intero che rappresenta il codice hash dell'oggetto.
+     */
+    @Override
+    public int hashCode(){
+        return codiceISBN == null ? 0 : codiceISBN.hashCode();
+    }
+
+    /**
+     * @brief Restituisce una rappresentazione testuale completa del libro.
+     * 
+     * La stringa include titolo, autori, anno di pubblicazione, ISBN e numero di copie.
+     *
+     * @post La stringa restituita non è null e contiene i dati aggiornati del libro
+     *
+     * @return Una stringa descrittiva leggibile dall'utente.
+     */
+    @Override
+    public String toString(){
+        return "Titolo = " + getTitolo() + ", Autori = " + getAutori() + ", Anno di Publicazione = " + getAnnoPubblicazione() + ", Codice ISBN = " + getCodiceISBN() + ", Copie disponibili = " + getNumeroCopieDisponibili() + "\n";
+    }
+    
+    
+    /**
+     * @brief Restituisce i dati del libro formattati per file .csv.
+     *
+     * I campi sono concatenati e separati da un punto e virgola (;).
+     * Ordine campi: titolo;autori;anno;ISBN;copie.
+     *
+     * @post La stringa contiene 5 campi separati da ';'
+     *
+     * @return Una stringa pronta per essere scritta in un file .csv.
+     */
+    public String toCSV()
+    {
+        String safeTitolo = (titolo != null) ? titolo.replace(";", "") : "";
+        String safeAutori = (autori != null) ? autori.replace(";", "") : "";
+        String safeISBN = (codiceISBN != null) ? codiceISBN.replace(";", "") : "";
+
+        return safeTitolo + ";" + safeAutori + ";" + annoPubblicazione + ";" + safeISBN + ";" + numeroCopieDisponibili;
+    }
+    
+    
+}
