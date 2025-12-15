@@ -1,0 +1,99 @@
+\chapter{📚 Gestione Biblioteca Universitaria }
+\hypertarget{md__r_e_a_d_m_e}{}\label{md__r_e_a_d_m_e}\index{📚 Gestione Biblioteca Universitaria@{📚 Gestione Biblioteca Universitaria}}
+\label{md__r_e_a_d_m_e_autotoc_md0}%
+\Hypertarget{md__r_e_a_d_m_e_autotoc_md0}%
+
+
+  
+
+Un\textquotesingle{}applicazione per la gestione di una biblioteca, sviluppata in {\bfseries{Java}} con interfaccia grafica {\bfseries{Java\+FX}}.\hypertarget{md__r_e_a_d_m_e_autotoc_md1}{}\doxysection{\texorpdfstring{📋 Indice}{📋 Indice}}\label{md__r_e_a_d_m_e_autotoc_md1}
+
+\begin{DoxyItemize}
+\item Introduzione
+\item Funzionalità Chiave
+\item Architettura e Tecnologie
+\item Requisiti e Analisi
+\item Installazione e Avvio
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md3}{}\doxysection{\texorpdfstring{📖 Introduzione}{📖 Introduzione}}\label{md__r_e_a_d_m_e_autotoc_md3}
+Il {\bfseries{Sistema di Gestione di una Libreria}} è progettato gestire una biblioteca universitaria, permettendo la gestione digitalizzata del catalogo libri, dell\textquotesingle{}anagrafica utenti e del monitoraggio dei prestiti.
+
+Il sistema opera in osservanza delle direttive ricevute, come il limite massimo di libri per utente e il controllo della disponibilità delle copie in tempo reale.
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md5}{}\doxysection{\texorpdfstring{🚀 Funzionalità Chiave}{🚀 Funzionalità Chiave}}\label{md__r_e_a_d_m_e_autotoc_md5}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md6}{}\doxysubsection{\texorpdfstring{📕 Gestione Catalogo (Libri)}{📕 Gestione Catalogo (Libri)}}\label{md__r_e_a_d_m_e_autotoc_md6}
+
+\begin{DoxyItemize}
+\item {\bfseries{Inserimento/\+Modifica\+:}} Aggiunta di nuovi libri con dettagli (Titolo, Autori, Anno, ID, Copie) e modifica delle giacenze.
+\item {\bfseries{Ricerca Avanzata\+:}} Filtri per Titolo, Autore o Codice Identificativo univoco.
+\item {\bfseries{Rimozione\+:}} Cancellazione sicura dei libri dal sistema.
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md7}{}\doxysubsection{\texorpdfstring{👥 Gestione Utenza}{👥 Gestione Utenza}}\label{md__r_e_a_d_m_e_autotoc_md7}
+
+\begin{DoxyItemize}
+\item {\bfseries{Registrazione\+:}} Inserimento dati anagrafici (Nome, Cognome, Matricola, Email).
+\item {\bfseries{Storico\+:}} Visualizzazione dei libri attualmente in prestito per ogni utente.
+\item {\bfseries{Manutenzione\+:}} Modifica e cancellazione profili utente.
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md8}{}\doxysubsection{\texorpdfstring{🔄 Gestione Prestiti}{🔄 Gestione Prestiti}}\label{md__r_e_a_d_m_e_autotoc_md8}
+
+\begin{DoxyItemize}
+\item {\bfseries{Check-\/out (Prestito)\+:}} -\/ Controllo automatico disponibilità copie.
+\begin{DoxyItemize}
+\item Controllo limite massimo (Max 3 libri per utente).
+\item Decremento automatico delle scorte.
+\end{DoxyItemize}
+\item {\bfseries{Check-\/in (Restituzione)\+:}} -\/ Registrazione rientro libro.
+\begin{DoxyItemize}
+\item Ripristino disponibilità copia nel catalogo.
+\end{DoxyItemize}
+\item {\bfseries{Monitoraggio\+:}} Visualizzazione prestiti attivi ordinati per data di restituzione.
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md10}{}\doxysection{\texorpdfstring{🛠 Architettura e Tecnologie}{🛠 Architettura e Tecnologie}}\label{md__r_e_a_d_m_e_autotoc_md10}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ Componente  }&\cellcolor{\tableheadbgcolor}\textbf{ Tecnologia / Descrizione  }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ Componente  }&\cellcolor{\tableheadbgcolor}\textbf{ Tecnologia / Descrizione  }\\\cline{1-2}
+\endhead
+{\bfseries{Linguaggio}}  &Java (JDK 8)  \\\cline{1-2}
+{\bfseries{GUI}}  &Java\+FX (FXML)  \\\cline{1-2}
+{\bfseries{Persistenza Dati}}  &File System (CSV)  \\\cline{1-2}
+{\bfseries{Pattern Architetturale}}  &MVC (Model-\/\+View-\/\+Controller)  \\\cline{1-2}
+{\bfseries{Sistemi Operativi}}  &Cross-\/platform  \\\cline{1-2}
+\end{longtabu}
+
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md12}{}\doxysection{\texorpdfstring{💻 Installazione e Avvio}{💻 Installazione e Avvio}}\label{md__r_e_a_d_m_e_autotoc_md12}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md13}{}\doxysubsection{\texorpdfstring{Prerequisiti}{Prerequisiti}}\label{md__r_e_a_d_m_e_autotoc_md13}
+
+\begin{DoxyItemize}
+\item Java JDK 8.
+\item Maven (opzionale, se usato per le dipendenze).
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md14}{}\doxysubsection{\texorpdfstring{Passaggi ( Work in Progress )}{Passaggi ( Work in Progress )}}\label{md__r_e_a_d_m_e_autotoc_md14}
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Clona la repository\+:}} 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ git\ clone\ https://github.com/AleTane04/IngegneriaDelSoftware\_Gruppo16.git}
+\DoxyCodeLine{2.\ **Spostarsi\ nella\ cartella\ del\ Progetto**}
+
+\end{DoxyCode}
+ bash cd Ingegneria\+Del\+Software\+\_\+\+Gruppo16
+\item {\bfseries{Adoperare Maven per il build automatico}} 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ mvn\ package}
+\DoxyCodeLine{4.\ **Eseguire\ il\ file\ jar\ più\ grande**}
+
+\end{DoxyCode}
+ bash ~\newline
+ java -\/jar target/\+Ing\+SW\+\_\+\+Gestione\+Biblioteca-\/1.\+0-\/\+SNAPSHOT.\+jar 
+\end{DoxyEnumerate}
