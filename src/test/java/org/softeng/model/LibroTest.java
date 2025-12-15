@@ -210,7 +210,7 @@ public class LibroTest {
     @Test
     public void testEqualsTrue() {
         
-        Libro secondoLibro = new Libro( " titolo2", "autore2",LocalDate.of(2000, 3, 2),"9781234567890",1);
+        Libro secondoLibro = new Libro( " 1984", "George Orwell",LocalDate.of(1949, 6, 8),"9781234567890",2);
         assertTrue(libro.equals(secondoLibro));
     }
 
