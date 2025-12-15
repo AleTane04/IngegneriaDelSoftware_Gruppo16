@@ -3,16 +3,69 @@ package org.softeng.data;
 import java.time.LocalDate;
 import static java.time.LocalDate.of;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import static org.junit.jupiter.api.Assertions.*;
-import org.softeng.data.*;
 import org.softeng.exceptions.*;
 import org.softeng.model.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 public class BibliotecaTest{
   private Biblioteca b;
+    private static final Path LIBRI_REAL = Path.of("libri.csv");
+    private static final Path LIBRI_BAK  = Path.of("libri.csv.BAK");
+
+    private static final Path UTENTI_REAL = Path.of("utenti.csv");
+    private static final Path UTENTI_BAK  = Path.of("utenti.csv.BAK");
+
+    private static final Path PRESTITI_REAL = Path.of("prestiti.csv");
+    private static final Path PRESTITI_BAK  = Path.of("prestiti.csv.BAK");
+
+    /**
+     * Eseguito UNA SOLA VOLTA prima di tutti i test.
+     * Mette al sicuro i dati veri rinominandoli.
+     */
+    @BeforeAll
+    public static void setupGlobal() throws IOException {
+        System.out.println("--- BACKUP DEI FILE REALI ---");
+        safeRename(LIBRI_REAL, LIBRI_BAK);
+        safeRename(UTENTI_REAL, UTENTI_BAK);
+        safeRename(PRESTITI_REAL, PRESTITI_BAK);
+    }
+
+    /**
+     * Eseguito UNA SOLA VOLTA alla fine di tutti i test.
+     * Cancella i dati di prova e ripristina i file originali.
+     */
+    @AfterAll
+    public static void tearDownGlobal() throws IOException {
+        System.out.println("--- RIPRISTINO DEI FILE REALI ---");
+
+        // 1. Cancello i file "sporchi" creati dai test
+        Files.deleteIfExists(LIBRI_REAL);
+        Files.deleteIfExists(UTENTI_REAL);
+        Files.deleteIfExists(PRESTITI_REAL);
+
+        // 2. Ripristino i file originali dal backup
+        safeRename(LIBRI_BAK, LIBRI_REAL);
+        safeRename(UTENTI_BAK, UTENTI_REAL);
+        safeRename(PRESTITI_BAK, PRESTITI_REAL);
+    }
+
+    // Metodo helper per rinominare senza rompere tutto se il file non esiste
+    private static void safeRename(Path source, Path target) throws IOException
+    {
+        if (Files.exists(source)) {
+            Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
 
   @BeforeEach
   public void setUp()
