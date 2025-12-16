@@ -80,6 +80,6 @@ Il sistema opera in osservanza delle direttive ricevute, come il limite massimo 
 
 5. **Caricare i .csv su cui si desidera operare nella root directory del tool (il tool viene fornito con dei .csv di prova)**
 
-6. **Buon utilizzo! P.S. per salvare, utilizzare la funzione "Salva" nel menù contestuale in alto a sinistra. In caso si voglia uscire senza salvare, chiudere la finestra o premere "Esci" nel menù contestuale in alto a sinistra, poi, in entrambi i casi confermare l'uscita dal tool**
+6. **Buon utilizzo! P.S. per salvare, utilizzare la funzione "Salva" nel menù contestuale in alto a sinistra. In caso si voglia uscire senza salvare, chiudere la finestra o premere "Esci" nel menù contestuale in alto a sinistra, poi, in entrambi i casi confermare, l'uscita dal tool**
   
   
