@@ -77,3 +77,7 @@ Il sistema opera in osservanza delle direttive ricevute, come il limite massimo 
 4. **Eseguire il file .jar più grande**
   ```bash   
 java -jar target/IngSW_GestioneBiblioteca-1.0-SNAPSHOT.jar
+
+5. **Caricare i .csv desiderati nella root directory del tool**
+  
+  
