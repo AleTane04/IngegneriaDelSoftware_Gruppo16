@@ -65,7 +65,7 @@ Il sistema opera in osservanza delle direttive ricevute, come il limite massimo 
 * Maven (opzionale, se usato per le dipendenze).
 
 ### Passaggi
-1. **Clona la repository:**
+1. **Clonare la repository**
    ```bash
    git clone https://github.com/AleTane04/IngegneriaDelSoftware_Gruppo16.git
 2. **Spostarsi nella cartella del Progetto**
@@ -74,10 +74,12 @@ Il sistema opera in osservanza delle direttive ricevute, come il limite massimo 
 3. **Adoperare Maven per il build automatico**
    ```bash   
    mvn package
-4. **Eseguire il file .jar più grande**
+4. **Eseguire il file .jar generato più grande**
    ```bash   
       java -jar target/  IngSW_GestioneBiblioteca-1.0-SNAPSHOT.jar
 
-5. **Caricare i .csv su cui si desidera operare nella root directory del tool**
+5. **Caricare i .csv su cui si desidera operare nella root directory del tool (il tool viene fornito con dei .csv di prova)**
+
+6. **Buon utilizzo! P.S. per salvare, utilizzare la funzione "Salva" nel menù contestuale in alto a sinistra. In caso si voglia uscire senza salvare, chiudere la finestra o premere "Esci" nel menù contestuale in alto a sinistra, poi, in entrambi i casi confermare l'uscita dal tool**
   
   
