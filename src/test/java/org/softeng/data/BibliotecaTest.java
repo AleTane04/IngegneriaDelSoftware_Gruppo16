@@ -19,47 +19,41 @@ import org.junit.jupiter.api.Test;
 
 public class BibliotecaTest{
   private Biblioteca b;
-    private static final Path LIBRI_REAL = Path.of("libri.csv");
-    private static final Path LIBRI_BAK  = Path.of("libri.csv.BAK");
+    private static final Path LIBRI_REAL = Path.of("elenco_libri.csv");
+    private static final Path LIBRI_BAK  = Path.of("elenco_libri.csv.BAK");
 
-    private static final Path UTENTI_REAL = Path.of("utenti.csv");
-    private static final Path UTENTI_BAK  = Path.of("utenti.csv.BAK");
+    private static final Path UTENTI_REAL = Path.of("elenco_utenti.csv");
+    private static final Path UTENTI_BAK  = Path.of("elenco_utenti.csv.BAK");
 
-    private static final Path PRESTITI_REAL = Path.of("prestiti.csv");
-    private static final Path PRESTITI_BAK  = Path.of("prestiti.csv.BAK");
+    private static final Path PRESTITI_REAL = Path.of("elenco_prestiti.csv");
+    private static final Path PRESTITI_BAK  = Path.of("elenco_prestiti.csv.BAK");
 
-    /**
-     * Eseguito UNA SOLA VOLTA prima di tutti i test.
-     * Mette al sicuro i dati veri rinominandoli.
-     */
+   
     @BeforeAll
     public static void setupGlobal() throws IOException {
-        System.out.println("--- BACKUP DEI FILE REALI ---");
+        System.out.println("--- BACKUP DEI FILE ORIGINALI ---");
         safeRename(LIBRI_REAL, LIBRI_BAK);
         safeRename(UTENTI_REAL, UTENTI_BAK);
         safeRename(PRESTITI_REAL, PRESTITI_BAK);
     }
 
-    /**
-     * Eseguito UNA SOLA VOLTA alla fine di tutti i test.
-     * Cancella i dati di prova e ripristina i file originali.
-     */
+    
     @AfterAll
     public static void tearDownGlobal() throws IOException {
-        System.out.println("--- RIPRISTINO DEI FILE REALI ---");
+        System.out.println("--- RIPRISTINO DEI FILE ORIGINALI ---");
 
-        // 1. Cancello i file "sporchi" creati dai test
+    
         Files.deleteIfExists(LIBRI_REAL);
         Files.deleteIfExists(UTENTI_REAL);
         Files.deleteIfExists(PRESTITI_REAL);
 
-        // 2. Ripristino i file originali dal backup
+        
         safeRename(LIBRI_BAK, LIBRI_REAL);
         safeRename(UTENTI_BAK, UTENTI_REAL);
         safeRename(PRESTITI_BAK, PRESTITI_REAL);
     }
 
-    // Metodo helper per rinominare senza rompere tutto se il file non esiste
+  
     private static void safeRename(Path source, Path target) throws IOException
     {
         if (Files.exists(source)) {
