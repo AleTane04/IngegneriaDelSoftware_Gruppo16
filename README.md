@@ -75,8 +75,8 @@ Il sistema opera in osservanza delle direttive ricevute, come il limite massimo 
    ```bash   
    mvn package
 4. **Eseguire il file .jar più grande**
-  ```bash   
-java -jar target/IngSW_GestioneBiblioteca-1.0-SNAPSHOT.jar
+   ```bash   
+java -jar target/IngSW_GestioneBiblioteca-1.0-SNAPSHOT.jar```
 5. **Caricare i .csv su cui si desidera operare nella root directory del tool**
   
   
