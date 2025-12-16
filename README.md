@@ -61,8 +61,8 @@ Il sistema opera in osservanza delle direttive ricevute, come il limite massimo 
 ## 💻 Installazione e Avvio
 
 ### Prerequisiti
-* Java JDK 8.
-* Maven (opzionale, se usato per le dipendenze).
+* Java JDK 8+.
+* Maven.
 
 ### Passaggi
 1. **Clonare la repository**
