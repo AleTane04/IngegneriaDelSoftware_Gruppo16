@@ -64,7 +64,7 @@ Il sistema opera in osservanza delle direttive ricevute, come il limite massimo 
 * Java JDK 8.
 * Maven (opzionale, se usato per le dipendenze).
 
-### Passaggi ( Work in Progress )
+### Passaggi
 1. **Clona la repository:**
    ```bash
    git clone https://github.com/AleTane04/IngegneriaDelSoftware_Gruppo16.git
@@ -77,7 +77,6 @@ Il sistema opera in osservanza delle direttive ricevute, come il limite massimo 
 4. **Eseguire il file .jar più grande**
   ```bash   
 java -jar target/IngSW_GestioneBiblioteca-1.0-SNAPSHOT.jar
-
-5. **Caricare i .csv desiderati nella root directory del tool**
+5. **Caricare i .csv su cui si desidera operare nella root directory del tool**
   
   
